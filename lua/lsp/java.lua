@@ -178,6 +178,59 @@ lspconfig.marksman.setup({
   on_attach = on_attach,
 })
 
+-- Java (jdtls)
+-- Install: :MasonInstall jdtls
+-- Note: jdtls requires Java 11+ to run
+local java_filetypes = { "java" }
+local jdtls_setup_done = false
+
+vim.api.nvim_create_autocmd("FileType", {
+  pattern = java_filetypes,
+  callback = function()
+    if jdtls_setup_done then return end
+    jdtls_setup_done = true
+
+    local jdtls = require("jdtls")
+    local jdtls_path = vim.fn.stdpath("data") .. "/mason/packages/jdtls"
+    local launcher_jar = vim.fn.glob(jdtls_path .. "/plugins/org.eclipse.equinox.launcher_*.jar")
+
+    if launcher_jar == "" then
+      vim.notify("jdtls not found. Run :MasonInstall jdtls", vim.log.levels.WARN)
+      return
+    end
+
+    local workspace_dir = vim.fn.getcwd()
+    local project_name = vim.fn.fnamemodify(workspace_dir, ":p:h:t")
+    local workspace = vim.fn.stdpath("data") .. "/jdtls_workspace/" .. project_name
+
+    local config = {
+      cmd = {
+        "java",
+        "-Declipse.application=org.eclipse.jdt.ls.core.id1",
+        "-Dosgi.bundles.defaultStartLevel=4",
+        "-Declipse.product=org.eclipse.jdt.ls.core.product",
+        "-Dlog.protocol=true",
+        "-Dlog.level=NONE",
+        "-Xmx1g",
+        "--add-modules=ALL-SYSTEM",
+        "--add-opens", "java.base/java.util=ALL-UNNAMED",
+        "--add-opens", "java.base/java.lang=ALL-UNNAMED",
+        "-jar", launcher_jar,
+        "-configuration", jdtls_path .. "/config_linux",
+        "-data", workspace,
+      },
+      root_dir = jdtls.setup.find_root({ "gradle.build", "pom.xml", ".git" }),
+      capabilities = capabilities,
+      on_attach = on_attach,
+      init_options = {
+        bundles = {},
+      },
+    }
+
+    jdtls.start_or_attach(config)
+  end,
+})
+
 -- ━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━
 -- AUTO SETUP REMAINING SERVERS
 -- ━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━

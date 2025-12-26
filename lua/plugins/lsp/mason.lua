@@ -32,6 +32,9 @@ mason_lspconfig.setup({
     "jsonls",
     "yamlls",
 
+    -- Java development
+    "jdtls",
+
     -- Documentation
     "marksman",
 

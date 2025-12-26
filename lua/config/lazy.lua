@@ -121,9 +121,10 @@ local plugins = {
       "hrsh7th/cmp-nvim-lsp",
       "williamboman/mason.nvim",
       "williamboman/mason-lspconfig.nvim",
+      "mfussenegger/nvim-jdtls",
     },
     config = function()
-      require("lsp.setup")
+      require("lsp.java")
     end,
   },
 
@@ -132,6 +133,17 @@ local plugins = {
     cmd = { "Mason", "MasonInstall", "MasonUpdate" },
     config = function()
       require("plugins.lsp.mason")
+    end,
+  },
+
+  -- ━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━
+  -- JAVA DEVELOPMENT SUPPORT
+  -- ━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━
+  {
+    "mfussenegger/nvim-jdtls",
+    ft = "java",
+    config = function()
+      require("plugins.java")
     end,
   },
 
