@@ -216,6 +216,85 @@ local plugins = {
       require("plugins.git.gitsigns")
     end,
   },
+
+  -- ━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━
+  -- ADDITIONAL TOOLS & ENHANCEMENTS
+  -- ━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━
+  {
+    "nvim-treesitter/nvim-treesitter-context",
+    event = "BufReadPost",
+    dependencies = "nvim-treesitter/nvim-treesitter",
+    config = function()
+      require("treesitter-context").setup({
+        enable = true,
+        multiline_threshold = 20,
+        trim_scope = "outer",
+        patterns = {
+          default = {
+            "class",
+            "function",
+            "method",
+            "block",
+            "if",
+            "while",
+            "for",
+            "with",
+            "try",
+          },
+        },
+      })
+    end,
+  },
+
+  {
+    "echasnovski/mini.nvim",
+    version = false,
+    event = "VeryLazy",
+    config = function()
+      require("plugins.mini")
+    end,
+  },
+
+  {
+    "folke/trouble.nvim",
+    cmd = { "Trouble", "TroubleToggle" },
+    keys = {
+      { "<leader>xx", "<cmd>Trouble diagnostics<cr>", desc = "Trouble: Toggle" },
+      { "<leader>xw", "<cmd>Trouble diagnostics toggle filter.buf=0<cr>", desc = "Trouble: Buffer" },
+    },
+    config = function()
+      require("plugins.trouble")
+    end,
+  },
+
+  {
+    "folke/todo-comments.nvim",
+    event = "VeryLazy",
+    dependencies = "nvim-lua/plenary.nvim",
+    config = function()
+      require("plugins.todo_comments")
+    end,
+  },
+
+  -- ━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━
+  -- FORMATTING & CODE QUALITY
+  -- ━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━
+  {
+    "stevearc/conform.nvim",
+    event = { "BufReadPost", "BufNewFile" },
+    cmd = "ConformInfo",
+    config = function()
+      require("plugins.conform")
+    end,
+  },
+
+  {
+    "mfussenegger/nvim-lint",
+    event = { "BufReadPost", "BufNewFile" },
+    config = function()
+      require("plugins.lint")
+    end,
+  },
 }
 
 -- ━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━

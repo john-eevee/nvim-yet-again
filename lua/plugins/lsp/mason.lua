@@ -18,17 +18,26 @@ mason.setup({
 
 mason_lspconfig.setup({
   ensure_installed = {
+    -- Core languages
     "lua_ls",
     "pyright",
     "rust_analyzer",
     "gopls",
     "clangd",
+
+    -- Web development
     "ts_ls",
     "html",
     "cssls",
     "jsonls",
     "yamlls",
+
+    -- Documentation
     "marksman",
+
+    -- Additional tools
+    "eslint",
+    "black",
   },
   automatic_installation = true,
 })
