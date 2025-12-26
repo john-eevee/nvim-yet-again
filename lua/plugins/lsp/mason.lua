@@ -21,10 +21,6 @@ mason_lspconfig.setup({
     -- Core languages
     "lua_ls",
     "pyright",
-    "rust_analyzer",
-    "gopls",
-    "clangd",
-
     -- Web development
     "ts_ls",
     "html",
@@ -40,7 +36,6 @@ mason_lspconfig.setup({
 
     -- Additional tools
     "eslint",
-    "black",
   },
   automatic_installation = true,
 })
