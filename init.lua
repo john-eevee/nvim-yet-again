@@ -7,6 +7,7 @@
 require("config.settings")      -- Editor settings and global options
 require("config.keymaps")       -- Leader key and core keymaps
 require("config.keymap_extended") -- Extended keymaps and shortcuts
+require("config.commands")      -- Custom user commands
 require("config.mise")          -- Mise-en-place environment setup
 require("config.lazy")          -- Plugin manager setup (lazy.nvim)
 require("config.autocmds")      -- Autocommands and event handlers
