@@ -3,7 +3,7 @@
 -- ║     Advanced syntax highlighting and code manipulation        ║
 -- ╚══════════════════════════════════════════════════════════════╝
 
-require("nvim-treesitter.configs").setup({
+require("nvim-treesitter.config").setup({
   ensure_installed = {
     "bash",
     "c",
