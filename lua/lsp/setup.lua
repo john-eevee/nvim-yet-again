@@ -4,7 +4,10 @@
 -- ╚══════════════════════════════════════════════════════════════╝
 
 local lspconfig = require("lspconfig")
-local mason_lspconfig = require("mason-lspconfig")
+local has_mason_lspconfig, mason_lspconfig = pcall(require, "mason-lspconfig")
+if not has_mason_lspconfig then
+  vim.notify("mason-lspconfig not available; automatic server setup will be skipped", vim.log.levels.WARN)
+end
 local cmp_nvim_lsp = require("cmp_nvim_lsp")
 
 -- ━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━
@@ -235,11 +238,44 @@ vim.api.nvim_create_autocmd("FileType", {
 -- AUTO SETUP REMAINING SERVERS
 -- ━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━
 
-mason_lspconfig.setup_handlers({
-  function(server_name)
-    lspconfig[server_name].setup({
-      capabilities = capabilities,
-      on_attach = on_attach,
-    })
-  end,
-})
+-- Mason 2 removed `setup_handlers`. Use a compatibility approach:
+-- 1) If the old `setup_handlers` function exists, use it (backwards compat).
+-- 2) Else, iterate installed servers via `mason_lspconfig.get_installed_servers()` and call `lspconfig[server].setup()`.
+-- 3) As a last resort, set defaults on `vim.lsp.configs[server]` so that servers pick them up when started.
+if has_mason_lspconfig and type(mason_lspconfig.setup_handlers) == "function" then
+  mason_lspconfig.setup_handlers({
+    function(server_name)
+      if lspconfig[server_name] and type(lspconfig[server_name].setup) == "function" then
+        lspconfig[server_name].setup({
+          capabilities = capabilities,
+          on_attach = on_attach,
+        })
+      else
+        vim.notify("lspconfig handler missing for: " .. server_name, vim.log.levels.WARN)
+      end
+    end,
+  })
+elseif has_mason_lspconfig and type(mason_lspconfig.get_installed_servers) == "function" then
+  local installed = mason_lspconfig.get_installed_servers()
+  for _, server_name in ipairs(installed) do
+    if lspconfig[server_name] and type(lspconfig[server_name].setup) == "function" then
+      lspconfig[server_name].setup({
+        capabilities = capabilities,
+        on_attach = on_attach,
+      })
+    else
+      -- Fallback: set defaults on vim.lsp.configs to ensure handlers/capabilities are present
+      if vim.lsp and vim.lsp.configs and vim.lsp.configs[server_name] then
+        vim.lsp.configs[server_name].default_config = vim.tbl_extend("force", vim.lsp.configs[server_name].default_config or {}, {
+          capabilities = capabilities,
+          on_attach = on_attach,
+        })
+      else
+        vim.notify("Cannot automatically configure LSP server: " .. server_name, vim.log.levels.WARN)
+      end
+    end
+  end
+else
+  -- mason-lspconfig not available or no compatible API; do not attempt auto-setup
+  vim.notify("mason-lspconfig setup_handlers/get_installed_servers unavailable; automatic server setup skipped", vim.log.levels.WARN)
+end

@@ -125,7 +125,7 @@ local plugins = {
       "mfussenegger/nvim-jdtls",
     },
     config = function()
-      require("lsp.java")
+      require("lsp.setup")
     end,
   },
 
