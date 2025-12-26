@@ -5,7 +5,7 @@
 
 local cmp = require("cmp")
 local luasnip = require("luasnip")
-`
+
 
 -- Configure luasnip
 luasnip.config.setup({
