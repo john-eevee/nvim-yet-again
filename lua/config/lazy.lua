@@ -168,14 +168,15 @@ local plugins = {
   -- ━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━
   {
     "olimorris/codecompanion.nvim",
-    cmd = { "CodeCompanion", "CodeCompanionChat", "CodeCompanionActions" },
-    keys = { "<leader>cc", "<leader>ca" },
+    cmd = { "CodeCompanion", "CodeCompanionChat", "CodeCompanionActions", "PlannerAgent", "GitOperator" },
+    keys = { "<leader>cc", "<leader>ca", "<leader>cp", "<leader>cg" },
     dependencies = {
       "nvim-lua/plenary.nvim",
       "nvim-telescope/telescope.nvim",
     },
     config = function()
       require("plugins.codecompanion")
+      require("plugins.codecompanion_agents")
     end,
   },
 
