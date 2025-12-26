@@ -76,15 +76,13 @@ local plugins = {
     "nvim-treesitter/nvim-treesitter",
     event = "BufReadPost",
     build = ":TSUpdate",
+    dependencies = {
+      "JoosepAlviste/nvim-ts-context-commentstring",
+      "nvim-treesitter/nvim-treesitter-textobjects",
+    },
     config = function()
       require("plugins.treesitter")
     end,
-  },
-
-  {
-    "nvim-treesitter/nvim-treesitter-textobjects",
-    event = "VeryLazy",
-    dependencies = "nvim-treesitter/nvim-treesitter",
   },
 
   -- ━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━
