@@ -3,9 +3,9 @@
 -- ║     Auto-detect projects and manage workspace setup           ║
 -- ╚══════════════════════════════════════════════════════════════╝
 
-require("project_nvim").setup({
+require("project").setup({
   manual_mode = false,
-  detection_methods = { "lsp", "pattern" },
+  use_lsp = true,
   patterns = { ".git", "_darcs", ".hg", ".bzr", ".svn", "Makefile", "package.json", "pyproject.toml", "Cargo.toml" },
   ignore_lsp = {},
   exclude_dirs = {},
