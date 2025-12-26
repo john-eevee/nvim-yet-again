@@ -47,75 +47,17 @@ lint.linters_by_ft = {
 -- JAVA-SPECIFIC KEYMAPS
 -- ━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━
 
-local function run_spotless()
-  local cwd = vim.fn.getcwd()
-  local cmd = ""
-
-  -- Detect Maven project
-  if vim.fn.filereadable(cwd .. "/pom.xml") == 1 then
-    cmd = "bash -c 'cd " .. cwd .. " && ./mvnw spotless:apply'"
-  -- Detect Gradle project
-  elseif vim.fn.filereadable(cwd .. "/build.gradle") == 1 or
-         vim.fn.filereadable(cwd .. "/build.gradle.kts") == 1 then
-    cmd = "bash -c 'cd " .. cwd .. " && ./gradlew spotless'"
-  else
-    vim.notify("No pom.xml or build.gradle found. Install Spotless.", vim.log.levels.WARN)
-    return
-  end
-
-  vim.fn.jobstart(cmd, {
-    on_stdout = function(_, data)
-      if data then
-        vim.notify(table.concat(data, "\n"), vim.log.levels.INFO)
-      end
-    end,
-    on_stderr = function(_, data)
-      if data then
-        vim.notify(table.concat(data, "\n"), vim.log.levels.WARN)
-      end
-    end,
-    on_exit = function()
-      vim.notify("Spotless formatting complete!", vim.log.levels.INFO)
-    end,
-  })
-end
-
 vim.api.nvim_create_autocmd("FileType", {
   pattern = "java",
   callback = function()
     local keymap = vim.keymap.set
     local opts = { noremap = true, silent = true, buffer = true }
 
-    -- Format with Spotless (auto-detects Maven or Gradle)
-    keymap("n", "<leader>lf", run_spotless, vim.tbl_extend("force", opts, {
-      desc = "Format Java with Spotless (Maven/Gradle auto-detect)",
-    }))
-
     -- Run linter
     keymap("n", "<leader>ll", function()
       require("lint").try_lint()
     end, vim.tbl_extend("force", opts, {
       desc = "Lint Java with checkstyle",
-    }))
-
-    -- Run Maven tests
-    keymap("n", "<leader>tm", "<cmd>!mvn test<CR>", vim.tbl_extend("force", opts, {
-      desc = "Run Maven tests",
-    }))
-
-    -- Run Gradle tests
-    keymap("n", "<leader>tg", "<cmd>!gradle test<CR>", vim.tbl_extend("force", opts, {
-      desc = "Run Gradle tests",
-    }))
-
-    -- Build Maven
-    keymap("n", "<leader>bm", "<cmd>!mvn clean install<CR>", vim.tbl_extend("force", opts, {
-      desc = "Build Maven (clean install)",
-    }))
-
-    -- Build Gradle
-    keymap("n", "<leader>bg", "<cmd>!gradle clean build<CR>", vim.tbl_extend("force", opts, {
-      desc = "Build Gradle (clean build)",
     }))
   end,
 })
