@@ -288,11 +288,14 @@ local plugins = {
     end,
   },
 
+  -- ━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━
+  -- NOTIFICATIONS & UI
+  -- ━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━
   {
-    "mfussenegger/nvim-lint",
-    event = { "BufReadPost", "BufNewFile" },
+    "rcarriga/nvim-notify",
+    event = "VeryLazy",
     config = function()
-      require("plugins.lint")
+      require("plugins.notify")
     end,
   },
 }
