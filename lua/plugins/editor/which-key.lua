@@ -51,17 +51,17 @@ wk.setup({
 })
 
 -- Register keymaps for which-key display
-wk.register({
-  w = { name = "+window" },
-  b = { name = "+buffer" },
-  f = { name = "+file" },
-  g = { name = "+goto" },
-  s = { name = "+search" },
-  c = { name = "+code" },
-  d = { name = "+debug" },
-  h = { name = "+help" },
-  l = { name = "+lsp" },
-  t = { name = "+telescope" },
-  u = { name = "+ui" },
-  x = { name = "+trouble" },
-}, { prefix = "<leader>" })
+wk.add({
+  { "<leader>b", group = "buffer" },
+  { "<leader>c", group = "code" },
+  { "<leader>d", group = "debug" },
+  { "<leader>f", group = "file" },
+  { "<leader>g", group = "goto" },
+  { "<leader>h", group = "help" },
+  { "<leader>l", group = "lsp" },
+  { "<leader>s", group = "search" },
+  { "<leader>t", group = "telescope" },
+  { "<leader>u", group = "ui" },
+  { "<leader>w", group = "window" },
+  { "<leader>x", group = "trouble" },
+})
