@@ -78,7 +78,10 @@ local plugins = {
     build = ":TSUpdate",
     dependencies = {
       "JoosepAlviste/nvim-ts-context-commentstring",
-      "nvim-treesitter/nvim-treesitter-textobjects",
+      {
+        "nvim-treesitter/nvim-treesitter-textobjects",
+         branch = "main"
+    },
     },
     config = function()
       require("plugins.treesitter")
@@ -205,7 +208,7 @@ local plugins = {
   -- PROJECT MANAGEMENT
   -- ━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━
   {
-    "ahmedkhalf/project.nvim",
+    "DrKJeff16/project.nvim",
     event = "VeryLazy",
     config = function()
       require("plugins.project")
@@ -290,6 +293,15 @@ local plugins = {
   -- ━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━
   -- FORMATTING & CODE QUALITY
   -- ━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━
+  {
+    "mfussenegger/nvim-lint",
+    event = "BufReadPost",
+    config = function()
+      -- plugin exposes global `lint` module
+      -- no additional setup required here; configured in `plugins/java.lua`
+    end,
+  },
+
   {
     "stevearc/conform.nvim",
     event = { "BufReadPost", "BufNewFile" },
