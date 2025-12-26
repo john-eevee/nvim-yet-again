@@ -33,7 +33,7 @@ local function global_find_replace(pattern, replacement)
 
   -- After selection with Telescope, use this command:
   -- :cfdo %s/pattern/replacement/g | update
-  vim.notify("Use :cfdo %s/" .. pattern .. "/" .. replacement .. "/g | update", vim.log.levels.INFO)
+  require("utils.logger").info("Use :cfdo %s/" .. pattern .. "/" .. replacement .. "/g | update")
 end
 
 --- Search word under cursor
@@ -62,7 +62,7 @@ end
 local function replace_in_project(old_word, new_word, file_pattern)
   file_pattern = file_pattern or "*"
   local cmd = string.format("cdo %%s/%s/%s/gc | update", old_word, new_word)
-  vim.notify("Execute: " .. cmd, vim.log.levels.INFO)
+  require("utils.logger").info("Execute: " .. cmd)
 end
 
 -- ━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━
@@ -78,7 +78,7 @@ end, { desc = "Search word under cursor" })
 vim.api.nvim_create_user_command("ReplaceBuffer", function(opts)
   local args = vim.split(opts.args, " ")
   if #args < 2 then
-    vim.notify("Usage: :ReplaceBuffer old new", vim.log.levels.ERROR)
+    require("utils.logger").error("Usage: :ReplaceBuffer old new")
     return
   end
   replace_in_buffer(args[1], args[2])

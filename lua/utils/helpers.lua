@@ -67,22 +67,22 @@ end
 -- NOTIFICATION UTILITIES
 -- ━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━
 
---- Show info notification
+--- Show info notification (logged to file)
 ---@param msg string
 function M.notify_info(msg)
-  vim.notify(msg, vim.log.levels.INFO, { title = "Neovim" })
+  require("utils.logger").info("Neovim: " .. msg)
 end
 
---- Show warning notification
+--- Show warning notification (logged to file)
 ---@param msg string
 function M.notify_warn(msg)
-  vim.notify(msg, vim.log.levels.WARN, { title = "Neovim" })
+  require("utils.logger").warn("Neovim: " .. msg)
 end
 
---- Show error notification
+--- Show error notification (logged to file)
 ---@param msg string
 function M.notify_error(msg)
-  vim.notify(msg, vim.log.levels.ERROR, { title = "Neovim" })
+  require("utils.logger").error("Neovim: " .. msg)
 end
 
 -- ━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━

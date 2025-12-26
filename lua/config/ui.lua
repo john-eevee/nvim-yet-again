@@ -91,7 +91,7 @@ vim.api.nvim_create_user_command("MinimalMode", function(opts)
   vim.opt.statusline = enable and "" or "%!luaeval('require(\"lualine\").statusline()')"
 
   local state = enable and "enabled" or "disabled"
-  vim.notify("Minimal mode " .. state, vim.log.levels.INFO)
+  require("utils.logger").info("UI: Minimal mode " .. state)
 end, {
   nargs = "?",
   complete = function()

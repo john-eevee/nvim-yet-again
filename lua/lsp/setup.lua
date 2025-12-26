@@ -6,7 +6,7 @@
 local lspconfig = require("lspconfig")
 local has_mason_lspconfig, mason_lspconfig = pcall(require, "mason-lspconfig")
 if not has_mason_lspconfig then
-  vim.notify("mason-lspconfig not available; automatic server setup will be skipped", vim.log.levels.WARN)
+  require("utils.logger").warn("mason-lspconfig not available; automatic server setup will be skipped")
 end
 local cmp_nvim_lsp = require("cmp_nvim_lsp")
 
@@ -198,7 +198,7 @@ vim.api.nvim_create_autocmd("FileType", {
     local launcher_jar = vim.fn.glob(jdtls_path .. "/plugins/org.eclipse.equinox.launcher_*.jar")
 
     if launcher_jar == "" then
-      vim.notify("jdtls not found. Run :MasonInstall jdtls", vim.log.levels.WARN)
+      require("utils.logger").warn("jdtls not found. Run :MasonInstall jdtls")
       return
     end
 
@@ -251,7 +251,7 @@ if has_mason_lspconfig and type(mason_lspconfig.setup_handlers) == "function" th
           on_attach = on_attach,
         })
       else
-        vim.notify("lspconfig handler missing for: " .. server_name, vim.log.levels.WARN)
+        require("utils.logger").warn("lspconfig handler missing for: " .. server_name)
       end
     end,
   })
@@ -271,11 +271,11 @@ elseif has_mason_lspconfig and type(mason_lspconfig.get_installed_servers) == "f
           on_attach = on_attach,
         })
       else
-        vim.notify("Cannot automatically configure LSP server: " .. server_name, vim.log.levels.WARN)
+        require("utils.logger").warn("Cannot automatically configure LSP server: " .. server_name)
       end
     end
   end
 else
   -- mason-lspconfig not available or no compatible API; do not attempt auto-setup
-  vim.notify("mason-lspconfig setup_handlers/get_installed_servers unavailable; automatic server setup skipped", vim.log.levels.WARN)
+  require("utils.logger").warn("mason-lspconfig setup_handlers/get_installed_servers unavailable; automatic server setup skipped")
 end

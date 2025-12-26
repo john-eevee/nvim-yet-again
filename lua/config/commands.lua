@@ -179,12 +179,8 @@ local function open_keymaps_buffer()
     vim.tbl_extend("force", keymap_opts, { desc = "Search in keymaps" })
   )
 
-  -- Notify user
-  vim.notify(
-    "Keymaps buffer opened. Press 'q' or <Esc> to close, '/' to search.",
-    vim.log.levels.INFO,
-    { title = "Keymaps" }
-  )
+  -- Log keymaps buffer open
+  require("utils.logger").info("Keymaps: Keymaps buffer opened. Press 'q' or <Esc> to close, '/' to search.")
 end
 
 -- ━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━
@@ -251,11 +247,11 @@ end
 --- @param cmd string Command to run (e.g., "pytest", "npm test", "cargo test")
 local function run_tests_with_links(cmd)
   if not cmd or cmd == "" then
-    vim.notify("No test command provided", vim.log.levels.ERROR, { title = "Test Runner" })
+    require("utils.logger").error("Test Runner: No test command provided")
     return
   end
 
-  vim.notify("Running tests: " .. cmd, vim.log.levels.INFO, { title = "Test Runner" })
+  require("utils.logger").info("Test Runner: Running tests: " .. cmd)
 
   -- Create a new buffer for test output
   local buf = vim.api.nvim_create_buf(false, true)
@@ -277,7 +273,7 @@ local function run_tests_with_links(cmd)
   -- Run command asynchronously
   local function on_exit(job_id, code)
     -- Read output from job (vim-jobstart would be used for this)
-    vim.notify("Tests completed with exit code: " .. code, vim.log.levels.INFO, { title = "Test Runner" })
+      require("utils.logger").info("Test Runner: Tests completed with exit code: " .. code)
   end
 
   -- Use vim.system for async execution (Neovim 0.10+)
@@ -315,9 +311,9 @@ local function run_tests_with_links(cmd)
       vim.api.nvim_buf_set_option(buf, "modifiable", false)
 
       if obj.code == 0 then
-        vim.notify("✓ All tests passed!", vim.log.levels.INFO, { title = "Test Runner" })
+        require("utils.logger").info("Test Runner: ✓ All tests passed!")
       else
-        vim.notify("✗ Tests failed (exit code: " .. obj.code .. ")", vim.log.levels.WARN, { title = "Test Runner" })
+        require("utils.logger").warn("Test Runner: ✗ Tests failed (exit code: " .. obj.code .. ")")
       end
     end)
   else
@@ -359,7 +355,7 @@ end
 local function copy_file_path()
   local file = vim.fn.expand("%:p")
   if file == "" or file == ":" then
-    vim.notify("No file in current buffer", vim.log.levels.WARN, { title = "Copy Path" })
+    require("utils.logger").warn("Copy Path: No file in current buffer")
     return
   end
 
@@ -373,7 +369,7 @@ local function copy_file_path()
   -- Copy to system clipboard (supports wl-copy, xclip, pbcopy)
   -- Using bash -c to ensure compatibility with Fish shell
   vim.fn.system({"bash", "-c", "echo -n '" .. rel_path:gsub("'", "'\\\\''") .. "' | wl-copy 2>/dev/null || echo -n '" .. rel_path:gsub("'", "'\\\\''") .. "' | xclip -selection clipboard 2>/dev/null || echo -n '" .. rel_path:gsub("'", "'\\\\''") .. "' | pbcopy"})
-  vim.notify("Copied: " .. rel_path, vim.log.levels.INFO, { title = "Copy Path" })
+  require("utils.logger").info("Copy Path: Copied: " .. rel_path)
 end
 
 --- Copy file path with line number to system clipboard
@@ -382,7 +378,7 @@ local function copy_file_path_with_line()
   local file = vim.fn.expand("%:p")
   local line = vim.fn.line(".")
   if file == "" or file == ":" then
-    vim.notify("No file in current buffer", vim.log.levels.WARN, { title = "Copy Path" })
+    require("utils.logger").warn("Copy Path: No file in current buffer")
     return
   end
 
@@ -398,7 +394,7 @@ local function copy_file_path_with_line()
   -- Copy to system clipboard (supports wl-copy, xclip, pbcopy)
   -- Using bash -c to ensure compatibility with Fish shell
   vim.fn.system({"bash", "-c", "echo -n '" .. path_with_line:gsub("'", "'\\\\''") .. "' | wl-copy 2>/dev/null || echo -n '" .. path_with_line:gsub("'", "'\\\\''") .. "' | xclip -selection clipboard 2>/dev/null || echo -n '" .. path_with_line:gsub("'", "'\\\\''") .. "' | pbcopy"})
-  vim.notify("Copied: " .. path_with_line, vim.log.levels.INFO, { title = "Copy Path" })
+  require("utils.logger").info("Copy Path: Copied: " .. path_with_line)
 end
 
 --- Quick test runner interface

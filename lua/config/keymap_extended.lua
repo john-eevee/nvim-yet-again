@@ -29,7 +29,7 @@ keymap("n", "<leader>sr", function()
         return
       end
       local cmd = "cfdo %s/" .. pattern .. "/" .. replacement .. "/gc | update"
-      vim.notify("After grep, run: :cfdo %s/" .. pattern .. "/" .. replacement .. "/gc | update", vim.log.levels.INFO)
+      require("utils.logger").info("Search: After grep, run: :cfdo %s/" .. pattern .. "/" .. replacement .. "/gc | update")
     end)
   end)
 end, { desc = "Search: Replace in project" })
@@ -51,7 +51,7 @@ keymap("n", "<leader>dr", function()
   if commands[ft] then
     vim.cmd(commands[ft])
   else
-    vim.notify("Run command not configured for " .. ft, vim.log.levels.WARN)
+    require("utils.logger").warn("Run command not configured for " .. ft)
   end
 end, { desc = "Debug: Run file" })
 

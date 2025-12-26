@@ -14,13 +14,13 @@ function M.start_profile()
   vim.cmd("profile start /tmp/nvim_profile.log")
   vim.cmd("profile func *")
   vim.cmd("profile file *")
-  vim.notify("Profiling started. Run :profile stop when done.", vim.log.levels.INFO)
+  require("utils.logger").info("Profiling started. Run :profile stop when done.")
 end
 
 --- Stop performance profiling and display results
 function M.stop_profile()
   vim.cmd("profile stop")
-  vim.notify("Profile saved to /tmp/nvim_profile.log", vim.log.levels.INFO)
+  require("utils.logger").info("Profile saved to /tmp/nvim_profile.log")
   vim.cmd("edit /tmp/nvim_profile.log")
 end
 
@@ -30,10 +30,11 @@ end
 
 --- Show lazy.nvim status
 function M.show_lazy_status()
-  if vim.fn.exists("*lazy#status") then
-    vim.notify(require("lazy.status").statusline())
+  local ok, status = pcall(function() return require("lazy.status").statusline() end)
+  if ok and status then
+    require("utils.logger").info("Lazy: " .. status)
   else
-    vim.notify("Lazy.nvim not loaded", vim.log.levels.WARN)
+    require("utils.logger").warn("Lazy.nvim not loaded")
   end
 end
 

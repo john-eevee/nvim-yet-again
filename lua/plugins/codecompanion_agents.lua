@@ -173,22 +173,14 @@ end
 local function open_planner()
   vim.cmd("CodeCompanionChat")
   -- Note: Once in chat, users can select the Planner agent
-  vim.notify(
-    "Planner agent ready! Ask to break down a task, create a project plan, or organize work.",
-    vim.log.levels.INFO,
-    { title = "CodeCompanion: Planner" }
-  )
+  require("utils.logger").info("CodeCompanion: Planner agent ready! Ask to break down a task, create a project plan, or organize work.")
 end
 
 --- Open CodeCompanion with Git Operator agent
 local function open_git_operator()
   vim.cmd("CodeCompanionChat")
   -- Note: Once in chat, users can select the Git Operator agent
-  vim.notify(
-    "Git Operator ready! Ask about commits, repository history, or git workflows.",
-    vim.log.levels.INFO,
-    { title = "CodeCompanion: Git Operator" }
-  )
+  require("utils.logger").info("CodeCompanion: Git Operator ready! Ask about commits, repository history, or git workflows.")
 end
 
 -- Create user commands
