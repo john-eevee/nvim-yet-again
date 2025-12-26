@@ -5,7 +5,7 @@
 
 local cmp = require("cmp")
 local luasnip = require("luasnip")
-local lspkind = require("lspkind")
+`
 
 -- Configure luasnip
 luasnip.config.setup({
@@ -69,16 +69,7 @@ cmp.setup({
     { name = "path", priority = 20 },
   }),
 
-  formatting = {
-    format = lspkind.cmp_format({
-      mode = "symbol_text",
-      maxwidth = 50,
-      ellipsis_char = "...",
-      before = function(entry, vim_item)
-        return vim_item
-      end,
-    }),
-  },
+
 
   experimental = {
     ghost_text = true,
