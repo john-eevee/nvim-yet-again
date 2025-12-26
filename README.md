@@ -32,26 +32,6 @@ Extras (recommended):
 Usage & Key Shortcuts
 - Browse keymaps: `<leader>km` or `:Keymaps`
 
-Testing & Validation
-
-Validate configuration integrity:
-
-```bash
-# Run comprehensive test suite (69 tests)
-cd ~/.config/nvim && tests/run_tests.sh
-```
-
-Tests check:
-- File structure and syntax
-- Required system tools (git, fish, curl)
-- Optional language runtimes (Java, Python, Go, Rust, etc.)
-- LSP setup and Java configuration
-- Clipboard utilities availability
-- Neovim version compatibility (≥0.9)
-
-See [tests/QUICK_START.md](tests/QUICK_START.md) for detailed testing guide.
-
-
 Customizing
 - Add plugins in `lua/config/lazy.lua`
 - Change keymaps in `lua/config/keymaps.lua`
