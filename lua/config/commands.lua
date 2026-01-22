@@ -476,7 +476,7 @@ end, {
 -- Quick test shortcuts
 vim.keymap.set(
   "n",
-  "<leader>tt",
+  "<leader>ta",
   function() run_tests_auto() end,
   { noremap = true, silent = true, desc = "Tests: Auto-detect and run" }
 )

@@ -4,7 +4,7 @@
 -- ╚══════════════════════════════════════════════════════════════╝
 
 local lazypath = vim.fn.stdpath("data") .. "/lazy/lazy.nvim"
-if not vim.loop.fs_stat(lazypath) then
+if not vim.uv.fs_stat(lazypath) then
   vim.fn.system({
     "git",
     "clone",
@@ -74,14 +74,13 @@ local plugins = {
   -- ━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━
   {
     "nvim-treesitter/nvim-treesitter",
-    event = "BufReadPost",
     build = ":TSUpdate",
     dependencies = {
       "JoosepAlviste/nvim-ts-context-commentstring",
       {
         "nvim-treesitter/nvim-treesitter-textobjects",
-         branch = "main"
-    },
+        branch = "main"
+      },
     },
     config = function()
       require("plugins.treesitter")
@@ -108,7 +107,8 @@ local plugins = {
 
   {
     "nvim-telescope/telescope-fzf-native.nvim",
-    build = "cmake -S. -Bbuild -DCMAKE_BUILD_TYPE=Release && cmake --build build --config Release && cmake --install build --prefix build",
+    build =
+    "cmake -S. -Bbuild -DCMAKE_BUILD_TYPE=Release && cmake --build build --config Release && cmake --install build --prefix build",
     lazy = true,
   },
 
@@ -135,6 +135,11 @@ local plugins = {
     config = function()
       require("plugins.lsp.mason")
     end,
+  },
+
+  {
+    "b0o/schemastore.nvim",
+    lazy = true,
   },
 
   -- ━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━
@@ -273,7 +278,7 @@ local plugins = {
     "folke/trouble.nvim",
     cmd = { "Trouble", "TroubleToggle" },
     keys = {
-      { "<leader>xx", "<cmd>Trouble diagnostics<cr>", desc = "Trouble: Toggle" },
+      { "<leader>xx", "<cmd>Trouble diagnostics<cr>",                     desc = "Trouble: Toggle" },
       { "<leader>xw", "<cmd>Trouble diagnostics toggle filter.buf=0<cr>", desc = "Trouble: Buffer" },
     },
     config = function()

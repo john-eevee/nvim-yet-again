@@ -103,11 +103,11 @@ keymap("n", "<leader>m", "<cmd>Telescope marks<CR>", { desc = "Marks: Show all" 
 keymap("n", "m,", "m,", { desc = "Marks: Set mark at ," })
 
 -- ━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━
--- TERMINAL INTEGRATION
+-- TERMINAL INTEGRATION (Space + t)
 -- ━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━
 
--- Open terminal in split
-keymap("n", "<leader>ts", function()
+-- Open terminal in split (horizontal)
+keymap("n", "<leader>th", function()
   vim.cmd("belowright split | terminal")
 end, { desc = "Terminal: Horizontal split" })
 
@@ -115,9 +115,24 @@ keymap("n", "<leader>tv", function()
   vim.cmd("rightbelow vsplit | terminal")
 end, { desc = "Terminal: Vertical split" })
 
-keymap("n", "<leader>tt", function()
+keymap("n", "<leader>tf", function()
   vim.cmd("rightbelow split | resize 15 | terminal")
-end, { desc = "Terminal: Floating" })
+end, { desc = "Terminal: Floating (small)" })
+
+-- ━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━
+-- GIT INTEGRATION (Space + g) - vim-fugitive
+-- ━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━
+
+keymap("n", "<leader>gs", "<cmd>Git<CR>", { desc = "Git: Status" })
+keymap("n", "<leader>ga", "<cmd>Git add %<CR>", { desc = "Git: Add file" })
+keymap("n", "<leader>gA", "<cmd>Git add .<CR>", { desc = "Git: Add all" })
+keymap("n", "<leader>gc", "<cmd>Git commit<CR>", { desc = "Git: Commit" })
+keymap("n", "<leader>gp", "<cmd>Git push<CR>", { desc = "Git: Push" })
+keymap("n", "<leader>gP", "<cmd>Git pull<CR>", { desc = "Git: Pull" })
+keymap("n", "<leader>gb", "<cmd>Git blame<CR>", { desc = "Git: Blame" })
+keymap("n", "<leader>gl", "<cmd>Git log<CR>", { desc = "Git: Log" })
+keymap("n", "<leader>gd", "<cmd>Git diff<CR>", { desc = "Git: Diff" })
+keymap("n", "<leader>gB", "<cmd>GBrowse<CR>", { desc = "Git: Browse on web" })
 
 -- ━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━
 -- UNDO/REDO TREE (prepare for undotree plugin)
@@ -135,6 +150,27 @@ keymap("n", "<leader>jr", "<cmd>Telescope lsp_references<CR>", { desc = "Jump: T
 keymap("n", "<leader>ji", "<cmd>Telescope lsp_implementations<CR>", { desc = "Jump: To implementation" })
 
 -- ━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━
+-- DIAGNOSTICS NAVIGATION (Space + e)
+-- ━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━
+
+keymap("n", "]e", vim.diagnostic.goto_next, { desc = "Diagnostic: Next" })
+keymap("n", "[e", vim.diagnostic.goto_prev, { desc = "Diagnostic: Previous" })
+keymap("n", "<leader>ee", vim.diagnostic.open_float, { desc = "Diagnostic: Open float" })
+keymap("n", "<leader>eq", vim.diagnostic.setloclist, { desc = "Diagnostic: Set loclist" })
+
+-- ━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━
+-- CODE OPERATIONS (Space + c) - LSP actions
+-- ━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━
+
+keymap("n", "<leader>ca", vim.lsp.buf.code_action, { desc = "Code: Action" })
+keymap("n", "<leader>cf", function()
+  vim.lsp.buf.format({ async = true })
+end, { desc = "Code: Format" })
+keymap("n", "<leader>cr", vim.lsp.buf.rename, { desc = "Code: Rename" })
+keymap("n", "<leader>ch", vim.lsp.buf.hover, { desc = "Code: Hover" })
+keymap("n", "<leader>cs", vim.lsp.buf.signature_help, { desc = "Code: Signature help" })
+
+-- ━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━
 -- COLORSCHEME QUICK SWITCH
 -- ━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━
 
@@ -149,11 +185,3 @@ keymap("n", "<leader>uc", function()
     end
   )
 end, { desc = "UI: Change colorscheme" })
-
--- ━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━
--- SAVE & QUIT VARIATIONS
--- ━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━
-
-keymap("n", "<leader>fw", "<cmd>w<CR>", { desc = "File: Write" })
-keymap("n", "<leader>fW", "<cmd>wa<CR>", { desc = "File: Write all" })
-keymap("n", "<leader>fx", "<cmd>wq<CR>", { desc = "File: Write and quit" })

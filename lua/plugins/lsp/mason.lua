@@ -21,21 +21,26 @@ mason_lspconfig.setup({
     -- Core languages
     "lua_ls",
     "pyright",
-    -- Web development
+
+    -- Web development (Node.js, TypeScript, JavaScript)
     "ts_ls",
     "html",
     "cssls",
     "jsonls",
     "yamlls",
+    "eslint",
 
     -- Java development
     "jdtls",
 
+    -- Elixir development
+    "elixirls",
+
+    -- Dart/Flutter development
+    -- "dartls", there is no dartls in mason
+
     -- Documentation
     "marksman",
-
-    -- Additional tools
-    "eslint",
   },
   automatic_installation = true,
 })

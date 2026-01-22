@@ -6,6 +6,7 @@
 -- ━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━
 -- EDITOR BEHAVIOR
 -- ━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━
+vim.cmd.syntax("on")                    -- Enable syntax highlighting
 vim.opt.number = true                   -- Show line numbers
 vim.opt.relativenumber = true           -- Relative line numbers for navigation
 vim.opt.cursorline = true               -- Highlight current line
@@ -65,6 +66,14 @@ vim.opt.fileencoding = "utf-8"          -- UTF-8 encoding
 vim.opt.hlsearch = true                 -- Highlight search results
 vim.opt.incsearch = true                -- Incremental search
 vim.opt.gdefault = false                -- Don't use 'g' flag by default in substitutions
+
+-- ━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━
+-- CODE FORMATTING & COMPLETION
+-- ━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━
+vim.opt.formatoptions:remove("c")       -- Don't auto-comment on new line
+vim.opt.formatoptions:remove("r")       -- Don't auto-comment on new line
+vim.opt.formatoptions:remove("o")       -- Don't auto-comment on new line
+vim.g.format_on_save = false            -- Disable format on save by default (enable per project)
 
 -- ━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━
 -- GLOBALS

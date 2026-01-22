@@ -53,6 +53,15 @@ autocmd("FileType", {
   end,
 })
 
+-- Detect Gradle files as groovy filetype
+autocmd({ "BufRead", "BufNewFile" }, {
+  group = filetype_group,
+  pattern = { "*.gradle", "*.gradle.kts", "build.gradle", "settings.gradle" },
+  callback = function()
+    vim.bo.filetype = "groovy"
+  end,
+})
+
 -- ━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━
 -- HIGHLIGHT ON YANK
 -- ━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━

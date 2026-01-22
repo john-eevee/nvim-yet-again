@@ -7,12 +7,13 @@
 local codecompanion = require("codecompanion")
 
 codecompanion.setup({
-  strategies = {
-    chat = "default",
-    inline = "default",
-  },
-  adapters = {
-    copilot = require("codecompanion.adapters").use("copilot"),
+  interactions = {
+    chat = {
+      adapter = "copilot"
+    },
+    inline = {
+      adapter = "copilot"
+    }
   },
   keymaps = {
     send = "<C-s>",

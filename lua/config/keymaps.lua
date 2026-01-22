@@ -63,6 +63,10 @@ keymap("n", "<leader>bl", "<cmd>bnext<CR>", { desc = "Buffer: Next" })
 keymap("n", "<leader>bh", "<cmd>bprevious<CR>", { desc = "Buffer: Previous" })
 keymap("n", "<leader>ba", "<cmd>%bdelete|edit #<CR>", { desc = "Buffer: Delete all others" })
 
+-- Smart buffer navigation with counts
+keymap("n", "<C-l>", "<cmd>bnext<CR>", { desc = "Buffer: Next (Ctrl+l)" })
+keymap("n", "<C-h>", "<cmd>bprevious<CR>", { desc = "Buffer: Previous (Ctrl+h)" })
+
 -- ━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━
 -- FILE OPERATIONS (Space + f)
 -- ━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━
@@ -114,3 +118,38 @@ end, { desc = "UI: Toggle relative numbers" })
 keymap("n", "<leader>uw", function()
   vim.opt.wrap = not vim.opt.wrap._value
 end, { desc = "UI: Toggle line wrap" })
+
+-- Toggle spell checking
+keymap("n", "<leader>us", function()
+  vim.opt.spell = not vim.opt.spell._value
+  if vim.opt.spell._value then
+    require("utils.logger").info("Spell check: ON")
+  else
+    require("utils.logger").info("Spell check: OFF")
+  end
+end, { desc = "UI: Toggle spell check" })
+
+-- Toggle diagnostics
+keymap("n", "<leader>ud", function()
+  vim.diagnostic.enable(not vim.diagnostic.is_disabled())
+  if vim.diagnostic.is_disabled() then
+    require("utils.logger").info("Diagnostics: OFF")
+  else
+    require("utils.logger").info("Diagnostics: ON")
+  end
+end, { desc = "UI: Toggle diagnostics" })
+
+-- ━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━
+-- COMMAND ABBREVIATIONS
+-- ━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━
+-- Save shortcuts
+vim.cmd("cnoreabbrev W w")
+vim.cmd("cnoreabbrev Wq wq")
+vim.cmd("cnoreabbrev Q q")
+vim.cmd("cnoreabbrev Qa qa")
+vim.cmd("cnoreabbrev WQ wq")
+vim.cmd("cnoreabbrev QA qa")
+
+-- Common typos
+vim.cmd("cnoreabbrev q1 q!")
+vim.cmd("cnoreabbrev w1 w!")
