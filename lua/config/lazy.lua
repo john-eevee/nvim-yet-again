@@ -221,6 +221,30 @@ local plugins = {
   },
 
   -- ━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━
+  -- PROJECT ROOTER - AUTO CD TO PROJECT ROOT
+  -- ━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━
+  {
+    "airblade/vim-rooter",
+    event = "VeryLazy",
+    config = function()
+      require("plugins.rooter")
+    end,
+  },
+
+  -- ━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━
+  -- FILE EXPLORER - OIL
+  -- ━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━
+  {
+    "stevearc/oil.nvim",
+    cmd = "Oil",
+    keys = { "<leader>-" },
+    dependencies = { "nvim-tree/nvim-web-devicons" },
+    config = function()
+      require("plugins.oil")
+    end,
+  },
+
+  -- ━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━
   -- GIT INTEGRATION
   -- ━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━
   {

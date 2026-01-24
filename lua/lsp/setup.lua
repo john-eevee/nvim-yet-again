@@ -249,27 +249,7 @@ vim.lsp.config("marksman", {
   filetypes = { "markdown", "markdown.mdx" },
 })
 
--- ━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━
--- JAVA - jdtls (Eclipse JDT Language Server)
--- Note: jdtls requires special setup, handled via ftplugin/java.lua
--- ━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━
 
-vim.lsp.config("jdtls", {
-  root_markers = { ".git", "mvnw", "gradlew", "pom.xml", "build.gradle", "build.gradle.kts", ".java-version" },
-  settings = {
-    java = {
-      import = {
-        gradle = {
-          enabled = true,
-        },
-      },
-      configuration = {
-        updateBuildConfiguration = "automatic",
-        detectSourceLanguageFromExternalBuildFiles = true,
-      },
-    },
-  },
-})
 
 -- ━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━
 -- LSP ATTACH CONFIGURATION

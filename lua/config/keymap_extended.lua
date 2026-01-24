@@ -28,7 +28,6 @@ keymap("n", "<leader>sr", function()
       if not replacement then
         return
       end
-      local cmd = "cfdo %s/" .. pattern .. "/" .. replacement .. "/gc | update"
       require("utils.logger").info("Search: After grep, run: :cfdo %s/" .. pattern .. "/" .. replacement .. "/gc | update")
     end)
   end)
@@ -85,15 +84,8 @@ keymap("n", "<leader>lc", "<cmd>lclose<CR>", { desc = "Location: Close" })
 keymap("n", "<leader>yr", "<cmd>Telescope registers<CR>", { desc = "Yank: Show registers" })
 
 -- Clipboard management
-if vim.fn.has("mac") == 1 then
-  -- macOS
-  keymap("n", "<leader>yy", '"+y', { desc = "Yank: To system clipboard" })
-  keymap("v", "<leader>yy", '"+y', { desc = "Yank: To system clipboard" })
-else
-  -- Linux
-  keymap("n", "<leader>yy", '"+y', { desc = "Yank: To system clipboard" })
-  keymap("v", "<leader>yy", '"+y', { desc = "Yank: To system clipboard" })
-end
+keymap("n", "<leader>yy", '"+y', { desc = "Yank: To system clipboard" })
+keymap("v", "<leader>yy", '"+y', { desc = "Yank: To system clipboard" })
 
 -- ━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━
 -- MARKS & JUMPS
@@ -162,7 +154,7 @@ keymap("n", "<leader>eq", vim.diagnostic.setloclist, { desc = "Diagnostic: Set l
 -- CODE OPERATIONS (Space + c) - LSP actions
 -- ━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━
 
-keymap("n", "<leader>ca", vim.lsp.buf.code_action, { desc = "Code: Action" })
+-- Note: <leader>ca is handled by CodeCompanion plugin in lua/plugins/codecompanion.lua
 keymap("n", "<leader>cf", function()
   vim.lsp.buf.format({ async = true })
 end, { desc = "Code: Format" })

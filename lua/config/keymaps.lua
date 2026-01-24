@@ -77,6 +77,11 @@ keymap("n", "<leader>fq", "<cmd>quit<CR>", { desc = "File: Quit" })
 keymap("n", "<leader>fQ", "<cmd>quit!<CR>", { desc = "File: Quit without save" })
 
 -- ━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━
+-- FILE EXPLORER (Space + -)
+-- ━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━
+keymap("n", "<leader>-", "<cmd>Oil<CR>", { desc = "Explorer: Oil" })
+
+-- ━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━
 -- SEARCH & REPLACE (Space + s)
 -- ━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━
 keymap("n", "<leader>sh", "<cmd>nohlsearch<CR>", { desc = "Search: Clear highlight" })

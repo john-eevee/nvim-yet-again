@@ -52,6 +52,7 @@ wk.setup({
 
 -- Register keymaps for which-key display
 wk.add({
+  { "<leader>-", desc = "Explorer: Oil" },
   { "<leader>b", group = "buffer" },
   { "<leader>c", group = "code/copilot" },
   { "<leader>d", group = "debug" },

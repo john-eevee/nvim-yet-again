@@ -7,25 +7,6 @@
 -- KEYMAPS COMMAND - Browse and Edit All Keybindings
 -- ━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━
 
--- Track keymap sources for documentation
-local keymap_metadata = {}
-
---- Store keymap metadata (called when keymaps are defined)
---- This is a manual registry approach since Neovim doesn't track source files
---- Keymaps in lua/config/keymaps.lua and lua/config/keymap_extended.lua
---- can be registered with their purposes
-local function register_keymap_sources()
-  -- This would be called manually to document keymap sources
-  keymap_metadata = {
-    ["<leader>km"] = "commands.lua - Browse all keymaps",
-    ["<leader>ff"] = "keymap_extended.lua / telescope - Find files",
-    ["<leader>fg"] = "keymap_extended.lua / telescope - Live grep",
-    ["<leader>wh"] = "keymaps.lua - Window navigation left",
-    ["<leader>wv"] = "keymaps.lua - Split vertical",
-    ["<leader>bn"] = "keymaps.lua - New buffer",
-  }
-end
-
 --- Extract keymap information from vim.keymap.get()
 --- @return table
 local function get_all_keymaps()
@@ -273,7 +254,7 @@ local function run_tests_with_links(cmd)
   -- Run command asynchronously
   local function on_exit(job_id, code)
     -- Read output from job (vim-jobstart would be used for this)
-      require("utils.logger").info("Test Runner: Tests completed with exit code: " .. code)
+    require("utils.logger").info("Test Runner: Tests completed with exit code: " .. code)
   end
 
   -- Use vim.system for async execution (Neovim 0.10+)
@@ -368,7 +349,11 @@ local function copy_file_path()
 
   -- Copy to system clipboard (supports wl-copy, xclip, pbcopy)
   -- Using bash -c to ensure compatibility with Fish shell
-  vim.fn.system({"bash", "-c", "echo -n '" .. rel_path:gsub("'", "'\\\\''") .. "' | wl-copy 2>/dev/null || echo -n '" .. rel_path:gsub("'", "'\\\\''") .. "' | xclip -selection clipboard 2>/dev/null || echo -n '" .. rel_path:gsub("'", "'\\\\''") .. "' | pbcopy"})
+  vim.fn.system({ "bash", "-c", "echo -n '" ..
+  rel_path:gsub("'", "'\\\\''") ..
+  "' | wl-copy 2>/dev/null || echo -n '" ..
+  rel_path:gsub("'", "'\\\\''") ..
+  "' | xclip -selection clipboard 2>/dev/null || echo -n '" .. rel_path:gsub("'", "'\\\\''") .. "' | pbcopy" })
   require("utils.logger").info("Copy Path: Copied: " .. rel_path)
 end
 
@@ -393,7 +378,11 @@ local function copy_file_path_with_line()
 
   -- Copy to system clipboard (supports wl-copy, xclip, pbcopy)
   -- Using bash -c to ensure compatibility with Fish shell
-  vim.fn.system({"bash", "-c", "echo -n '" .. path_with_line:gsub("'", "'\\\\''") .. "' | wl-copy 2>/dev/null || echo -n '" .. path_with_line:gsub("'", "'\\\\''") .. "' | xclip -selection clipboard 2>/dev/null || echo -n '" .. path_with_line:gsub("'", "'\\\\''") .. "' | pbcopy"})
+  vim.fn.system({ "bash", "-c", "echo -n '" ..
+  path_with_line:gsub("'", "'\\\\''") ..
+  "' | wl-copy 2>/dev/null || echo -n '" ..
+  path_with_line:gsub("'", "'\\\\''") ..
+  "' | xclip -selection clipboard 2>/dev/null || echo -n '" .. path_with_line:gsub("'", "'\\\\''") .. "' | pbcopy" })
   require("utils.logger").info("Copy Path: Copied: " .. path_with_line)
 end
 
@@ -523,4 +512,62 @@ vim.keymap.set(
   "<leader>yl",
   copy_file_path_with_line,
   { noremap = true, silent = true, desc = "Yank: Copy file path with line" }
+)
+
+-- ━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━
+-- COPILOT CLI - Open in Right Split
+-- ━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━
+
+--- Open Copilot CLI in a tmux split or fallback to buffer
+local function open_copilot_cli_split()
+  local tmux_session = vim.fn.getenv("TMUX")
+
+  -- Try to open in tmux split if in a tmux session
+  if tmux_session and tmux_session ~= vim.NIL and tmux_session ~= "" then
+    local split_cmd = "tmux split-window -h -c '#{pane_current_path}' 'copilot_cli --yolo --banner'"
+    local result = vim.fn.system(split_cmd)
+
+    if vim.v.shell_error == 0 then
+      require("utils.logger").info("Copilot CLI: Opened in new tmux split")
+      return
+    else
+      require("utils.logger").warn("Copilot CLI: Failed to open in tmux, falling back to buffer")
+    end
+  end
+
+  -- Fallback: Create a new buffer for Copilot CLI
+  local buf = vim.api.nvim_create_buf(false, true)
+  vim.api.nvim_set_option_value("buftype", "terminal", { buf = buf })
+  vim.api.nvim_set_option_value("bufhidden", "hide", { buf = buf })
+
+  -- Open in vertical right split
+  vim.cmd("rightbelow vsplit")
+  vim.api.nvim_set_current_buf(buf)
+
+  -- Set buffer name
+  vim.api.nvim_buf_set_name(buf, "Copilot CLI")
+  vim.bo.filetype = "copilot_cli"
+
+  -- Start the Copilot CLI in the terminal with --yolo and --banner flags
+  local term_chan = vim.api.nvim_open_term(buf, {})
+  vim.fn.chansend(term_chan, "copilot_cli --yolo --banner\n")
+
+  -- Buffer-local keymaps
+  local keymap_opts = { noremap = true, silent = true, buffer = buf }
+  vim.keymap.set("n", "q", "<cmd>bdelete<CR>", vim.tbl_extend("force", keymap_opts, { desc = "Close Copilot CLI" }))
+
+  require("utils.logger").info("Copilot CLI: Opened in right split (buffer)")
+end
+
+-- Create the CopilotCli command
+vim.api.nvim_create_user_command("CopilotCli", open_copilot_cli_split, {
+  desc = "Open Copilot CLI in a right split buffer",
+})
+
+-- Add keymap to open Copilot CLI (using <leader>co to avoid conflict with CodeCompanion)
+vim.keymap.set(
+  "n",
+  "<leader>co",
+  "<cmd>CopilotCli<CR>",
+  { noremap = true, silent = true, desc = "Copilot: Open CLI in right split" }
 )
