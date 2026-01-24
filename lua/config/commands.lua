@@ -515,27 +515,27 @@ vim.keymap.set(
 )
 
 -- ━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━
--- COPILOT CLI - Open in Right Split
+-- OPENCODE CLI - Open in Right Split
 -- ━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━
 
---- Open Copilot CLI in a tmux split or fallback to buffer
-local function open_copilot_cli_split()
+--- Open Opencode CLI in a tmux split or fallback to buffer
+local function open_opencode_cli_split()
   local tmux_session = vim.fn.getenv("TMUX")
 
   -- Try to open in tmux split if in a tmux session
   if tmux_session and tmux_session ~= vim.NIL and tmux_session ~= "" then
-    local split_cmd = "tmux split-window -h -c '#{pane_current_path}' 'copilot_cli --yolo --banner'"
+    local split_cmd = "tmux split-window -h -c '#{pane_current_path}' 'opencode'"
     local result = vim.fn.system(split_cmd)
 
     if vim.v.shell_error == 0 then
-      require("utils.logger").info("Copilot CLI: Opened in new tmux split")
+      require("utils.logger").info("Opencode CLI: Opened in new tmux split")
       return
     else
-      require("utils.logger").warn("Copilot CLI: Failed to open in tmux, falling back to buffer")
+      require("utils.logger").warn("Opencode CLI: Failed to open in tmux, falling back to buffer")
     end
   end
 
-  -- Fallback: Create a new buffer for Copilot CLI
+  -- Fallback: Create a new buffer for Opencode CLI
   local buf = vim.api.nvim_create_buf(false, true)
   vim.api.nvim_set_option_value("buftype", "terminal", { buf = buf })
   vim.api.nvim_set_option_value("bufhidden", "hide", { buf = buf })
@@ -545,29 +545,29 @@ local function open_copilot_cli_split()
   vim.api.nvim_set_current_buf(buf)
 
   -- Set buffer name
-  vim.api.nvim_buf_set_name(buf, "Copilot CLI")
-  vim.bo.filetype = "copilot_cli"
+  vim.api.nvim_buf_set_name(buf, "Opencode CLI")
+  vim.bo.filetype = "opencode"
 
-  -- Start the Copilot CLI in the terminal with --yolo and --banner flags
+  -- Start the Opencode CLI in the terminal
   local term_chan = vim.api.nvim_open_term(buf, {})
-  vim.fn.chansend(term_chan, "copilot_cli --yolo --banner\n")
+  vim.fn.chansend(term_chan, "opencode\n")
 
   -- Buffer-local keymaps
   local keymap_opts = { noremap = true, silent = true, buffer = buf }
-  vim.keymap.set("n", "q", "<cmd>bdelete<CR>", vim.tbl_extend("force", keymap_opts, { desc = "Close Copilot CLI" }))
+  vim.keymap.set("n", "q", "<cmd>bdelete<CR>", vim.tbl_extend("force", keymap_opts, { desc = "Close Opencode CLI" }))
 
-  require("utils.logger").info("Copilot CLI: Opened in right split (buffer)")
+  require("utils.logger").info("Opencode CLI: Opened in right split (buffer)")
 end
 
--- Create the CopilotCli command
-vim.api.nvim_create_user_command("CopilotCli", open_copilot_cli_split, {
-  desc = "Open Copilot CLI in a right split buffer",
+-- Create the Opencode command
+vim.api.nvim_create_user_command("Opencode", open_opencode_cli_split, {
+  desc = "Open Opencode CLI in a right split buffer",
 })
 
--- Add keymap to open Copilot CLI (using <leader>co to avoid conflict with CodeCompanion)
+-- Add keymap to open Opencode CLI
 vim.keymap.set(
   "n",
-  "<leader>co",
-  "<cmd>CopilotCli<CR>",
-  { noremap = true, silent = true, desc = "Copilot: Open CLI in right split" }
+  "<leader>oo",
+  "<cmd>Opencode<CR>",
+  { noremap = true, silent = true, desc = "Opencode: Open CLI in right split" }
 )
