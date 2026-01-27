@@ -608,4 +608,4 @@ local function source_nvim()
   vim.cmd('source ' .. init)
 end
 
-vim.nvim_create_user_command('Source', source_nvim, {})
+vim.api.nvim_create_user_command('Source', source_nvim, {})

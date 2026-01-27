@@ -154,7 +154,6 @@ keymap("n", "<leader>eq", vim.diagnostic.setloclist, { desc = "Diagnostic: Set l
 -- CODE OPERATIONS (Space + c) - LSP actions
 -- ━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━
 
--- Note: <leader>ca is handled by CodeCompanion plugin in lua/plugins/codecompanion.lua
 keymap("n", "<leader>cf", function()
   vim.lsp.buf.format({ async = true })
 end, { desc = "Code: Format" })
