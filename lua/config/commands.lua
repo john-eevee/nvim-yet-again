@@ -535,7 +535,25 @@ local function open_opencode_cli_split()
     end
   end
 
-  -- Fallback: Create a new buffer for Opencode CLI
+  -- Fallback: Try to open in WezTerm split/window, otherwise create a buffer
+  local cwd = vim.fn.getcwd()
+
+  -- Try several wezterm CLI variants (depends on wezterm version)
+  local wezterm_cmds = {
+    "wezterm cli spawn --cwd \"" .. cwd .. "\" -- opencode",
+    "wezterm start --cwd \"" .. cwd .. "\" opencode",
+    "wezterm start -- opencode",
+  }
+
+  for _, cmd in ipairs(wezterm_cmds) do
+    local _ = vim.fn.system(cmd)
+    if vim.v.shell_error == 0 then
+      require("utils.logger").info("Opencode CLI: Opened in WezTerm")
+      return
+    end
+  end
+
+  -- Final fallback: Create a new buffer for Opencode CLI
   local buf = vim.api.nvim_create_buf(false, true)
   vim.api.nvim_set_option_value("buftype", "terminal", { buf = buf })
   vim.api.nvim_set_option_value("bufhidden", "hide", { buf = buf })
