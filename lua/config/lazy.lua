@@ -340,16 +340,7 @@ local plugins = {
     end,
   },
 
-  -- ━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━
-  -- NOTIFICATIONS & UI
-  -- ━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━
-  {
-    "rcarriga/nvim-notify",
-    event = "VeryLazy",
-    config = function()
-      require("plugins.notify")
-    end,
-  },
+  -- Removed: nvim-notify - using standard Neovim messages instead
 }
 
 -- ━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━

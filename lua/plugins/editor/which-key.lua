@@ -54,10 +54,10 @@ wk.setup({
 wk.add({
   { "<leader>-", desc = "Explorer: Oil" },
   { "<leader>b", group = "buffer" },
-  { "<leader>c", group = "code/copilot" },
+  { "<leader>c", group = "code" },
   { "<leader>d", group = "debug" },
   { "<leader>e", group = "diagnostic" },
-  { "<leader>f", group = "file" },
+  { "<leader>f", group = "file/finder" },
   { "<leader>g", group = "goto" },
   { "<leader>h", group = "help/history" },
   { "<leader>j", group = "jump/lsp" },

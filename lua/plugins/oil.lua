@@ -8,7 +8,7 @@ require("oil").setup({
   default_file_explorer = true,
   -- Restore the cursor in the directory you came from
   restore_win_pos = true,
-  skip_confirm_for_simple_edits = false,
+  skip_confirm_for_simple_edits = true,
   -- Keymaps in oil buffer
   keymaps = {
     ["g?"] = "actions.show_help",
@@ -73,3 +73,8 @@ require("oil").setup({
   -- Timeout duration (in ms) that oil will wait for the filesystem to change before reloading
   fs_edit_timeout = 1500,
 })
+
+-- ━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━
+-- KEYBINDINGS
+-- ━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━
+vim.keymap.set("n", "<leader>-", "<cmd>Oil .<CR>", { desc = "Oil: Open current directory" })

@@ -571,3 +571,41 @@ vim.keymap.set(
   "<cmd>Opencode<CR>",
   { noremap = true, silent = true, desc = "Opencode: Open CLI in right split" }
 )
+
+local function toggle_bool_under_caret()
+  local cw = vim.fn.expand('<cword>')
+  if not (cw == "true" or cw == "false" or cw == "True" or cw == "False") then return end
+  local row = vim.api.nvim_win_get_cursor(0)[1]
+  local col = vim.fn.col('.') -- 1-indexed
+  local line = vim.api.nvim_get_current_line()
+  local s, e, start_search = nil, nil, 1
+  while true do
+    local a, b = line:find(cw, start_search, true)
+    if not a then break end
+    if col >= a and col <= b then s, e = a, b; break end
+    start_search = b + 1
+  end
+  if not s or not e then return end
+  local repl
+  if cw == "true" then repl = "false"
+  elseif cw == "false" then repl = "true"
+  elseif cw == "True" then repl = "False"
+  else repl = "True" end
+  if vim.api.nvim_buf_set_text then
+    vim.api.nvim_buf_set_text(0, row-1, s-1, row-1, e, {repl})
+  else
+    local new = line:sub(1, s-1) .. repl .. line:sub(e+1)
+    vim.api.nvim_buf_set_lines(0, row-1, row, false, {new})
+  end
+end
+
+vim.keymap.set('n', "<leader>cb", toggle_bool_under_caret, {noremap = true, silent = true, desc = "Flips the boolean"})
+
+
+local function source_nvim()
+  local config = vim.fn.expand("~/.config/nvim")
+  local init = config .. "init.lua"
+  vim.cmd('source ' .. init)
+end
+
+vim.nvim_create_user_command('Source', source_nvim, {})

@@ -25,10 +25,14 @@ if current_file:match("^build%.gradle") or current_file:match("^settings%.gradle
     local root_dir = require("jdtls.setup").find_root({ ".git", "mvnw", "gradlew", "pom.xml", "build.gradle" })
     
     if root_dir then
-      vim.notify("Java LSP available for Gradle file: " .. current_file, vim.log.levels.INFO, { title = "Groovy LSP" })
+      vim.api.nvim_echo({
+        { "Java LSP available for Gradle file: " .. current_file, "ModeMsg" }
+      }, false, {})
     end
   else
-    vim.notify("nvim-jdtls not found - IDE features unavailable for " .. current_file, vim.log.levels.WARN, { title = "Groovy LSP" })
+    vim.api.nvim_echo({
+      { "nvim-jdtls not found - IDE features unavailable for " .. current_file, "WarningMsg" }
+    }, false, {})
   end
 end
 

@@ -12,7 +12,9 @@ vim.b.did_ftplugin_java = true
 -- Check if jdtls is available
 local jdtls_ok, jdtls = pcall(require, "jdtls")
 if not jdtls_ok then
-  vim.notify("nvim-jdtls not found, Java LSP not configured", vim.log.levels.WARN)
+  vim.api.nvim_echo({
+    { "nvim-jdtls not found, Java LSP not configured", "WarningMsg" }
+  }, false, {})
   return
 end
 
@@ -27,12 +29,8 @@ local workspace_dir = home .. "/.local/share/eclipse/" .. vim.fn.fnamemodify(vim
 -- Ensure workspace directory exists
 vim.fn.mkdir(workspace_dir, "p")
 
--- Debug: Log workspace initialization
-vim.notify(
-  "JDTLS Workspace: " .. workspace_dir .. "\nJDTLS Path: " .. jdtls_path,
-  vim.log.levels.DEBUG,
-  { title = "Java LSP Init" }
-)
+-- Debug: Log workspace initialization (silent, no message)
+-- Uncomment to print: print("JDTLS Workspace: " .. workspace_dir .. "\nJDTLS Path: " .. jdtls_path)
 
 -- ━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━
 -- CAPABILITIES
@@ -227,11 +225,10 @@ config.on_attach = function(client, bufnr)
   -- Debug: Show JDTLS status
   keymap("n", "<leader>js", function()
     local root = require("jdtls.setup").find_root({ ".git", "mvnw", "gradlew", "pom.xml", "build.gradle" })
-    local msg = "JDTLS Status:\n"
-    msg = msg .. "Root: " .. (root or "NOT FOUND") .. "\n"
-    msg = msg .. "Client: " .. client.name .. " (ID: " .. client.id .. ")\n"
-    msg = msg .. "Workspace: " .. workspace_dir
-    vim.notify(msg, vim.log.levels.INFO, { title = "Java LSP Debug" })
+    local msg = "JDTLS Status: Root: " .. (root or "NOT FOUND") .. " | Client: " .. client.name .. " (ID: " .. client.id .. ")"
+    vim.api.nvim_echo({
+      { msg, "ModeMsg" }
+    }, false, {})
   end, vim.tbl_extend("force", opts, { desc = "Java: Show JDTLS status" }))
 
   -- Update codelens on save
@@ -247,7 +244,9 @@ config.on_attach = function(client, bufnr)
     vim.lsp.inlay_hint.enable(true, { bufnr = bufnr })
   end
 
-  vim.notify("JDTLS attached to buffer " .. bufnr, vim.log.levels.INFO, { title = "Java LSP" })
+  vim.api.nvim_echo({
+    { "JDTLS attached to buffer " .. bufnr, "ModeMsg" }
+  }, false, {})
 end
 
 -- ━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━

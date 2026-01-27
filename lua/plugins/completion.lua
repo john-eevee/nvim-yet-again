@@ -48,7 +48,24 @@ cmp.setup({
       elseif luasnip.expand_or_locally_jumpable() then
         luasnip.expand_or_jump()
       else
-        fallback()
+        -- Smart Tab: Jump over specific characters
+        local line = vim.api.nvim_get_current_line()
+        local col = vim.api.nvim_win_get_cursor(0)[2]
+        local char = line:sub(col + 1, col + 1)
+        local jump_chars = { ")", "}", "]", "(", "{", "[", ",", ".", ":", ";", "\"", "'", " " }
+        local should_jump = false
+        for _, jc in ipairs(jump_chars) do
+          if char == jc then
+            should_jump = true
+            break
+          end
+        end
+
+        if should_jump then
+          vim.api.nvim_win_set_cursor(0, { vim.api.nvim_win_get_cursor(0)[1], col + 1 })
+        else
+          fallback()
+        end
       end
     end, { "i", "s" }),
     ["<S-Tab>"] = cmp.mapping(function(fallback)

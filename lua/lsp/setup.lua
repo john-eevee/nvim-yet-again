@@ -425,12 +425,10 @@ vim.api.nvim_create_autocmd("LspAttach", {
       print(string.format("LSP: %s (ID: %d)", client.name, client.id))
     end, vim.tbl_extend("force", opts, { desc = "LSP: Client info" }))
 
-    -- Notify that LSP has attached
-    vim.notify(
-      string.format("LSP '%s' attached to buffer %d", client.name, bufnr),
-      vim.log.levels.INFO,
-      { title = "LSP" }
-    )
+    -- Print that LSP has attached
+    vim.api.nvim_echo({
+      { string.format("LSP '%s' attached to buffer %d", client.name, bufnr), "ModeMsg" }
+    }, false, {})
   end,
 })
 
