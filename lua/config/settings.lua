@@ -6,7 +6,7 @@
 -- ━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━
 -- EDITOR BEHAVIOR
 -- ━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━
-vim.opt.syntax = "on"                   -- Enable syntax highlighting
+vim.cmd.syntax("on")                    -- Enable syntax highlighting
 vim.opt.number = true                   -- Show line numbers
 vim.opt.relativenumber = true           -- Relative line numbers for navigation
 vim.opt.cursorline = true               -- Highlight current line
