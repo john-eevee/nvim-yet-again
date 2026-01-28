@@ -150,6 +150,45 @@ keymap("n", "[e", vim.diagnostic.goto_prev, { desc = "Diagnostic: Previous" })
 keymap("n", "<leader>ee", vim.diagnostic.open_float, { desc = "Diagnostic: Open float" })
 keymap("n", "<leader>eq", vim.diagnostic.setloclist, { desc = "Diagnostic: Set loclist" })
 
+-- Show all diagnostics for the project (Telescope)
+keymap("n", "<leader>ea", function()
+  local ok, telescope = pcall(require, "telescope")
+  if not ok then
+    require("utils.logger").error("Telescope not available")
+    return
+  end
+
+  local has_diag_picker, _ = pcall(require, "telescope.builtin")
+  if has_diag_picker then
+    -- order diagnostics by severity: Error -> Warn -> Info -> Hint
+    require("telescope.builtin").diagnostics({
+      severity_sort = true,
+      layout_strategy = "vertical",
+      layout_config = { height = 0.6 },
+    })
+    return
+  end
+
+  -- Fallback: use Trouble if available
+  if pcall(require, "trouble") then
+    vim.cmd("Trouble workspace_diagnostics")
+    return
+  end
+
+  -- Last fallback: populate quickfix and open
+  local items = {}
+  for _, d in ipairs(vim.diagnostic.get()) do
+    table.insert(items, {
+      bufnr = d.bufnr or 0,
+      lnum = d.range and d.range.start and d.range.start.line + 1 or 1,
+      col = d.range and d.range.start and d.range.start.character + 1 or 1,
+      text = (d.message or "") .. " [" .. (d.source or "") .. "]",
+    })
+  end
+  vim.fn.setqflist({}, "", { title = "Workspace Diagnostics", items = items })
+  vim.cmd("copen")
+end, { desc = "Diagnostic: Show all workspace diagnostics (Telescope)" })
+
 -- ━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━
 -- CODE OPERATIONS (Space + c) - LSP actions
 -- ━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━

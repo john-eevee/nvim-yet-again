@@ -15,11 +15,11 @@ local expr_opts = { noremap = true, silent = true, expr = true }
 -- ━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━
 -- NAVIGATION IMPROVEMENTS
 -- ━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━
--- Disable arrow keys for pure hjkl navigation
-keymap("n", "<Up>", "<nop>", opts)
-keymap("n", "<Down>", "<nop>", opts)
-keymap("n", "<Left>", "<nop>", opts)
-keymap("n", "<Right>", "<nop>", opts)
+-- Arrow keys work alongside hjkl navigation
+keymap("n", "<Up>", "k", opts)
+keymap("n", "<Down>", "j", opts)
+keymap("n", "<Left>", "h", opts)
+keymap("n", "<Right>", "l", opts)
 
 -- Center cursor on search results
 keymap("n", "n", "nzz", opts)
@@ -38,6 +38,12 @@ keymap("n", "<leader>wj", "<C-w>j", { desc = "Window: Down" })
 keymap("n", "<leader>wk", "<C-w>k", { desc = "Window: Up" })
 keymap("n", "<leader>wl", "<C-w>l", { desc = "Window: Right" })
 
+-- Arrow key variants for navigation
+keymap("n", "<leader>w<Left>", "<C-w>h", { desc = "Window: Left (arrow)" })
+keymap("n", "<leader>w<Down>", "<C-w>j", { desc = "Window: Down (arrow)" })
+keymap("n", "<leader>w<Up>", "<C-w>k", { desc = "Window: Up (arrow)" })
+keymap("n", "<leader>w<Right>", "<C-w>l", { desc = "Window: Right (arrow)" })
+
 -- Split creation (new splits go right/below)
 keymap("n", "<leader>wv", "<C-w>v", { desc = "Window: Split vertical" })
 keymap("n", "<leader>ws", "<C-w>s", { desc = "Window: Split horizontal" })
@@ -54,6 +60,12 @@ keymap("n", "<leader>w-", "<C-w>-", { desc = "Window: Decrease height" })
 keymap("n", "<leader>w>", "<C-w>>", { desc = "Window: Increase width" })
 keymap("n", "<leader>w<", "<C-w><", { desc = "Window: Decrease width" })
 
+-- Arrow key variants for resizing (Shift+arrow for height, Alt+arrow for width)
+keymap("n", "<leader>w<S-Up>", "<C-w>+", { desc = "Window: Increase height (shift+up)" })
+keymap("n", "<leader>w<S-Down>", "<C-w>-", { desc = "Window: Decrease height (shift+down)" })
+keymap("n", "<leader>w<M-Right>", "<C-w>>", { desc = "Window: Increase width (alt+right)" })
+keymap("n", "<leader>w<M-Left>", "<C-w><", { desc = "Window: Decrease width (alt+left)" })
+
 -- ━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━
 -- BUFFER MANAGEMENT (Space + b)
 -- ━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━
@@ -66,6 +78,10 @@ keymap("n", "<leader>ba", "<cmd>%bdelete|edit #<CR>", { desc = "Buffer: Delete a
 -- Smart buffer navigation with counts
 keymap("n", "<C-l>", "<cmd>bnext<CR>", { desc = "Buffer: Next (Ctrl+l)" })
 keymap("n", "<C-h>", "<cmd>bprevious<CR>", { desc = "Buffer: Previous (Ctrl+h)" })
+
+-- Arrow key variants for buffer navigation
+keymap("n", "<C-Right>", "<cmd>bnext<CR>", { desc = "Buffer: Next (ctrl+right)" })
+keymap("n", "<C-Left>", "<cmd>bprevious<CR>", { desc = "Buffer: Previous (ctrl+left)" })
 
 -- ━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━
 -- FILE OPERATIONS (Space + f)
@@ -106,6 +122,10 @@ keymap("v", ">", ">gv", opts)
 keymap("v", "J", ":move '>+1<CR>gv-gv", opts)
 keymap("v", "K", ":move '<-2<CR>gv-gv", opts)
 
+-- Arrow key variants for line movement
+keymap("v", "<C-Down>", ":move '>+1<CR>gv-gv", opts)
+keymap("v", "<C-Up>", ":move '<-2<CR>gv-gv", opts)
+
 -- Keep register when pasting
 keymap("v", "p", '"_dP', opts)
 
@@ -137,8 +157,9 @@ end, { desc = "UI: Toggle spell check" })
 
 -- Toggle diagnostics
 keymap("n", "<leader>ud", function()
-  vim.diagnostic.enable(not vim.diagnostic.is_disabled())
-  if vim.diagnostic.is_disabled() then
+  local enabled = vim.diagnostic.is_enabled()
+  vim.diagnostic.enable(not enabled)
+  if enabled then
     require("utils.logger").info("Diagnostics: OFF")
   else
     require("utils.logger").info("Diagnostics: ON")
