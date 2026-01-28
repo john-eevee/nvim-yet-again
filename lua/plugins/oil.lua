@@ -39,18 +39,15 @@ require("oil").setup({
     is_always_hidden = function(name, bufnr)
       return name == ".." or name == ".git"
     end,
+    natural_order = "fast",
+    case_insensitive = true,
     sort = {
       { "type", "asc" },
       { "name", "asc" },
     },
   },
   -- Optional columns to be rendered in the order of appearance
-  columns = {
-    "icon",
-    "permissions",
-    "size",
-    "mtime",
-  },
+  columns = {},
   buf_options = {
     buflisted = false,
     bufhidden = "hide",
@@ -69,12 +66,14 @@ require("oil").setup({
   -- Set to `false` to disable, or create a custom function
   constrain_cursor_to_editable = true,
   -- Set to true to watch the filesystem for changes and reload oil
-  watch_for_changes = false,
+  watch_for_changes = true,
   -- Timeout duration (in ms) that oil will wait for the filesystem to change before reloading
   fs_edit_timeout = 1500,
+  -- send to trash
+  delete_to_trash = true
 })
 
 -- ━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━
 -- KEYBINDINGS
 -- ━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━
-vim.keymap.set("n", "<leader>-", "<cmd>Oil .<CR>", { desc = "Oil: Open current directory" })
+vim.keymap.set("n", "-", "<cmd>Oil .<CR>", { desc = "Oil: Open current directory" })
