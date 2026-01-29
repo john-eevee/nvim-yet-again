@@ -28,7 +28,8 @@ keymap("n", "<leader>sr", function()
       if not replacement then
         return
       end
-      require("utils.logger").info("Search: After grep, run: :cfdo %s/" .. pattern .. "/" .. replacement .. "/gc | update")
+      require("utils.logger").info("Search: After grep, run: :cfdo %s/" ..
+      pattern .. "/" .. replacement .. "/gc | update")
     end)
   end)
 end, { desc = "Search: Replace in project" })
@@ -168,13 +169,6 @@ keymap("n", "<leader>ea", function()
     })
     return
   end
-
-  -- Fallback: use Trouble if available
-  if pcall(require, "trouble") then
-    vim.cmd("Trouble workspace_diagnostics")
-    return
-  end
-
   -- Last fallback: populate quickfix and open
   local items = {}
   for _, d in ipairs(vim.diagnostic.get()) do

@@ -281,19 +281,6 @@ local plugins = {
       require("plugins.mini")
     end,
   },
-
-  {
-    "folke/trouble.nvim",
-    cmd = { "Trouble", "TroubleToggle" },
-    keys = {
-      { "<leader>xx", "<cmd>Trouble diagnostics<cr>",                     desc = "Trouble: Toggle" },
-      { "<leader>xw", "<cmd>Trouble diagnostics toggle filter.buf=0<cr>", desc = "Trouble: Buffer" },
-    },
-    config = function()
-      require("plugins.trouble")
-    end,
-  },
-
   {
     "folke/todo-comments.nvim",
     event = "VeryLazy",
