@@ -518,78 +518,78 @@ vim.keymap.set(
 -- OPENCODE CLI - Open in Right Split
 -- ━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━
 
---- Open Opencode CLI in a tmux split or fallback to buffer
-local function open_opencode_cli_split()
-  local tmux_session = vim.fn.getenv("TMUX")
-
-  -- Try to open in tmux split if in a tmux session
-  if tmux_session and tmux_session ~= vim.NIL and tmux_session ~= "" then
-    local split_cmd = "tmux split-window -h -c '#{pane_current_path}' 'opencode'"
-    local result = vim.fn.system(split_cmd)
-
-    if vim.v.shell_error == 0 then
-      require("utils.logger").info("Opencode CLI: Opened in new tmux split")
-      return
-    else
-      require("utils.logger").warn("Opencode CLI: Failed to open in tmux, falling back to buffer")
-    end
-  end
-
-  -- Fallback: Try to open in WezTerm split/window, otherwise create a buffer
-  local cwd = vim.fn.getcwd()
-
-  -- Try several wezterm CLI variants (depends on wezterm version)
-  local wezterm_cmds = {
-    "wezterm cli spawn --cwd \"" .. cwd .. "\" -- opencode",
-    "wezterm start --cwd \"" .. cwd .. "\" opencode",
-    "wezterm start -- opencode",
-  }
-
-  for _, cmd in ipairs(wezterm_cmds) do
-    local _ = vim.fn.system(cmd)
-    if vim.v.shell_error == 0 then
-      require("utils.logger").info("Opencode CLI: Opened in WezTerm")
-      return
-    end
-  end
-
-  -- Final fallback: Create a new buffer for Opencode CLI
-  local buf = vim.api.nvim_create_buf(false, true)
-  vim.api.nvim_set_option_value("buftype", "terminal", { buf = buf })
-  vim.api.nvim_set_option_value("bufhidden", "hide", { buf = buf })
-
-  -- Open in vertical right split
-  vim.cmd("rightbelow vsplit")
-  vim.api.nvim_set_current_buf(buf)
-
-  -- Set buffer name
-  vim.api.nvim_buf_set_name(buf, "Opencode CLI")
-  vim.bo.filetype = "opencode"
-
-  -- Start the Opencode CLI in the terminal
-  local term_chan = vim.api.nvim_open_term(buf, {})
-  vim.fn.chansend(term_chan, "opencode\n")
-
-  -- Buffer-local keymaps
-  local keymap_opts = { noremap = true, silent = true, buffer = buf }
-  vim.keymap.set("n", "q", "<cmd>bdelete<CR>", vim.tbl_extend("force", keymap_opts, { desc = "Close Opencode CLI" }))
-
-  require("utils.logger").info("Opencode CLI: Opened in right split (buffer)")
-end
-
--- Create the Opencode command
-vim.api.nvim_create_user_command("Opencode", open_opencode_cli_split, {
-  desc = "Open Opencode CLI in a right split buffer",
-})
-
--- Add keymap to open Opencode CLI
-vim.keymap.set(
-  "n",
-  "<leader>oo",
-  "<cmd>Opencode<CR>",
-  { noremap = true, silent = true, desc = "Opencode: Open CLI in right split" }
-)
-
+-- --- Open Opencode CLI in a tmux split or fallback to buffer
+-- local function open_opencode_cli_split()
+--   local tmux_session = vim.fn.getenv("TMUX")
+--
+--   -- Try to open in tmux split if in a tmux session
+--   if tmux_session and tmux_session ~= vim.NIL and tmux_session ~= "" then
+--     local split_cmd = "tmux split-window -h -c '#{pane_current_path}' 'opencode'"
+--     local result = vim.fn.system(split_cmd)
+--
+--     if vim.v.shell_error == 0 then
+--       require("utils.logger").info("Opencode CLI: Opened in new tmux split")
+--       return
+--     else
+--       require("utils.logger").warn("Opencode CLI: Failed to open in tmux, falling back to buffer")
+--     end
+--   end
+--
+--   -- Fallback: Try to open in WezTerm split/window, otherwise create a buffer
+--   local cwd = vim.fn.getcwd()
+--
+--   -- Try several wezterm CLI variants (depends on wezterm version)
+--   local wezterm_cmds = {
+--     "wezterm cli spawn --cwd \"" .. cwd .. "\" -- opencode",
+--     "wezterm start --cwd \"" .. cwd .. "\" opencode",
+--     "wezterm start -- opencode",
+--   }
+--
+--   for _, cmd in ipairs(wezterm_cmds) do
+--     local _ = vim.fn.system(cmd)
+--     if vim.v.shell_error == 0 then
+--       require("utils.logger").info("Opencode CLI: Opened in WezTerm")
+--       return
+--     end
+--   end
+--
+--   -- Final fallback: Create a new buffer for Opencode CLI
+--   local buf = vim.api.nvim_create_buf(false, true)
+--   vim.api.nvim_set_option_value("buftype", "terminal", { buf = buf })
+--   vim.api.nvim_set_option_value("bufhidden", "hide", { buf = buf })
+--
+--   -- Open in vertical right split
+--   vim.cmd("rightbelow vsplit")
+--   vim.api.nvim_set_current_buf(buf)
+--
+--   -- Set buffer name
+--   vim.api.nvim_buf_set_name(buf, "Opencode CLI")
+--   vim.bo.filetype = "opencode"
+--
+--   -- Start the Opencode CLI in the terminal
+--   local term_chan = vim.api.nvim_open_term(buf, {})
+--   vim.fn.chansend(term_chan, "opencode\n")
+--
+--   -- Buffer-local keymaps
+--   local keymap_opts = { noremap = true, silent = true, buffer = buf }
+--   vim.keymap.set("n", "q", "<cmd>bdelete<CR>", vim.tbl_extend("force", keymap_opts, { desc = "Close Opencode CLI" }))
+--
+--   require("utils.logger").info("Opencode CLI: Opened in right split (buffer)")
+-- end
+--
+-- -- Create the Opencode command
+-- vim.api.nvim_create_user_command("Opencode", open_opencode_cli_split, {
+--   desc = "Open Opencode CLI in a right split buffer",
+-- })
+--
+-- -- Add keymap to open Opencode CLI
+-- vim.keymap.set(
+--   "n",
+--   "<leader>oo",
+--   "<cmd>Opencode<CR>",
+--   { noremap = true, silent = true, desc = "Opencode: Open CLI in right split" }
+-- )
+--
 local function toggle_bool_under_caret()
   local cw = vim.fn.expand('<cword>')
   if not (cw == "true" or cw == "false" or cw == "True" or cw == "False") then return end
@@ -600,29 +600,36 @@ local function toggle_bool_under_caret()
   while true do
     local a, b = line:find(cw, start_search, true)
     if not a then break end
-    if col >= a and col <= b then s, e = a, b; break end
+    if col >= a and col <= b then
+      s, e = a, b; break
+    end
     start_search = b + 1
   end
   if not s or not e then return end
   local repl
-  if cw == "true" then repl = "false"
-  elseif cw == "false" then repl = "true"
-  elseif cw == "True" then repl = "False"
-  else repl = "True" end
-  if vim.api.nvim_buf_set_text then
-    vim.api.nvim_buf_set_text(0, row-1, s-1, row-1, e, {repl})
+  if cw == "true" then
+    repl = "false"
+  elseif cw == "false" then
+    repl = "true"
+  elseif cw == "True" then
+    repl = "False"
   else
-    local new = line:sub(1, s-1) .. repl .. line:sub(e+1)
-    vim.api.nvim_buf_set_lines(0, row-1, row, false, {new})
+    repl = "True"
+  end
+  if vim.api.nvim_buf_set_text then
+    vim.api.nvim_buf_set_text(0, row - 1, s - 1, row - 1, e, { repl })
+  else
+    local new = line:sub(1, s - 1) .. repl .. line:sub(e + 1)
+    vim.api.nvim_buf_set_lines(0, row - 1, row, false, { new })
   end
 end
 
-vim.keymap.set('n', "<leader>cb", toggle_bool_under_caret, {noremap = true, silent = true, desc = "Flips the boolean"})
+vim.keymap.set('n', "<leader>cb", toggle_bool_under_caret, { noremap = true, silent = true, desc = "Flips the boolean" })
 
 
 local function source_nvim()
   local config = vim.fn.expand("~/.config/nvim")
-  local init = config .. "init.lua"
+  local init = config .. "/init.lua"
   vim.cmd('source ' .. init)
 end
 

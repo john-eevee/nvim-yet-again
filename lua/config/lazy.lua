@@ -311,7 +311,13 @@ local plugins = {
     end,
   },
 
-  -- Removed: nvim-notify - using standard Neovim messages instead
+  {
+    "nickjvandyke/opencode.nvim",
+    event = "VeryLazy",
+    config = function()
+      require("plugins.opencode")
+    end
+  }
 }
 
 -- ━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━

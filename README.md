@@ -6,7 +6,6 @@ Highlights
 - Space as leader key, FISH-friendly, lazy-loaded plugins for fast startup
 - LSP support (Python, Rust, Go, C/C++, TS/JS, HTML/CSS, JSON, YAML, Lua, Markdown)
 - TreeSitter, Telescope, Conform (formatting), Nvim-lint (linting)
-- CodeCompanion (Copilot), Git integration (Fugitive, Gitsigns), and useful UI plugins
 
 Quick Install
 1. Clone this repo to `~/.config/nvim` and open Neovim:
