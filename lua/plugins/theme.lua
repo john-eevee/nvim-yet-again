@@ -67,13 +67,42 @@ return {
     event = "VeryLazy",
     opts = function()
       local icons = require("lazyvim.config").icons
+      -- Catppuccin Mocha color palette
+      local colors = {
+        rosewater = "#f5e0dc",
+        flamingo = "#f2cdcd",
+        pink = "#f5c2e7",
+        mauve = "#cba6f7",
+        red = "#f38ba8",
+        maroon = "#eba0ac",
+        peach = "#fab387",
+        yellow = "#f9e2af",
+        green = "#a6e3a1",
+        teal = "#94e2d5",
+        sky = "#89dceb",
+        sapphire = "#74c7ec",
+        blue = "#89b4fa",
+        lavender = "#b4befe",
+        text = "#cdd6f4",
+        subtext1 = "#bac2de",
+        subtext0 = "#a6adc8",
+        overlay2 = "#9399b2",
+        overlay1 = "#7f849c",
+        overlay0 = "#6c7086",
+        surface2 = "#585b70",
+        surface1 = "#45475a",
+        surface0 = "#313244",
+        base = "#1e1e2e",
+        mantle = "#181825",
+        crust = "#11111b",
+      }
 
       return {
         options = {
           theme = "catppuccin",
           globalstatus = true,
           disabled_filetypes = { statusline = { "dashboard", "lazy", "alpha" } },
-          component_separators = { left = "", right = "" },
+          component_separators = { left = "│", right = "│" },
           section_separators = { left = "", right = "" },
         },
         sections = {
@@ -83,13 +112,14 @@ return {
               fmt = function(str)
                 return str:sub(1, 1)
               end,
+              color = { fg = colors.crust, bg = colors.blue, gui = "bold" },
             },
           },
           lualine_b = {
             {
               "branch",
               icon = "",
-              color = { fg = "#89b4fa" },
+              color = { fg = colors.blue, gui = "bold" },
             },
           },
           lualine_c = {
@@ -101,6 +131,7 @@ return {
                 readonly = " 🔒",
                 unnamed = "[No Name]",
               },
+              color = { fg = colors.text },
             },
             {
               "diff",
@@ -108,6 +139,11 @@ return {
                 added = icons.git.added,
                 modified = icons.git.modified,
                 removed = icons.git.removed,
+              },
+              diff_color = {
+                added = { fg = colors.green },
+                modified = { fg = colors.yellow },
+                removed = { fg = colors.red },
               },
               padding = { left = 1, right = 0 },
             },
@@ -118,6 +154,12 @@ return {
                 warn = icons.diagnostics.Warn,
                 info = icons.diagnostics.Info,
                 hint = icons.diagnostics.Hint,
+              },
+              diagnostics_color = {
+                error = { fg = colors.red },
+                warn = { fg = colors.yellow },
+                info = { fg = colors.sky },
+                hint = { fg = colors.teal },
               },
               padding = { left = 1, right = 0 },
             },
@@ -130,7 +172,7 @@ return {
               cond = function()
                 return package.loaded["noice"] and require("noice").api.status.command.has()
               end,
-              color = { fg = "#f38ba8" },
+              color = { fg = colors.pink },
             },
             {
               function()
@@ -139,12 +181,12 @@ return {
               cond = function()
                 return package.loaded["noice"] and require("noice").api.status.mode.has()
               end,
-              color = { fg = "#f38ba8" },
+              color = { fg = colors.pink },
             },
             {
               "encoding",
               padding = { left = 1, right = 0 },
-              color = { fg = "#a6e3a1" },
+              color = { fg = colors.green },
             },
             {
               "fileformat",
@@ -154,7 +196,7 @@ return {
                 mac = "mac",
               },
               padding = { left = 1, right = 0 },
-              color = { fg = "#89dceb" },
+              color = { fg = colors.sky },
             },
           },
           lualine_y = {
@@ -162,16 +204,18 @@ return {
               "filetype",
               icon_only = true,
               padding = { left = 1, right = 0 },
+              color = { fg = colors.mauve },
             },
             {
               "progress",
               padding = { left = 1, right = 1 },
+              color = { fg = colors.subtext0 },
             },
           },
           lualine_z = {
             {
               "location",
-              color = { fg = "#f5c2e7", bg = "#313244" },
+              color = { fg = colors.crust, bg = colors.pink, gui = "bold" },
             },
           },
         },
@@ -182,6 +226,7 @@ return {
             {
               "filename",
               path = 1,
+              color = { fg = colors.surface2 },
             },
           },
           lualine_x = {},
