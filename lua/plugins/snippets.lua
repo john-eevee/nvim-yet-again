@@ -15,13 +15,6 @@ return {
       delete_check_events = "TextChanged",
       region_check_events = "CursorMoved",
       enable_autosnippets = true,
-      ext_opts = {
-        [require("luasnip.util.types").choiceNode] = {
-          active = {
-            virt_text = { { " ◄ ", "NonTest" } },
-          },
-        },
-      },
     },
     keys = {
       {
