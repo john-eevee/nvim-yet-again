@@ -110,7 +110,7 @@ return {
     keys = {
       {
         "<leader>-",
-        "<cmd>Oil<CR>",
+        "<cmd>Oil .<CR>",
         desc = "Oil: Toggle file explorer",
       },
     },
