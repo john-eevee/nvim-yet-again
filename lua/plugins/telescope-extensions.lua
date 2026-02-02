@@ -15,14 +15,88 @@ return {
     "nvim-telescope/telescope.nvim",
     dependencies = {
       "tpope/vim-repeat",
+      "nvim-telescope/telescope-fzf-native.nvim",
     },
     opts = {
+      defaults = {
+        -- ━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━
+        -- FILE FINDER - Use ripgrep for better performance
+        -- ━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━
+        find_command = {
+          "rg",
+          "--files",
+          "--hidden",           -- Include hidden files
+          "--glob=!.git",        -- Exclude .git directory
+          "--glob=!node_modules", -- Exclude node_modules
+          "--glob=!__pycache__",  -- Exclude Python cache
+          "--glob=!.venv",        -- Exclude virtual environments
+          "--glob=!.dart_tool",   -- Exclude Dart build
+          "--glob=!build",        -- Exclude build directories
+          "--glob=!dist",         -- Exclude dist directories
+          "--glob=!.idea",        -- Exclude IDE config
+          "--glob=!.vscode",      -- Exclude VSCode config
+        },
+        -- Use ripgrep for live grep as well
+        vimgrep_arguments = {
+          "rg",
+          "--color=never",
+          "--no-heading",
+          "--with-filename",
+          "--line-number",
+          "--column",
+          "--smart-case",        -- Smart case matching
+          "--hidden",            -- Search hidden files
+          "--glob=!.git",        -- Respect gitignore patterns
+        },
+      },
+      pickers = {
+        -- ━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━
+        -- FILE PICKER CONFIGURATION
+        -- ━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━
+        find_files = {
+          -- Use ripgrep for finding files
+          find_command = {
+            "rg",
+            "--files",
+            "--hidden",
+            "--glob=!.git",
+            "--glob=!node_modules",
+            "--glob=!__pycache__",
+            "--glob=!.venv",
+            "--glob=!.dart_tool",
+            "--glob=!build",
+            "--glob=!dist",
+            "--glob=!.idea",
+            "--glob=!.vscode",
+          },
+          hidden = true,
+          no_ignore = false,     -- Respect .gitignore
+        },
+        -- ━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━
+        -- LIVE GREP CONFIGURATION
+        -- ━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━
+        live_grep = {
+          -- ripgrep already configured in defaults above
+          additional_args = function()
+            return { "--smart-case" }
+          end,
+        },
+      },
       extensions = {
         -- ━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━
         -- REGISTERS EXTENSION
         -- ━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━
         registers = {
           show_empty = false,
+        },
+        -- ━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━
+        -- FZF EXTENSION - Fast fuzzy matching
+        -- ━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━
+        fzf = {
+          fuzzy = true,
+          override_generic_sorter = true,
+          override_file_sorter = true,
+          case_mode = "smart_case",
         },
       },
     },
@@ -32,8 +106,8 @@ return {
 
       -- Load extensions
       pcall(telescope.load_extension, "registers")
-      pcall(telescope.load_extension, "notify")
       pcall(telescope.load_extension, "fzf")
+      pcall(telescope.load_extension, "notify")
     end,
     keys = {
       -- ━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━
@@ -119,31 +193,6 @@ return {
         "<leader>sl",
         "<cmd>Telescope loclist<CR>",
         desc = "Telescope: Loclist",
-      },
-    },
-  },
-
-  -- ━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━
-  -- TELESCOPE REGISTERS EXTENSION
-  -- ━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━
-  -- Provides easy access to all Neovim registers
-  {
-    "nvim-telescope/telescope-registers.nvim",
-    event = "VeryLazy",
-  },
-
-  -- ━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━
-  -- TELESCOPE COMMAND PALETTE
-  -- ━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━
-  -- Command palette with categories and descriptions
-  {
-    "LinArcX/telescope-command-palette.nvim",
-    event = "VeryLazy",
-    keys = {
-      {
-        "<C-M-p>",
-        "<cmd>Telescope command_palette<CR>",
-        desc = "Telescope: Command Palette",
       },
     },
   },
