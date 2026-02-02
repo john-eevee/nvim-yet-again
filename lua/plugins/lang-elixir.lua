@@ -19,7 +19,7 @@ return {
       servers = {
         elixirls = {
           cmd = { "elixir-ls" },
-          -- Enable experimental Features like improved hover information
+          -- Enable experimental features like improved hover information
           settings = {
             elixirLS = {
               dialyzerEnabled = true,
@@ -35,42 +35,12 @@ return {
 
   -- Add Mason integration for automatic installation
   {
-    "williamboman/mason.nvim",
-    opts = {
-      ensure_installed = {
+    "mason-org/mason.nvim",
+    opts = function(_, opts)
+      vim.list_extend(opts.ensure_installed, {
         "elixir-ls",
         "elixirformat",
-      },
-    },
-  },
-
-  -- Optional: Configure nvim-dap for debugging (if dap is used)
-  {
-    "mfussenegger/nvim-dap",
-    optional = true,
-    dependencies = {
-      "mason.nvim",
-      config = function()
-        local dap = require("dap")
-        local dapui = require("dapui")
-
-        dap.adapters.elixir = {
-          type = "executable",
-          command = "elixir-ls",
-          args = { "--debugger" },
-        }
-
-        dap.configurations.elixir = {
-          {
-            type = "elixir",
-            name = "Elixir",
-            request = "launch",
-            task = "phx.server",
-            taskArgs = {},
-            startBranch = "main",
-          },
-        }
-      end,
-    },
+      })
+    end,
   },
 }
