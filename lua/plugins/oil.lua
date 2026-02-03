@@ -63,7 +63,7 @@ return {
       -- * move (false by default)
       -- * delete (false by default)
       -- * trash (true by default)
-      skip_confirm_for_simple_edits = false,
+      skip_confirm_for_simple_edits = true,
       view_options = {
         -- Show files and directories that start with "."
         show_hidden = false,
@@ -110,7 +110,7 @@ return {
     keys = {
       {
         "<leader>-",
-        "<cmd>Oil .<CR>",
+        "<cmd>Oil<CR>",
         desc = "Oil: Toggle file explorer",
       },
     },

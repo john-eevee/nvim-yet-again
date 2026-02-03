@@ -16,25 +16,21 @@ return {
     dependencies = {
       "tpope/vim-repeat",
       "nvim-telescope/telescope-fzf-native.nvim",
+      "nvim-telescope/telescope-smart-history.nvim",
+      "kkharji/sqlite.lua",
     },
     opts = {
       defaults = {
+        history = {
+          path = vim.fn.stdpath("cache") .. "/history.sqlite3",
+          limit = 1000,
+        },
         -- ━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━
         -- FILE FINDER - Use ripgrep for better performance
         -- ━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━
         find_command = {
           "rg",
           "--files",
-          "--hidden",           -- Include hidden files
-          "--glob=!.git",        -- Exclude .git directory
-          "--glob=!node_modules", -- Exclude node_modules
-          "--glob=!__pycache__",  -- Exclude Python cache
-          "--glob=!.venv",        -- Exclude virtual environments
-          "--glob=!.dart_tool",   -- Exclude Dart build
-          "--glob=!build",        -- Exclude build directories
-          "--glob=!dist",         -- Exclude dist directories
-          "--glob=!.idea",        -- Exclude IDE config
-          "--glob=!.vscode",      -- Exclude VSCode config
         },
         -- Use ripgrep for live grep as well
         vimgrep_arguments = {
@@ -44,9 +40,7 @@ return {
           "--with-filename",
           "--line-number",
           "--column",
-          "--smart-case",        -- Smart case matching
-          "--hidden",            -- Search hidden files
-          "--glob=!.git",        -- Respect gitignore patterns
+          "--smart-case", -- Smart case matching
         },
       },
       pickers = {
@@ -70,7 +64,7 @@ return {
             "--glob=!.vscode",
           },
           hidden = true,
-          no_ignore = false,     -- Respect .gitignore
+          no_ignore = false, -- Respect .gitignore
         },
         -- ━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━
         -- LIVE GREP CONFIGURATION
