@@ -9,7 +9,8 @@ local expr_opts = { noremap = true, silent = true, expr = true }
 -- ━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━
 -- SMART TAB JUMPER
 -- ━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━
-require("utils.smart-tab-jumper").setup()
+-- Smart Tab Jumper is integrated with cmp in lua/plugins/cmp.lua
+-- No additional setup needed here
 
 -- ━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━
 -- LEADER KEY SETUP
