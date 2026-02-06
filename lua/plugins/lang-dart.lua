@@ -37,7 +37,7 @@ return {
 
   -- Add Mason integration for Dart formatters and LSP
   {
-    "mason-org/mason.nvim",
+    "williamboman/mason.nvim",
     opts = function(_, opts)
       vim.list_extend(opts.ensure_installed, {
         "dart-debug-adapter",

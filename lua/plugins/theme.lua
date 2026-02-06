@@ -89,7 +89,6 @@ return {
     "nvim-lualine/lualine.nvim",
     event = "VeryLazy",
     opts = function()
-      local icons = require("lazyvim.config").icons
       -- Rosé Pine color palette
       local colors = {
         base = "#191724",
@@ -145,9 +144,9 @@ return {
             {
               "diff",
               symbols = {
-                added = icons.git.added,
-                modified = icons.git.modified,
-                removed = icons.git.removed,
+                added = "+",
+                modified = "~",
+                removed = "-",
               },
               diff_color = {
                 added = { fg = colors.foam },
@@ -159,10 +158,10 @@ return {
             {
               "diagnostics",
               symbols = {
-                error = icons.diagnostics.Error,
-                warn = icons.diagnostics.Warn,
-                info = icons.diagnostics.Info,
-                hint = icons.diagnostics.Hint,
+                error = " ",
+                warn = " ",
+                info = " ",
+                hint = " ",
               },
               diagnostics_color = {
                 error = { fg = colors.love },
@@ -174,24 +173,6 @@ return {
             },
           },
           lualine_x = {
-            {
-              function()
-                return require("noice").api.status.command.get()
-              end,
-              cond = function()
-                return package.loaded["noice"] and require("noice").api.status.command.has()
-              end,
-              color = { fg = colors.rose },
-            },
-            {
-              function()
-                return require("noice").api.status.mode.get()
-              end,
-              cond = function()
-                return package.loaded["noice"] and require("noice").api.status.mode.has()
-              end,
-              color = { fg = colors.rose },
-            },
             {
               "encoding",
               padding = { left = 1, right = 0 },
@@ -246,13 +227,5 @@ return {
         extensions = { "neo-tree", "lazy", "trouble", "mason", "quickfix" },
       }
     end,
-  },
-
-  -- Configure LazyVim to use Rosé Pine
-  {
-    "LazyVim/LazyVim",
-    opts = {
-      colorscheme = "rose-pine",
-    },
   },
 }

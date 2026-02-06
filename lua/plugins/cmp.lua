@@ -1,53 +1,34 @@
 return {
-  "hrsh7th/nvim-cmp",
-  config = function()
-    local cmp = require("cmp")
-    local luasnip = require("luasnip")
-    local smart_tab = require("utils.smart-tab-jumper")
+  {
+    "saghen/blink.cmp",
+    lazy = false, -- lazy loading handled internally
+    dependencies = {
+      "rafamadriz/friendly-snippets",
+      "L3MON4D3/LuaSnip",
+    },
 
-    cmp.setup({
-      mapping = {
-        ["<CR>"] = cmp.mapping(function(fallback)
-          if cmp.visible() then
-            if luasnip.expandable() then
-              luasnip.expand()
-            else
-              cmp.confirm({
-                select = true,
-              })
-            end
-          else
-            fallback()
-          end
-        end),
+    version = "v0.*",
 
-        ["<Tab>"] = cmp.mapping(function(fallback)
-          if cmp.visible() then
-            local entry = cmp.get_selected_entry()
-            if not entry then
-              cmp.select_next_item({ behavior = cmp.SelectBehavior.Select })
-            end
-            cmp.confirm({ select = true })
-          elseif luasnip.locally_jumpable(1) then
-            luasnip.jump(1)
-          else
-            smart_tab.try_jump()
-          end
-        end, { "i", "s" }),
+    ---@module 'blink.cmp'
+    ---@type blink.cmp.Config
+    opts = {
+      keymap = { preset = "default" },
 
-        ["<S-Tab>"] = cmp.mapping(function(fallback)
-          if cmp.visible() then
-            cmp.select_prev_item()
-          elseif luasnip.locally_jumpable(-1) then
-            luasnip.jump(-1)
-          else
-            fallback()
-          end
-        end, { "i", "s" }),
-        -- ... Your other mappings ...
+      appearance = {
+        use_nvim_cmp_as_default = true,
+        nerd_font_variant = "mono",
       },
 
-      -- ... Your other configuration ...
-    })
-  end,
+      snippets = {
+        preset = "luasnip",
+      },
+
+      sources = {
+        default = { "lsp", "path", "snippets", "buffer" },
+      },
+
+      signature = { enabled = true },
+    },
+    opts_extend = { "sources.default" },
+  },
 }

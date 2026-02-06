@@ -35,7 +35,7 @@ return {
 
   -- Add Mason integration for automatic installation
   {
-    "mason-org/mason.nvim",
+    "williamboman/mason.nvim",
     opts = function(_, opts)
       vim.list_extend(opts.ensure_installed, {
         "elixir-ls",
