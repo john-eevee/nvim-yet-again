@@ -38,7 +38,6 @@ return {
     },
     config = function(_, opts)
       local lspconfig = require("lspconfig")
-      local capabilities = require("blink.cmp").get_lsp_capabilities()
 
       require("mason").setup()
 
@@ -64,12 +63,13 @@ return {
           return
         end
         local server_opts = opts.servers[server_name] or {}
-        server_opts.capabilities = vim.tbl_deep_extend("force", capabilities, server_opts.capabilities or {})
+        -- Correctly get blink.cmp capabilities
+        server_opts.capabilities = require("blink.cmp").get_lsp_capabilities(server_opts.capabilities)
 
         if lspconfig[server_name] then
           lspconfig[server_name].setup(server_opts)
         else
-          -- Custom server setup
+          -- Custom server setup (e.g. Astral's ty)
           vim.api.nvim_create_autocmd("FileType", {
             pattern = server_opts.filetypes or {},
             callback = function(ev)
@@ -83,7 +83,7 @@ return {
       -- Filter servers for mason-lspconfig
       local ensure_installed = {}
       for server, server_opts in pairs(opts.servers) do
-        if server_opts.mason ~= false then
+        if server_opts.mason ~= false and lspconfig[server] then
           table.insert(ensure_installed, server)
         end
       end

@@ -7,7 +7,10 @@ return {
       "L3MON4D3/LuaSnip",
     },
 
-    version = "v0.*",
+    -- Use the main branch and build from source for Neovim nightly (0.11)
+    -- This often resolves internal async errors like 'await_all'
+    version = "*",
+    build = "cargo build --release",
 
     ---@module 'blink.cmp'
     ---@type blink.cmp.Config
