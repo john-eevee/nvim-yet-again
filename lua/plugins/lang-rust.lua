@@ -4,70 +4,18 @@ return {
   {
     "nvim-treesitter/nvim-treesitter",
     opts = function(_, opts)
-      vim.list_extend(opts.ensure_installed, {
+      opts.ensure_installed = vim.list_extend(opts.ensure_installed or {}, {
         "rust",
         "toml",
       })
     end,
   },
 
-  -- Configure Rust Analyzer (LSP)
-  {
-    "neovim/nvim-lspconfig",
-    opts = {
-      servers = {
-        rust_analyzer = {
-          settings = {
-            ["rust-analyzer"] = {
-              assist = {
-                expressionFillDefault = "todo",
-              },
-              cargo = {
-                allFeatures = true,
-                loadOutDirsFromCheck = true,
-                runBuildScripts = true,
-              },
-              checkOnSave = {
-                allFeatures = true,
-                command = "clippy",
-                extraArgs = { "--all-targets", "--all-features" },
-              },
-              procMacro = {
-                enable = true,
-              },
-              runnables = {
-                command = "cargo",
-              },
-              inlayHints = {
-                enable = true,
-                chainingHints = true,
-                closureReturnTypeHints = "with_block",
-                closingBraceHints = true,
-                lifetimeElisionHints = {
-                  enable = "skip_trivial",
-                  useParameterNames = true,
-                },
-                maxLength = nil,
-                reborrowHints = "mutable",
-                renderColons = true,
-                typeHints = {
-                  enable = true,
-                  hideClosureInitialization = false,
-                  hideNamedConstructor = false,
-                },
-              },
-            },
-          },
-        },
-      },
-    },
-  },
-
   -- Add Mason integration for Rust tools
   {
-    "mason-org/mason.nvim",
+    "williamboman/mason.nvim",
     opts = function(_, opts)
-      vim.list_extend(opts.ensure_installed, {
+      opts.ensure_installed = vim.list_extend(opts.ensure_installed or {}, {
         "rust-analyzer",
         "rustfmt",
         "codelldb",

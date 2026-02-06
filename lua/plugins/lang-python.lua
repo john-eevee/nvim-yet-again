@@ -5,47 +5,17 @@ return {
   {
     "nvim-treesitter/nvim-treesitter",
     opts = function(_, opts)
-      vim.list_extend(opts.ensure_installed, {
+      opts.ensure_installed = vim.list_extend(opts.ensure_installed or {}, {
         "python",
       })
     end,
   },
 
-  -- Configure Ty (Astral's Python type checker) as the primary LSP
-  -- Ty provides fast type checking and diagnostics
-  {
-    "neovim/nvim-lspconfig",
-    opts = {
-      servers = {
-        -- Ty language server for type checking (Neovim 0.10 and earlier)
-        ty = {
-          cmd = { "ty", "server" },
-          settings = {
-            ty = {
-              -- Type checking mode: strict, standard, or basic
-              typeCheckingMode = "standard",
-              -- Additional settings for type checking
-              diagnosticMode = "workspace",
-            },
-          },
-          root_dir = require("lspconfig.util").root_pattern(
-            "pyproject.toml",
-            "setup.py",
-            "setup.cfg",
-            "pyrightconfig.json",
-            "typings",
-            ".git"
-          ),
-        },
-      },
-    },
-  },
-
   -- Add Mason integration for Python tools (Astral stack)
   {
-    "mason-org/mason.nvim",
+    "williamboman/mason.nvim",
     opts = function(_, opts)
-      vim.list_extend(opts.ensure_installed, {
+      opts.ensure_installed = vim.list_extend(opts.ensure_installed or {}, {
         -- Type checking with Ty
         "ty",
         -- Linting and formatting with Ruff (replaces flake8, black, isort, etc.)
@@ -151,24 +121,6 @@ return {
           },
         }
       end
-    end,
-  },
-
-  -- Integration with uv (Astral's Python package manager)
-  -- If you have uv available, it will be used for project detection
-  {
-    "neovim/nvim-lspconfig",
-    opts = function(_, opts)
-      -- Enable Ty for all Python files in projects with uv
-      local lspconfig = require("lspconfig")
-      if not lspconfig.ty.manager then
-        lspconfig.ty.setup({
-          on_attach = function(client, bufnr)
-            -- Optional: add custom keybinds or behavior
-          end,
-        })
-      end
-      return opts
     end,
   },
 }

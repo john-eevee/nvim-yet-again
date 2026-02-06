@@ -48,44 +48,4 @@ return {
     "rafamadriz/friendly-snippets",
     lazy = true,
   },
-
-  -- nvim-cmp integration with LuaSnip
-  {
-    "hrsh7th/nvim-cmp",
-    dependencies = {
-      "saadparwaiz1/cmp_luasnip",
-    },
-    ---@param opts cmp.ConfigSchema
-    opts = function(_, opts)
-      local cmp = require("cmp")
-      local luasnip = require("luasnip")
-
-      opts.snippet = {
-        expand = function(args)
-          luasnip.lsp_expand(args.body)
-        end,
-      }
-
-      -- Add luasnip as a source
-      table.insert(opts.sources, { name = "luasnip", priority = 75 })
-
-      -- Configure mapping
-      opts.mapping = vim.tbl_extend("force", opts.mapping or {}, {
-        ["<C-k>"] = cmp.mapping.select_prev_item({ behavior = cmp.SelectBehavior.Insert }),
-        ["<C-j>"] = cmp.mapping.select_next_item({ behavior = cmp.SelectBehavior.Insert }),
-        ["<C-l>"] = cmp.mapping(function()
-          if luasnip.expand_or_jumpable() then
-            luasnip.expand_or_jump()
-          end
-        end, { "i", "s" }),
-        ["<C-h>"] = cmp.mapping(function()
-          if luasnip.jumpable(-1) then
-            luasnip.jump(-1)
-          end
-        end, { "i", "s" }),
-      })
-
-      return opts
-    end,
-  },
 }

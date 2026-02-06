@@ -4,42 +4,17 @@ return {
   {
     "nvim-treesitter/nvim-treesitter",
     opts = function(_, opts)
-      vim.list_extend(opts.ensure_installed, {
+      opts.ensure_installed = vim.list_extend(opts.ensure_installed or {}, {
         "dart",
       })
     end,
   },
 
-  -- Configure Dart language server and Flutter tools
-  {
-    "neovim/nvim-lspconfig",
-    opts = {
-      servers = {
-        dartls = {
-          cmd = { "dart", "language-server", "--protocol=lsp" },
-          init_options = {
-            closingLabels = true,
-            flutterOutline = true,
-            outline = true,
-          },
-          settings = {
-            dart = {
-              completeFunctionCalls = true,
-              enableSnippets = true,
-              enableSdkFormatter = true,
-              lineLength = 80,
-            },
-          },
-        },
-      },
-    },
-  },
-
   -- Add Mason integration for Dart formatters and LSP
   {
-    "mason-org/mason.nvim",
+    "williamboman/mason.nvim",
     opts = function(_, opts)
-      vim.list_extend(opts.ensure_installed, {
+      opts.ensure_installed = vim.list_extend(opts.ensure_installed or {}, {
         "dart-debug-adapter",
       })
     end,

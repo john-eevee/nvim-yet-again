@@ -4,7 +4,7 @@ return {
   {
     "nvim-treesitter/nvim-treesitter",
     opts = function(_, opts)
-      vim.list_extend(opts.ensure_installed, {
+      opts.ensure_installed = vim.list_extend(opts.ensure_installed or {}, {
         "go",
         "gomod",
         "gosum",
@@ -12,34 +12,11 @@ return {
     end,
   },
 
-  -- Configure gopls (Go Language Server)
-  {
-    "neovim/nvim-lspconfig",
-    opts = {
-      servers = {
-        gopls = {
-          cmd = { "gopls" },
-          settings = {
-            gopls = {
-              usePlaceholders = true,
-              analyses = {
-                unusedparams = true,
-                shadow = true,
-              },
-              staticcheck = true,
-              gofumpt = true,
-            },
-          },
-        },
-      },
-    },
-  },
-
   -- Add Mason integration for Go tools
   {
-    "mason-org/mason.nvim",
+    "williamboman/mason.nvim",
     opts = function(_, opts)
-      vim.list_extend(opts.ensure_installed, {
+      opts.ensure_installed = vim.list_extend(opts.ensure_installed or {}, {
         "gopls",
         "goimports",
         "golines",
