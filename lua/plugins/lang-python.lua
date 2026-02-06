@@ -28,7 +28,7 @@ return {
               diagnosticMode = "workspace",
             },
           },
-          root_dir = require("lspconfig.util").root_pattern(
+          root_dir = vim.lsp.rpc.root_pattern(
             "pyproject.toml",
             "setup.py",
             "setup.cfg",
@@ -160,7 +160,7 @@ return {
     "neovim/nvim-lspconfig",
     opts = function(_, opts)
       -- Enable Ty for all Python files in projects with uv
-      local lspconfig = require("lspconfig")
+      local lspconfig = package.loaded["lspconfig"]
       if not lspconfig.ty.manager then
         lspconfig.ty.setup({
           on_attach = function(client, bufnr)
