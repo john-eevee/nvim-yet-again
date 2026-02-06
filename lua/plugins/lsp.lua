@@ -47,8 +47,6 @@ return {
       local files = vim.fn.globpath(lsp_after_path, "*.lua", false, true)
       for _, file in ipairs(files) do
         local server_name = vim.fn.fnamemodify(file, ":t:r")
-        -- Handle 'python.lua' as 'ty' or 'pyright'
-        -- Given the content uses 'ty', let's use 'ty'
         if server_name == "python" then
           server_name = "ty"
         end
@@ -59,11 +57,32 @@ return {
         end
       end
 
+      local setup_done = {}
+
+      local function setup(server_name)
+        if setup_done[server_name] then
+          return
+        end
+        local server_opts = opts.servers[server_name] or {}
+        server_opts.capabilities = vim.tbl_deep_extend("force", capabilities, server_opts.capabilities or {})
+
+        if lspconfig[server_name] then
+          lspconfig[server_name].setup(server_opts)
+        else
+          -- Custom server setup
+          vim.api.nvim_create_autocmd("FileType", {
+            pattern = server_opts.filetypes or {},
+            callback = function(ev)
+              vim.lsp.start(server_opts)
+            end,
+          })
+        end
+        setup_done[server_name] = true
+      end
+
       -- Filter servers for mason-lspconfig
       local ensure_installed = {}
       for server, server_opts in pairs(opts.servers) do
-        -- Only install if not explicitly disabled and if it's a known mason package
-        -- For now, we'll just try to install everything that doesn't have mason = false
         if server_opts.mason ~= false then
           table.insert(ensure_installed, server)
         end
@@ -73,24 +92,15 @@ return {
         ensure_installed = ensure_installed,
         handlers = {
           function(server_name)
-            local server_opts = opts.servers[server_name] or {}
-            server_opts.capabilities = vim.tbl_deep_extend("force", capabilities, server_opts.capabilities or {})
-            
-            -- Check if lspconfig has this server, otherwise it's a custom setup
-            if lspconfig[server_name] then
-              lspconfig[server_name].setup(server_opts)
-            else
-              -- Custom server setup
-              vim.api.nvim_create_autocmd("FileType", {
-                pattern = server_opts.filetypes or {},
-                callback = function(ev)
-                  vim.lsp.start(server_opts)
-                end,
-              })
-            end
+            setup(server_name)
           end,
         },
       })
+
+      -- Setup servers not handled by mason-lspconfig
+      for server_name, _ in pairs(opts.servers) do
+        setup(server_name)
+      end
 
       -- Global diagnostics config
       vim.diagnostic.config({
