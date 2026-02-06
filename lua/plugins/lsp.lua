@@ -34,25 +34,186 @@ return {
             },
           },
         },
+        ty = {
+          cmd = { "ty", "server" },
+          filetypes = { "python" },
+          root_dir = function(fname)
+            return vim.fs.root(fname, {
+              "pyproject.toml",
+              "setup.py",
+              "setup.cfg",
+              "pyrightconfig.json",
+              "typings",
+              ".git",
+            })
+          end,
+          settings = {
+            ty = {
+              typeCheckingMode = "standard",
+              diagnosticMode = "workspace",
+            },
+          },
+        },
+        rust_analyzer = {
+          settings = {
+            ["rust-analyzer"] = {
+              assist = {
+                expressionFillDefault = "todo",
+              },
+              cargo = {
+                allFeatures = true,
+                loadOutDirsFromCheck = true,
+                runBuildScripts = true,
+              },
+              checkOnSave = {
+                allFeatures = true,
+                command = "clippy",
+                extraArgs = { "--all-targets", "--all-features" },
+              },
+              procMacro = {
+                enable = true,
+              },
+              runnables = {
+                command = "cargo",
+              },
+              inlayHints = {
+                enable = true,
+                chainingHints = true,
+                closureReturnTypeHints = "with_block",
+                closingBraceHints = true,
+                lifetimeElisionHints = {
+                  enable = "skip_trivial",
+                  useParameterNames = true,
+                },
+                maxLength = nil,
+                reborrowHints = "mutable",
+                renderColons = true,
+                typeHints = {
+                  enable = true,
+                  hideClosureInitialization = false,
+                  hideNamedConstructor = false,
+                },
+              },
+            },
+          },
+        },
+        dartls = {
+          cmd = { "dart", "language-server", "--protocol=lsp" },
+          filetypes = { "dart" },
+          init_options = {
+            closingLabels = true,
+            flutterOutline = true,
+            outline = true,
+          },
+          settings = {
+            dart = {
+              completeFunctionCalls = true,
+              enableSnippets = true,
+              enableSdkFormatter = true,
+              lineLength = 80,
+            },
+          },
+        },
+        elixirls = {
+          cmd = { "elixir-ls" },
+          settings = {
+            elixirLS = {
+              dialyzerEnabled = true,
+              fetchDeps = false,
+              enableTestLenses = true,
+              suggestSpecs = true,
+            },
+          },
+        },
+        jdtls = {
+          settings = {
+            java = {
+              project = {
+                referencedLibraries = {
+                  "$JAVA_HOME/lib/**/*.jar",
+                },
+              },
+              eclipse = {
+                downloadSources = true,
+              },
+              maven = {
+                downloadSources = true,
+              },
+              implementation = {
+                searchAllProjectsScope = true,
+              },
+              referencesCodeLens = {
+                enabled = true,
+              },
+              signatureHelp = {
+                enabled = true,
+                description = {
+                  enabled = true,
+                },
+              },
+              contentProvider = "fernflower",
+              autobuild = {
+                enabled = true,
+              },
+              saveActions = {
+                organizeImports = true,
+              },
+              sources = {
+                organizeImports = {
+                  starThreshold = 9999,
+                  staticStarThreshold = 9999,
+                },
+              },
+              codeGeneration = {
+                toString = {
+                  template = "${object}.toString()",
+                },
+                hashCodeEquals = {
+                  useInstanceof = true,
+                  useJava7Objects = true,
+                },
+                useBlocks = true,
+              },
+              configuration = {
+                runtimes = {
+                  {
+                    name = "JavaSE-11",
+                    path = os.getenv("JAVA_HOME") or "/usr/lib/jvm/java-11",
+                    default = true,
+                  },
+                  {
+                    name = "JavaSE-17",
+                    path = os.getenv("JAVA_HOME_17") or "/usr/lib/jvm/java-17",
+                  },
+                },
+              },
+              format = {
+                enabled = true,
+                settings = {
+                  url = os.getenv("JAVA_FORMAT_SETTINGS_URL"),
+                  profile = os.getenv("JAVA_FORMAT_SETTINGS_PROFILE"),
+                },
+              },
+            },
+          },
+        },
+        gopls = {
+          settings = {
+            gopls = {
+              usePlaceholders = true,
+              analyses = {
+                unusedparams = true,
+                shadow = true,
+              },
+              staticcheck = true,
+              gofumpt = true,
+            },
+          },
+        },
       },
     },
     config = function(_, opts)
       require("mason").setup()
-
-      -- Merge configurations from after/lsp/*.lua
-      local lsp_after_path = vim.fn.stdpath("config") .. "/after/lsp"
-      local files = vim.fn.globpath(lsp_after_path, "*.lua", false, true)
-      for _, file in ipairs(files) do
-        local server_name = vim.fn.fnamemodify(file, ":t:r")
-        if server_name == "python" then
-          server_name = "ty"
-        end
-
-        local ok, config = pcall(dofile, file)
-        if ok and type(config) == "table" then
-          opts.servers[server_name] = vim.tbl_deep_extend("force", opts.servers[server_name] or {}, config)
-        end
-      end
 
       local setup_done = {}
 
