@@ -1,5 +1,14 @@
 return {
-  -- LSP Config
+  {
+    "folke/lazydev.nvim",
+    ft = "lua",
+    opts = {
+      library = {
+        { path = "luvit-meta/library", words = { "vim%.uv" } },
+      },
+    },
+  },
+  { "Bilal2453/luvit-meta", lazy = true },
   {
     "neovim/nvim-lspconfig",
     dependencies = {
@@ -32,20 +41,63 @@ return {
       local capabilities = require("blink.cmp").get_lsp_capabilities()
 
       require("mason").setup()
+
+      -- Merge configurations from after/lsp/*.lua
+      local lsp_after_path = vim.fn.stdpath("config") .. "/after/lsp"
+      local files = vim.fn.globpath(lsp_after_path, "*.lua", false, true)
+      for _, file in ipairs(files) do
+        local server_name = vim.fn.fnamemodify(file, ":t:r")
+        -- Handle 'python.lua' as 'ty' or 'pyright'
+        -- Given the content uses 'ty', let's use 'ty'
+        if server_name == "python" then
+          server_name = "ty"
+        end
+
+        local ok, config = pcall(dofile, file)
+        if ok and type(config) == "table" then
+          opts.servers[server_name] = vim.tbl_deep_extend("force", opts.servers[server_name] or {}, config)
+        end
+      end
+
+      -- Filter servers for mason-lspconfig
+      local ensure_installed = {}
+      for server, server_opts in pairs(opts.servers) do
+        -- Only install if not explicitly disabled and if it's a known mason package
+        -- For now, we'll just try to install everything that doesn't have mason = false
+        if server_opts.mason ~= false then
+          table.insert(ensure_installed, server)
+        end
+      end
+
       require("mason-lspconfig").setup({
-        ensure_installed = vim.tbl_keys(opts.servers or {}),
+        ensure_installed = ensure_installed,
         handlers = {
           function(server_name)
             local server_opts = opts.servers[server_name] or {}
             server_opts.capabilities = vim.tbl_deep_extend("force", capabilities, server_opts.capabilities or {})
-            lspconfig[server_name].setup(server_opts)
+            
+            -- Check if lspconfig has this server, otherwise it's a custom setup
+            if lspconfig[server_name] then
+              lspconfig[server_name].setup(server_opts)
+            else
+              -- Custom server setup
+              vim.api.nvim_create_autocmd("FileType", {
+                pattern = server_opts.filetypes or {},
+                callback = function(ev)
+                  vim.lsp.start(server_opts)
+                end,
+              })
+            end
           end,
         },
       })
 
       -- Global diagnostics config
       vim.diagnostic.config({
-        virtual_text = true,
+        virtual_text = {
+          spacing = 4,
+          prefix = "●",
+        },
         signs = true,
         underline = true,
         update_in_insert = false,
