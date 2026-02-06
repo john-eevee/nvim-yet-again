@@ -4,7 +4,7 @@ return {
   {
     "nvim-treesitter/nvim-treesitter",
     opts = function(_, opts)
-      vim.list_extend(opts.ensure_installed, {
+      opts.ensure_installed = vim.list_extend(opts.ensure_installed or {}, {
         "java",
       })
     end,
@@ -95,7 +95,7 @@ return {
   {
     "williamboman/mason.nvim",
     opts = function(_, opts)
-      vim.list_extend(opts.ensure_installed, {
+      opts.ensure_installed = vim.list_extend(opts.ensure_installed or {}, {
         "jdtls",
         "java-debug-adapter",
         "java-test",

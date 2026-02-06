@@ -5,7 +5,7 @@ return {
   {
     "nvim-treesitter/nvim-treesitter",
     opts = function(_, opts)
-      vim.list_extend(opts.ensure_installed, {
+      opts.ensure_installed = vim.list_extend(opts.ensure_installed or {}, {
         "python",
       })
     end,
@@ -45,7 +45,7 @@ return {
   {
     "williamboman/mason.nvim",
     opts = function(_, opts)
-      vim.list_extend(opts.ensure_installed, {
+      opts.ensure_installed = vim.list_extend(opts.ensure_installed or {}, {
         -- Type checking with Ty
         "ty",
         -- Linting and formatting with Ruff (replaces flake8, black, isort, etc.)
