@@ -12,29 +12,6 @@ return {
     end,
   },
 
-  -- Configure gopls (Go Language Server)
-  {
-    "neovim/nvim-lspconfig",
-    opts = {
-      servers = {
-        gopls = {
-          cmd = { "gopls" },
-          settings = {
-            gopls = {
-              usePlaceholders = true,
-              analyses = {
-                unusedparams = true,
-                shadow = true,
-              },
-              staticcheck = true,
-              gofumpt = true,
-            },
-          },
-        },
-      },
-    },
-  },
-
   -- Add Mason integration for Go tools
   {
     "williamboman/mason.nvim",

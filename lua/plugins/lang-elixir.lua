@@ -12,27 +12,6 @@ return {
     end,
   },
 
-  -- Configure ElixirLS language server
-  {
-    "neovim/nvim-lspconfig",
-    opts = {
-      servers = {
-        elixirls = {
-          cmd = { "elixir-ls" },
-          -- Enable experimental features like improved hover information
-          settings = {
-            elixirLS = {
-              dialyzerEnabled = true,
-              fetchDeps = false,
-              enableTestLenses = true,
-              suggestSpecs = true,
-            },
-          },
-        },
-      },
-    },
-  },
-
   -- Add Mason integration for automatic installation
   {
     "williamboman/mason.nvim",

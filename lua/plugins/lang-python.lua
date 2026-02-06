@@ -11,38 +11,6 @@ return {
     end,
   },
 
-  -- Configure Ty (Astral's Python type checker) as the primary LSP
-  -- Ty provides fast type checking and diagnostics
-  {
-    "neovim/nvim-lspconfig",
-    opts = {
-      servers = {
-        -- Ty language server for type checking (Neovim 0.10 and earlier)
-        ty = {
-          cmd = { "ty", "server" },
-          settings = {
-            ty = {
-              -- Type checking mode: strict, standard, or basic
-              typeCheckingMode = "standard",
-              -- Additional settings for type checking
-              diagnosticMode = "workspace",
-            },
-          },
-          root_dir = function(fname)
-            return vim.fs.root(fname, {
-              "pyproject.toml",
-              "setup.py",
-              "setup.cfg",
-              "pyrightconfig.json",
-              "typings",
-              ".git",
-            })
-          end,
-        },
-      },
-    },
-  },
-
   -- Add Mason integration for Python tools (Astral stack)
   {
     "williamboman/mason.nvim",
@@ -153,17 +121,6 @@ return {
           },
         }
       end
-    end,
-  },
-
-  -- Integration with uv (Astral's Python package manager)
-  -- If you have uv available, it will be used for project detection
-  {
-    "neovim/nvim-lspconfig",
-    opts = function(_, opts)
-      -- The custom LSP setup for 'ty' is already handled by our main lsp.lua
-      -- which merges opts.servers and calls vim.lsp.start()
-      return opts
     end,
   },
 }

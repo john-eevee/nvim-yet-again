@@ -10,31 +10,6 @@ return {
     end,
   },
 
-  -- Configure Dart language server and Flutter tools
-  {
-    "neovim/nvim-lspconfig",
-    opts = {
-      servers = {
-        dartls = {
-          cmd = { "dart", "language-server", "--protocol=lsp" },
-          init_options = {
-            closingLabels = true,
-            flutterOutline = true,
-            outline = true,
-          },
-          settings = {
-            dart = {
-              completeFunctionCalls = true,
-              enableSnippets = true,
-              enableSdkFormatter = true,
-              lineLength = 80,
-            },
-          },
-        },
-      },
-    },
-  },
-
   -- Add Mason integration for Dart formatters and LSP
   {
     "williamboman/mason.nvim",
