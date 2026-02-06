@@ -83,5 +83,5 @@ vim.g.format_on_save = false            -- Disable format on save by default (en
 -- ━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━
 -- GLOBALS
 -- ━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━
-vim.g.mapleader = " "                   -- Space as leader
-vim.g.maplocalleader = "\\"             -- Backslash as local leader
+vim.g.mapleader = "\\"                  -- Ctrl+\ as leader
+vim.g.maplocalleader = ","              -- Comma as local leader

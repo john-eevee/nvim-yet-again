@@ -2,8 +2,8 @@
 -- Language server for Dart providing IDE features
 
 return {
-  cmd = { 'dart', 'language-server', '--protocol=lsp' },
-  filetypes = { 'dart' },
+  cmd = { "dart", "language-server", "--protocol=lsp" },
+  filetypes = { "dart" },
   init_options = {
     closingLabels = true,
     flutterOutline = true,

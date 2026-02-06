@@ -6,24 +6,7 @@ return {
     local smart_tab = require("utils.smart-tab-jumper")
 
     cmp.setup({
-
-      -- ... Your other configuration ...
-
-      -- Auto-select first entry
-      completion = {
-        completeopt = "menu,menuone,noselect",
-      },
-
-      -- Snippet configuration
-      snippet = {
-        expand = function(args)
-          luasnip.lsp_expand(args.body)
-        end,
-      },
-
       mapping = {
-
-        -- ... Your other mappings ...
         ["<CR>"] = cmp.mapping(function(fallback)
           if cmp.visible() then
             if luasnip.expandable() then
@@ -38,10 +21,29 @@ return {
           end
         end),
 
-        ["<Tab>"] = smart_tab.create_cmp_mapping(cmp, luasnip),
+        ["<Tab>"] = cmp.mapping(function(fallback)
+          if cmp.visible() then
+            local entry = cmp.get_selected_entry()
+            if not entry then
+              cmp.select_next_item({ behavior = cmp.SelectBehavior.Select })
+            end
+            cmp.confirm({ select = true })
+          elseif luasnip.locally_jumpable(1) then
+            luasnip.jump(1)
+          else
+            smart_tab.try_jump()
+          end
+        end, { "i", "s" }),
 
-        ["<S-Tab>"] = smart_tab.create_shift_tab_mapping(cmp, luasnip),
-
+        ["<S-Tab>"] = cmp.mapping(function(fallback)
+          if cmp.visible() then
+            cmp.select_prev_item()
+          elseif luasnip.locally_jumpable(-1) then
+            luasnip.jump(-1)
+          else
+            fallback()
+          end
+        end, { "i", "s" }),
         -- ... Your other mappings ...
       },
 

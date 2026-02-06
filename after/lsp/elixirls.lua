@@ -2,7 +2,7 @@
 -- Language server for Elixir providing diagnostics and code intelligence
 
 return {
-  cmd = { 'elixir-ls' },
+  cmd = { "elixir-ls" },
   settings = {
     elixirLS = {
       dialyzerEnabled = true,

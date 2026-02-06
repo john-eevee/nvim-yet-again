@@ -1,105 +1,114 @@
--- Theme configuration with Catppuccin Mocha and sleek lualine
+-- Theme configuration with Rosé Pine and sleek lualine
 return {
-  -- Catppuccin Mocha theme
+  -- Rosé Pine theme
   {
-    "catppuccin/nvim",
-    name = "catppuccin",
+    "rose-pine/neovim",
+    name = "rose-pine",
     priority = 1000,
     config = function()
-      require("catppuccin").setup({
-        flavour = "mocha",
-        transparent_background = true,
-        term_colors = true,
-        dim_inactive = {
-          enabled = true,
-          shade = "dark",
-          percentage = 0.15,
-        },
+      require("rose-pine").setup({
+        variant = "main", -- main, moon, or dawn
+        dark_variant = "main",
+        dim_inactive = true,
+        dim_nc_background = false,
         styles = {
-          comments = { "italic" },
-          conditionals = { "italic" },
-          loops = {},
-          functions = {},
-          keywords = {},
-          strings = {},
-          variables = {},
-          numbers = {},
-          booleans = {},
-          properties = {},
-          types = {},
-          operators = {},
+          bold = true,
+          italic = true,
+          transparency = true,
         },
-        integrations = {
-          cmp = true,
-          gitsigns = true,
-          nvimtree = true,
-          treesitter = true,
-          notify = true,
-          mini = true,
-          telescope = true,
-          which_key = true,
-          dashboard = true,
-          mason = true,
-          native_lsp = {
-            enabled = true,
-            virtual_text = {
-              errors = { "italic" },
-              hints = { "italic" },
-              warnings = { "italic" },
-              information = { "italic" },
-            },
-            underlines = {
-              errors = { "underline" },
-              hints = { "underline" },
-              warnings = { "underline" },
-              information = { "underline" },
-            },
+        groups = {
+          background = "base",
+          background_nc = "base",
+          panel = "surface",
+          panel_nc = "base",
+          border = "highlight_med",
+          comment = "muted",
+          link = "iris",
+          punctuation = "subtle",
+
+          error = "love",
+          hint = "iris",
+          info = "foam",
+          ok = "pine",
+          warn = "gold",
+
+          git_add = "foam",
+          git_change = "rose",
+          git_delete = "love",
+          git_dirty = "rose",
+          git_ignore = "muted",
+          git_merge = "iris",
+          git_rename = "pine",
+          git_stage = "iris",
+          git_text = "rose",
+          git_untracked = "subtle",
+
+          headings = {
+            h1 = "iris",
+            h2 = "foam",
+            h3 = "rose",
+            h4 = "gold",
+            h5 = "pine",
+            h6 = "foam",
           },
         },
+        palette = {
+          base = "#191724",
+          surface = "#1f1d2e",
+          overlay = "#26233c",
+          muted = "#6e6a86",
+          subtle = "#908caa",
+          text = "#e0def4",
+          love = "#eb6f92",
+          gold = "#f6c177",
+          rose = "#ebbcba",
+          pine = "#31748f",
+          foam = "#9ccfd8",
+          iris = "#c4a7e7",
+          hl_low = "#21202e",
+          hl_med = "#403d52",
+          hl_high = "#524f67",
+        },
+        highlight_groups = {
+          ColorColumn = { bg = "surface" },
+          CursorLine = { bg = "hl_low" },
+          CursorLineNr = { bold = true },
+          LineNr = { fg = "muted" },
+          Visual = { bg = "overlay", bold = true },
+          VisualNOS = { bg = "overlay", bold = true },
+          Search = { bg = "overlay", bold = true },
+          IncSearch = { bg = "love", fg = "base", bold = true },
+        },
       })
-      vim.cmd.colorscheme("catppuccin")
+      vim.cmd.colorscheme("rose-pine")
     end,
   },
 
-  -- Sleeker lualine with Catppuccin theme
+  -- Sleeker lualine with Rosé Pine theme
   {
     "nvim-lualine/lualine.nvim",
     event = "VeryLazy",
     opts = function()
       local icons = require("lazyvim.config").icons
-      -- Catppuccin Mocha color palette
+      -- Rosé Pine color palette
       local colors = {
-        rosewater = "#f5e0dc",
-        flamingo = "#f2cdcd",
-        pink = "#f5c2e7",
-        mauve = "#cba6f7",
-        red = "#f38ba8",
-        maroon = "#eba0ac",
-        peach = "#fab387",
-        yellow = "#f9e2af",
-        green = "#a6e3a1",
-        teal = "#94e2d5",
-        sky = "#89dceb",
-        sapphire = "#74c7ec",
-        blue = "#89b4fa",
-        lavender = "#b4befe",
-        text = "#cdd6f4",
-        subtext1 = "#bac2de",
-        subtext0 = "#a6adc8",
-        overlay2 = "#9399b2",
-        overlay1 = "#7f849c",
-        overlay0 = "#6c7086",
-        surface2 = "#585b70",
-        surface1 = "#45475a",
-        surface0 = "#313244",
-        base = "#1e1e2e",
-        mantle = "#181825",
-        crust = "#11111b",
+        base = "#191724",
+        surface = "#1f1d2e",
+        overlay = "#26233c",
+        muted = "#6e6a86",
+        subtle = "#908caa",
+        text = "#e0def4",
+        love = "#eb6f92",
+        gold = "#f6c177",
+        rose = "#ebbcba",
+        pine = "#31748f",
+        foam = "#9ccfd8",
+        iris = "#c4a7e7",
       }
 
       return {
         options = {
-          theme = "catppuccin",
+          theme = "rose-pine",
           globalstatus = true,
           disabled_filetypes = { statusline = { "dashboard", "lazy", "alpha" } },
           component_separators = { left = "│", right = "│" },
@@ -112,14 +121,14 @@ return {
               fmt = function(str)
                 return str:sub(1, 1)
               end,
-              color = { fg = colors.crust, bg = colors.blue, gui = "bold" },
+              color = { fg = colors.base, bg = colors.iris, gui = "bold" },
             },
           },
           lualine_b = {
             {
               "branch",
               icon = "",
-              color = { fg = colors.blue, gui = "bold" },
+              color = { fg = colors.iris, gui = "bold" },
             },
           },
           lualine_c = {
@@ -141,9 +150,9 @@ return {
                 removed = icons.git.removed,
               },
               diff_color = {
-                added = { fg = colors.green },
-                modified = { fg = colors.yellow },
-                removed = { fg = colors.red },
+                added = { fg = colors.foam },
+                modified = { fg = colors.gold },
+                removed = { fg = colors.love },
               },
               padding = { left = 1, right = 0 },
             },
@@ -156,10 +165,10 @@ return {
                 hint = icons.diagnostics.Hint,
               },
               diagnostics_color = {
-                error = { fg = colors.red },
-                warn = { fg = colors.yellow },
-                info = { fg = colors.sky },
-                hint = { fg = colors.teal },
+                error = { fg = colors.love },
+                warn = { fg = colors.gold },
+                info = { fg = colors.foam },
+                hint = { fg = colors.iris },
               },
               padding = { left = 1, right = 0 },
             },
@@ -172,7 +181,7 @@ return {
               cond = function()
                 return package.loaded["noice"] and require("noice").api.status.command.has()
               end,
-              color = { fg = colors.pink },
+              color = { fg = colors.rose },
             },
             {
               function()
@@ -181,12 +190,12 @@ return {
               cond = function()
                 return package.loaded["noice"] and require("noice").api.status.mode.has()
               end,
-              color = { fg = colors.pink },
+              color = { fg = colors.rose },
             },
             {
               "encoding",
               padding = { left = 1, right = 0 },
-              color = { fg = colors.green },
+              color = { fg = colors.foam },
             },
             {
               "fileformat",
@@ -196,7 +205,7 @@ return {
                 mac = "mac",
               },
               padding = { left = 1, right = 0 },
-              color = { fg = colors.sky },
+              color = { fg = colors.pine },
             },
           },
           lualine_y = {
@@ -204,18 +213,18 @@ return {
               "filetype",
               icon_only = true,
               padding = { left = 1, right = 0 },
-              color = { fg = colors.mauve },
+              color = { fg = colors.iris },
             },
             {
               "progress",
               padding = { left = 1, right = 1 },
-              color = { fg = colors.subtext0 },
+              color = { fg = colors.subtle },
             },
           },
           lualine_z = {
             {
               "location",
-              color = { fg = colors.crust, bg = colors.pink, gui = "bold" },
+              color = { fg = colors.base, bg = colors.rose, gui = "bold" },
             },
           },
         },
@@ -226,7 +235,7 @@ return {
             {
               "filename",
               path = 1,
-              color = { fg = colors.surface2 },
+              color = { fg = colors.overlay },
             },
           },
           lualine_x = {},
@@ -239,11 +248,11 @@ return {
     end,
   },
 
-  -- Configure LazyVim to use Catppuccin
+  -- Configure LazyVim to use Rosé Pine
   {
     "LazyVim/LazyVim",
     opts = {
-      colorscheme = "catppuccin",
+      colorscheme = "rose-pine",
     },
   },
 }
