@@ -37,10 +37,6 @@ return {
       },
     },
     config = function(_, opts)
-      -- Neovim 0.11+ uses vim.lsp.config for built-in LSP configurations
-      -- nvim-lspconfig is now primarily a collection of these configurations
-      local has_native_config, _ = pcall(require, "vim.lsp.config")
-
       require("mason").setup()
 
       -- Merge configurations from after/lsp/*.lua
@@ -68,22 +64,43 @@ return {
         -- Correctly get blink.cmp capabilities
         server_opts.capabilities = require("blink.cmp").get_lsp_capabilities(server_opts.capabilities)
 
-        -- Neovim 0.11+ native setup if available
-        if has_native_config and vim.lsp.config[server_name] then
-          vim.lsp.config[server_name] = server_opts
-          vim.lsp.enable(server_name)
-        elseif package.loaded["lspconfig"] and require("lspconfig")[server_name] then
-          -- Fallback for lspconfig 
-          require("lspconfig")[server_name].setup(server_opts)
-        else
-          -- Custom server setup (e.g. Astral's ty)
+        -- Use native vim.lsp.start for maximum control and 0.11 compliance
+        -- This avoids relying on lspconfig's internal setup logic
+        local filetypes = server_opts.filetypes
+        if not filetypes and server_name ~= "ty" then
+          -- Fallback to lspconfig defined filetypes if not provided
+          local ok, lspconfig_configs = pcall(require, "lspconfig.configs")
+          if ok and lspconfig_configs[server_name] then
+            filetypes = lspconfig_configs[server_name].default_config.filetypes
+          end
+        end
+
+        if filetypes then
           vim.api.nvim_create_autocmd("FileType", {
-            pattern = server_opts.filetypes or {},
+            pattern = filetypes,
             callback = function(ev)
-              vim.lsp.start(server_opts)
+              local config = vim.tbl_deep_extend("force", {
+                name = server_name,
+                root_dir = server_opts.root_dir,
+              }, server_opts)
+              
+              -- Use vim.fs.root for project root detection if available and root_dir is not set
+              if not config.root_dir and server_opts.root_patterns then
+                config.root_dir = vim.fs.root(ev.buf, server_opts.root_patterns)
+              end
+              
+              vim.lsp.start(config)
             end,
           })
+        else
+          -- If we can't determine filetypes, fallback to lspconfig for 0.11
+          -- nvim-lspconfig v3.0 (for nvim 0.11) uses vim.lsp.config internally
+          local ok, lspconfig = pcall(require, "lspconfig")
+          if ok and lspconfig[server_name] then
+            lspconfig[server_name].setup(server_opts)
+          end
         end
+        
         setup_done[server_name] = true
       end
 

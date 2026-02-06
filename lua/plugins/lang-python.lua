@@ -28,14 +28,16 @@ return {
               diagnosticMode = "workspace",
             },
           },
-          root_dir = vim.lsp.rpc.root_pattern(
-            "pyproject.toml",
-            "setup.py",
-            "setup.cfg",
-            "pyrightconfig.json",
-            "typings",
-            ".git"
-          ),
+          root_dir = function(fname)
+            return vim.fs.root(fname, {
+              "pyproject.toml",
+              "setup.py",
+              "setup.cfg",
+              "pyrightconfig.json",
+              "typings",
+              ".git",
+            })
+          end,
         },
       },
     },
@@ -159,15 +161,8 @@ return {
   {
     "neovim/nvim-lspconfig",
     opts = function(_, opts)
-      -- Enable Ty for all Python files in projects with uv
-      local lspconfig = package.loaded["lspconfig"]
-      if not lspconfig.ty.manager then
-        lspconfig.ty.setup({
-          on_attach = function(client, bufnr)
-            -- Optional: add custom keybinds or behavior
-          end,
-        })
-      end
+      -- The custom LSP setup for 'ty' is already handled by our main lsp.lua
+      -- which merges opts.servers and calls vim.lsp.start()
       return opts
     end,
   },
