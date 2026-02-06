@@ -37,7 +37,9 @@ return {
       },
     },
     config = function(_, opts)
-      local lspconfig = require("lspconfig")
+      -- Neovim 0.11+ uses vim.lsp.config for built-in LSP configurations
+      -- nvim-lspconfig is now primarily a collection of these configurations
+      local has_native_config, _ = pcall(require, "vim.lsp.config")
 
       require("mason").setup()
 
@@ -66,8 +68,13 @@ return {
         -- Correctly get blink.cmp capabilities
         server_opts.capabilities = require("blink.cmp").get_lsp_capabilities(server_opts.capabilities)
 
-        if lspconfig[server_name] then
-          lspconfig[server_name].setup(server_opts)
+        -- Neovim 0.11+ native setup if available
+        if has_native_config and vim.lsp.config[server_name] then
+          vim.lsp.config[server_name] = server_opts
+          vim.lsp.enable(server_name)
+        elseif package.loaded["lspconfig"] and require("lspconfig")[server_name] then
+          -- Fallback for lspconfig 
+          require("lspconfig")[server_name].setup(server_opts)
         else
           -- Custom server setup (e.g. Astral's ty)
           vim.api.nvim_create_autocmd("FileType", {
@@ -83,7 +90,7 @@ return {
       -- Filter servers for mason-lspconfig
       local ensure_installed = {}
       for server, server_opts in pairs(opts.servers) do
-        if server_opts.mason ~= false and lspconfig[server] then
+        if server_opts.mason ~= false then
           table.insert(ensure_installed, server)
         end
       end
