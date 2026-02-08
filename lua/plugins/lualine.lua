@@ -1,30 +1,39 @@
 return {
   "nvim-lualine/lualine.nvim",
+  dependencies = {
+    "catppuccin/nvim",
+  },
   event = "VeryLazy",
   opts = function()
-    -- Rosé Pine color palette
-    local colors = {
-      base = "#191724",
-      surface = "#1f1d2e",
-      overlay = "#26233c",
-      muted = "#6e6a86",
-      subtle = "#908caa",
-      text = "#e0def4",
-      love = "#eb6f92",
-      gold = "#f6c177",
-      rose = "#ebbcba",
-      pine = "#31748f",
-      foam = "#9ccfd8",
-      iris = "#c4a7e7",
-    }
+    -- Load the configured theme and make section backgrounds transparent
+    -- while moving the previous background color to the foreground.
+
+    -- For each mode and each section (a,b,c) set bg to 'NONE' and
+    -- set fg to the previous bg so the foreground becomes the old background.
+    local theme = require("lualine.themes.catppuccin")
+    local modes = { "normal", "insert", "visual", "replace", "command", "inactive" }
+    for _, mode in ipairs(modes) do
+      local m = theme[mode]
+      if type(m) == "table" then
+        for _, sec in ipairs({ "a", "b", "c" }) do
+          local s = m[sec]
+          if type(s) == "table" then
+            if s.bg then
+              s.fg = s.bg
+            end
+            s.bg = "NONE"
+          end
+        end
+      end
+    end
 
     return {
       options = {
-        theme = "rose-pine",
+        theme = theme,
         globalstatus = true,
         disabled_filetypes = { statusline = { "dashboard", "lazy", "alpha" } },
-        component_separators = { left = "│", right = "│" },
-        section_separators = { left = "", right = "" },
+        component_separators = { left = " ", right = " " },
+        section_separators = { left = " ", right = " " },
       },
       sections = {
         lualine_a = {
@@ -33,14 +42,12 @@ return {
             fmt = function(str)
               return str:sub(1, 1)
             end,
-            color = { fg = colors.base, bg = colors.iris, gui = "bold" },
           },
         },
         lualine_b = {
           {
             "branch",
             icon = "",
-            color = { fg = colors.iris, gui = "bold" },
           },
         },
         lualine_c = {
@@ -48,24 +55,19 @@ return {
             "filename",
             path = 1,
             symbols = {
-              modified = " ●",
-              readonly = " 🔒",
-              unnamed = "[No Name]",
+              modified = " ",
+              readonly = " ",
+              unnamed = "",
             },
-            color = { fg = colors.text },
           },
           {
             "diff",
             symbols = {
-              added = "+",
-              modified = "~",
-              removed = "-",
+              added = " ",
+              modified = " ",
+              removed = " ",
             },
-            diff_color = {
-              added = { fg = colors.foam },
-              modified = { fg = colors.gold },
-              removed = { fg = colors.love },
-            },
+            diff_color = {},
             padding = { left = 1, right = 0 },
           },
           {
@@ -76,12 +78,6 @@ return {
               info = " ",
               hint = " ",
             },
-            diagnostics_color = {
-              error = { fg = colors.love },
-              warn = { fg = colors.gold },
-              info = { fg = colors.foam },
-              hint = { fg = colors.iris },
-            },
             padding = { left = 1, right = 0 },
           },
         },
@@ -89,36 +85,31 @@ return {
           {
             "encoding",
             padding = { left = 1, right = 0 },
-            color = { fg = colors.foam },
           },
-          {
-            "fileformat",
-            symbols = {
-              unix = "unix",
-              dos = "dos",
-              mac = "mac",
-            },
-            padding = { left = 1, right = 0 },
-            color = { fg = colors.pine },
-          },
+          -- {
+          -- "fileformat",
+          -- symbols = {
+          --   unix = "unix",
+          --   dos = "dos",
+          --   mac = "mac",
+          -- },
+          -- padding = { left = 1, right = 0 },
+          --  },
         },
         lualine_y = {
           {
             "filetype",
             icon_only = true,
             padding = { left = 1, right = 0 },
-            color = { fg = colors.iris },
           },
           {
             "progress",
             padding = { left = 1, right = 1 },
-            color = { fg = colors.subtle },
           },
         },
         lualine_z = {
           {
             "location",
-            color = { fg = colors.base, bg = colors.rose, gui = "bold" },
           },
         },
       },
@@ -129,7 +120,7 @@ return {
           {
             "filename",
             path = 1,
-            color = { fg = colors.overlay },
+            color = {},
           },
         },
         lualine_x = {},
