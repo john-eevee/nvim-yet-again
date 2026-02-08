@@ -1,7 +1,7 @@
 return {
   "nvim-lualine/lualine.nvim",
   dependencies = {
-    "catppuccin/nvim",
+    "shaunsingh/nord.nvim",
   },
   event = "VeryLazy",
   opts = function()
@@ -10,7 +10,7 @@ return {
 
     -- For each mode and each section (a,b,c) set bg to 'NONE' and
     -- set fg to the previous bg so the foreground becomes the old background.
-    local theme = require("lualine.themes.catppuccin")
+    local theme = require('lualine.themes.nord')
     local modes = { "normal", "insert", "visual", "replace", "command", "inactive" }
     for _, mode in ipairs(modes) do
       local m = theme[mode]
