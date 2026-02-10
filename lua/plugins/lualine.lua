@@ -10,23 +10,23 @@ return {
 
     -- For each mode and each section (a,b,c) set bg to 'NONE' and
     -- set fg to the previous bg so the foreground becomes the old background.
-    local theme = require('lualine.themes.nord')
-    local modes = { "normal", "insert", "visual", "replace", "command", "inactive" }
-    for _, mode in ipairs(modes) do
-      local m = theme[mode]
-      if type(m) == "table" then
-        for _, sec in ipairs({ "a", "b", "c" }) do
-          local s = m[sec]
-          if type(s) == "table" then
-            if s.bg then
-              s.fg = s.bg
-            end
-            s.bg = "NONE"
-          end
-        end
-      end
-    end
-
+    local theme = require("lualine.themes.nord")
+    -- local modes = { "normal", "insert", "visual", "replace", "command", "inactive" }
+    -- for _, mode in ipairs(modes) do
+    --   local m = theme[mode]
+    --   if type(m) == "table" then
+    --     for _, sec in ipairs({ "a", "b", "c" }) do
+    --       local s = m[sec]
+    --       if type(s) == "table" then
+    --         if s.bg then
+    --           -- s.fg = s.bg
+    --         end
+    --         s.bg = "NONE"
+    --       end
+    --     end
+    --   end
+    -- end
+    --
     return {
       options = {
         theme = theme,

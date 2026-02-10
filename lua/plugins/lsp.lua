@@ -98,6 +98,7 @@ return {
           },
         },
         dartls = {
+          mason = false,
           cmd = { "dart", "language-server", "--protocol=lsp" },
           filetypes = { "dart" },
           init_options = {
@@ -197,6 +198,15 @@ return {
             },
           },
         },
+        graphql = {
+          mason = false,
+          cmd = { "graphql-lsp", "server", "-m", "stream" },
+          filetypes = { "graphql", "typescriptreact", "javascriptreact" },
+          root_dir = function(bufnr, on_dir)
+            local fname = vim.api.nvim_buf_get_name(bufnr)
+            on_dir(util.root_pattern(".graphqlrc*", ".graphql.config.*", "graphql.config.*")(fname))
+          end,
+        },
         gopls = {
           settings = {
             gopls = {
@@ -209,6 +219,59 @@ return {
               gofumpt = true,
             },
           },
+        },
+        golangci_lint_ls = {
+
+          mason = false,
+          cmd = { "golangci-lint-langserver" },
+          filetypes = { "go", "gomod" },
+          init_options = {
+            command = {
+              "golangci-lint",
+              "run",
+              -- disable all output formats that might be enabled by the users .golangci.yml
+              "--output.text.path=",
+              "--output.tab.path=",
+              "--output.html.path=",
+              "--output.checkstyle.path=",
+              "--output.junit-xml.path=",
+              "--output.teamcity.path=",
+              "--output.sarif.path=",
+              -- disable stats output
+              "--show-stats=false",
+              -- enable JSON output to be used by the language server
+              "--output.json.path=stdout",
+            },
+          },
+          root_markers = {
+            ".golangci.yml",
+            ".golangci.yaml",
+            ".golangci.toml",
+            ".golangci.json",
+            "go.work",
+            "go.mod",
+            ".git",
+          },
+          before_init = function(_, config)
+            -- Add support for golangci-lint V1 (in V2 `--out-format=json` was replaced by
+            -- `--output.json.path=stdout`).
+            local v1, v2 = false, false
+            -- PERF: `golangci-lint version` is very slow (about 0.1 sec) so let's find
+            -- version using `go version -m $(which golangci-lint) | grep '^\smod'`.
+            if vim.fn.executable("go") == 1 then
+              local exe = vim.fn.exepath("golangci-lint")
+              local version = vim.system({ "go", "version", "-m", exe }):wait()
+              v1 = string.match(version.stdout, "\tmod\tgithub.com/golangci/golangci%-lint\t")
+              v2 = string.match(version.stdout, "\tmod\tgithub.com/golangci/golangci%-lint/v2\t")
+            end
+            if not v1 and not v2 then
+              local version = vim.system({ "golangci-lint", "version" }):wait()
+              v1 = string.match(version.stdout, "version v?1%.")
+            end
+            if v1 then
+              config.init_options.command = { "golangci-lint", "run", "--out-format", "json" }
+            end
+          end,
         },
       },
     },
@@ -246,14 +309,15 @@ return {
               callback = function(ev)
                 local config = vim.tbl_deep_extend("force", {
                   name = server_name,
-                  root_dir = server_opts.root_dir or (server_opts.root_patterns and vim.fs.root(ev.buf, server_opts.root_patterns)),
+                  root_dir = server_opts.root_dir
+                    or (server_opts.root_patterns and vim.fs.root(ev.buf, server_opts.root_patterns)),
                 }, server_opts)
                 vim.lsp.start(config)
               end,
             })
           end
         end
-        
+
         setup_done[server_name] = true
       end
 
