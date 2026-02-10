@@ -82,14 +82,6 @@ return {
           },
         },
       })
-
-      -- Flutter-specific keymaps
-      local map = vim.keymap.set
-      map("n", "<leader>fa", "<cmd>FlutterRun<CR>", { noremap = true, desc = "Flutter: Run" })
-      map("n", "<leader>fq", "<cmd>FlutterQuit<CR>", { noremap = true, desc = "Flutter: Quit" })
-      map("n", "<leader>fr", "<cmd>FlutterReload<CR>", { noremap = true, desc = "Flutter: Reload" })
-      map("n", "<leader>fR", "<cmd>FlutterRestart<CR>", { noremap = true, desc = "Flutter: Restart" })
-      map("n", "<leader>fD", "<cmd>FlutterDevices<CR>", { noremap = true, desc = "Flutter: Devices" })
     end,
   },
 

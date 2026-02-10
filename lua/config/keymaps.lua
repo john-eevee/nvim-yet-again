@@ -7,12 +7,6 @@ local opts = { noremap = true, silent = true }
 local expr_opts = { noremap = true, silent = true, expr = true }
 
 -- ━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━
--- LEADER KEY SETUP
--- ━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━
--- Map <C-\> to act as the leader key
-vim.g.mapleader = "\\"
-
--- ━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━
 -- SMART TAB JUMPER
 -- ━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━
 -- Smart Tab Jumper is integrated with cmp in lua/plugins/cmp.lua
@@ -26,6 +20,11 @@ keymap("n", "<Up>", "k", opts)
 keymap("n", "<Down>", "j", opts)
 keymap("n", "<Left>", "h", opts)
 keymap("n", "<Right>", "l", opts)
+
+-- Colemak-DH home-row navigation remap
+-- Map Colemak-DH keys to Vim's hjkl so movement remains ergonomic on that layout.
+-- s => h (left), n => j (down), e => k (up), i => l (right)
+-- (Colemak-DH remaps removed) Using arrow keys for navigation per user request
 
 -- Center cursor on search results
 keymap("n", "n", "nzz", opts)

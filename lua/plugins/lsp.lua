@@ -115,16 +115,22 @@ return {
             },
           },
         },
-        elixirls = {
-          cmd = { "elixir-ls" },
-          settings = {
-            elixirLS = {
-              dialyzerEnabled = true,
-              fetchDeps = false,
-              enableTestLenses = true,
-              suggestSpecs = true,
-            },
-          },
+        -- elixirls = {
+        --   cmd = { "elixir-ls" },
+        --   settings = {
+        --     elixirLS = {
+        --       dialyzerEnabled = true,
+        --       fetchDeps = false,
+        --       enableTestLenses = true,
+        --       suggestSpecs = true,
+        --     },
+        --   },
+        -- },
+        expert = {
+          mason = false,
+          cmd = { "expert_linux_amd64", "--stdio" },
+          root_markers = { "mix.exs", ".git" },
+          filetypes = { "elixir", "eelixir", "heex" },
         },
         jdtls = {
           settings = {

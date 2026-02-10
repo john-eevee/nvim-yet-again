@@ -10,6 +10,7 @@
 -- 3. telescope.builtin - Built-in pickers (commands, help_tags, etc.)
 -- ━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━
 
+local theme = "ivy"
 return {
   {
     "nvim-telescope/telescope-fzf-native.nvim",
@@ -52,6 +53,7 @@ return {
         -- ━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━
         -- FILE PICKER CONFIGURATION
         -- ━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━
+        theme = theme,
         find_files = {
           -- Use ripgrep for finding files
           find_command = {
@@ -70,6 +72,7 @@ return {
           },
           hidden = true,
           no_ignore = false, -- Respect .gitignore
+          theme = theme,
         },
         -- ━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━
         -- LIVE GREP CONFIGURATION
@@ -79,6 +82,7 @@ return {
           additional_args = function()
             return { "--smart-case" }
           end,
+          theme = theme,
         },
       },
       extensions = {
@@ -87,6 +91,7 @@ return {
         -- ━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━
         registers = {
           show_empty = false,
+          theme = theme,
         },
         -- ━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━
         -- FZF EXTENSION - Fast fuzzy matching
@@ -96,6 +101,7 @@ return {
           override_generic_sorter = true,
           override_file_sorter = true,
           case_mode = "smart_case",
+          theme = theme,
         },
       },
     },
@@ -128,7 +134,7 @@ return {
         desc = "Telescope: Find Files",
       },
       {
-        "<leader>sg",
+        "<leader>fg",
         "<cmd>Telescope live_grep<CR>",
         desc = "Telescope: Live Grep",
       },
@@ -142,12 +148,12 @@ return {
       -- COMMANDS & COMMAND PALETTE
       -- ━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━
       {
-        "<leader>sc",
+        "<leader>fc",
         "<cmd>Telescope commands<CR>",
         desc = "Telescope: Commands",
       },
       {
-        "<leader>sp",
+        "<leader>fp",
         function()
           require("telescope.builtin").builtin()
         end,
@@ -158,7 +164,7 @@ return {
       -- HELP TAGS
       -- ━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━
       {
-        "<leader>sh",
+        "<leader>fh",
         "<cmd>Telescope help_tags<CR>",
         desc = "Telescope: Help Tags",
       },
@@ -167,7 +173,7 @@ return {
       -- KEYMAPS
       -- ━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━
       {
-        "<leader>sk",
+        "<leader>fk",
         "<cmd>Telescope keymaps<CR>",
         desc = "Telescope: Keymaps",
       },
@@ -176,7 +182,7 @@ return {
       -- SEARCH HISTORY
       -- ━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━
       {
-        "<leader>s/",
+        "<leader>f/",
         "<cmd>Telescope search_history<CR>",
         desc = "Telescope: Search History",
       },
@@ -185,7 +191,7 @@ return {
       -- COMMAND HISTORY
       -- ━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━
       {
-        "<leader>s:",
+        "<leader>f:",
         "<cmd>Telescope command_history<CR>",
         desc = "Telescope: Command History",
       },
@@ -211,6 +217,43 @@ return {
         "<leader>sl",
         "<cmd>Telescope loclist<CR>",
         desc = "Telescope: Loclist",
+      },
+      {
+        "<leader>gR",
+        "<cmd>Telescope lsp_references",
+        desc = "Telescope: LSP References",
+      },
+      {
+        "<leader>go",
+        "<cmd>Telescope lsp_document_symbols",
+        desc = "Telescope: LSP Document Symbols",
+      },
+      {
+        "<leader>gO",
+        "<cmd>Telescope lsp_workspace_symbols",
+        desc = "Telescope: LSP Worspace Symbols",
+      },
+      {
+        "<leader>gx",
+        "<cmd>Telescope diagnostics",
+        desc = "Telescope: Diagnostics",
+      },
+      {
+        "<leader>gI",
+        "<cmd>Telescope lsp_implementations",
+        desc = "Telescope: Implementations",
+      },
+
+      {
+        "<leader>gd",
+        "<cmd>Telescope definitions",
+        desc = "Telescope: Definitions",
+      },
+
+      {
+        "<leader>gT",
+        "<cmd>Telescope lsp_type_definitions",
+        desc = "Telescope: Type Definitions",
       },
     },
   },
