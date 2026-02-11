@@ -220,39 +220,39 @@ return {
       },
       {
         "<leader>gR",
-        "<cmd>Telescope lsp_references",
+        "<cmd>Telescope lsp_references<CR>",
         desc = "Telescope: LSP References",
       },
       {
         "<leader>go",
-        "<cmd>Telescope lsp_document_symbols",
+        "<cmd>Telescope lsp_document_symbols<CR>",
         desc = "Telescope: LSP Document Symbols",
       },
       {
         "<leader>gO",
-        "<cmd>Telescope lsp_workspace_symbols",
-        desc = "Telescope: LSP Worspace Symbols",
+        "<cmd>Telescope lsp_workspace_symbols<CR>",
+        desc = "Telescope: LSP Workspace Symbols",
       },
       {
         "<leader>gx",
-        "<cmd>Telescope diagnostics",
+        "<cmd>Telescope diagnostics<CR>",
         desc = "Telescope: Diagnostics",
       },
       {
         "<leader>gI",
-        "<cmd>Telescope lsp_implementations",
+        "<cmd>Telescope lsp_implementations<CR>",
         desc = "Telescope: Implementations",
       },
 
       {
         "<leader>gd",
-        "<cmd>Telescope definitions",
+        "<cmd>Telescope definitions<CR>",
         desc = "Telescope: Definitions",
       },
 
       {
         "<leader>gT",
-        "<cmd>Telescope lsp_type_definitions",
+        "<cmd>Telescope lsp_type_definitions<CR>",
         desc = "Telescope: Type Definitions",
       },
     },
