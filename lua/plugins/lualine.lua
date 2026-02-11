@@ -5,12 +5,56 @@ return {
   },
   event = "VeryLazy",
   opts = function()
+    local configuration = vim.fn["everforest#get_configuration"]()
+    local palette = vim.fn["everforest#get_palette"](configuration.background, configuration.colors_override)
+
+    if configuration.transparent_background == 2 then
+      palette.bg1 = palette.none
+    end
+
+    palette = {
+      normal = {
+        a = { bg = palette.statusline1[1], fg = palette.bg0[1], gui = "bold" },
+        b = { bg = palette.bg3[1], fg = palette.grey2[1] },
+        c = { bg = palette.bg1[1], fg = palette.grey1[1] },
+      },
+      insert = {
+        a = { bg = palette.statusline2[1], fg = palette.bg0[1], gui = "bold" },
+        b = { bg = palette.bg3[1], fg = palette.fg[1] },
+        c = { bg = palette.bg1[1], fg = palette.fg[1] },
+      },
+      visual = {
+        a = { bg = palette.statusline3[1], fg = palette.bg0[1], gui = "bold" },
+        b = { bg = palette.bg3[1], fg = palette.fg[1] },
+        c = { bg = palette.bg1[1], fg = palette.fg[1] },
+      },
+      replace = {
+        a = { bg = palette.orange[1], fg = palette.bg0[1], gui = "bold" },
+        b = { bg = palette.bg3[1], fg = palette.fg[1] },
+        c = { bg = palette.bg1[1], fg = palette.fg[1] },
+      },
+      command = {
+        a = { bg = palette.aqua[1], fg = palette.bg0[1], gui = "bold" },
+        b = { bg = palette.bg3[1], fg = palette.fg[1] },
+        c = { bg = palette.bg1[1], fg = palette.fg[1] },
+      },
+      terminal = {
+        a = { bg = palette.purple[1], fg = palette.bg0[1], gui = "bold" },
+        b = { bg = palette.bg3[1], fg = palette.fg[1] },
+        c = { bg = palette.bg1[1], fg = palette.fg[1] },
+      },
+      inactive = {
+        a = { bg = palette.bg1[1], fg = palette.grey1[1] },
+        b = { bg = palette.bg1[1], fg = palette.grey1[1] },
+        c = { bg = palette.bg1[1], fg = palette.grey1[1] },
+      },
+    }
     -- Load the configured theme and make section backgrounds transparent
     -- while moving the previous background color to the foreground.
 
     -- For each mode and each section (a,b,c) set bg to 'NONE' and
     -- set fg to the previous bg so the foreground becomes the old background.
-    local theme = require("lualine.themes.nord")
+    local theme = palette
     -- local modes = { "normal", "insert", "visual", "replace", "command", "inactive" }
     -- for _, mode in ipairs(modes) do
     --   local m = theme[mode]

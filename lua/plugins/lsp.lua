@@ -19,273 +19,23 @@ return {
     opts = {
       -- Default servers to install
       servers = {
-        lua_ls = {
-          settings = {
-            Lua = {
-              diagnostics = {
-                globals = { "vim" },
-              },
-              workspace = {
-                checkThirdParty = false,
-              },
-              telemetry = {
-                enable = false,
-              },
-            },
-          },
-        },
-        ty = {
-          cmd = { "ty", "server" },
-          filetypes = { "python" },
-          root_dir = function(fname)
-            return vim.fs.root(fname, {
-              "pyproject.toml",
-              "setup.py",
-              "setup.cfg",
-              "pyrightconfig.json",
-              "typings",
-              ".git",
-            })
-          end,
-          settings = {
-            ty = {
-              typeCheckingMode = "standard",
-              diagnosticMode = "workspace",
-            },
-          },
-        },
-        rust_analyzer = {
-          settings = {
-            ["rust-analyzer"] = {
-              assist = {
-                expressionFillDefault = "todo",
-              },
-              cargo = {
-                allFeatures = true,
-                loadOutDirsFromCheck = true,
-                runBuildScripts = true,
-              },
-              checkOnSave = {
-                allFeatures = true,
-                command = "clippy",
-                extraArgs = { "--all-targets", "--all-features" },
-              },
-              procMacro = {
-                enable = true,
-              },
-              runnables = {
-                command = "cargo",
-              },
-              inlayHints = {
-                enable = true,
-                chainingHints = true,
-                closureReturnTypeHints = "with_block",
-                closingBraceHints = true,
-                lifetimeElisionHints = {
-                  enable = "skip_trivial",
-                  useParameterNames = true,
-                },
-                maxLength = nil,
-                reborrowHints = "mutable",
-                renderColons = true,
-                typeHints = {
-                  enable = true,
-                  hideClosureInitialization = false,
-                  hideNamedConstructor = false,
-                },
-              },
-            },
-          },
-        },
-        dartls = {
-          mason = false,
-          cmd = { "dart", "language-server", "--protocol=lsp" },
-          filetypes = { "dart" },
-          init_options = {
-            closingLabels = true,
-            flutterOutline = true,
-            outline = true,
-          },
-          settings = {
-            dart = {
-              completeFunctionCalls = true,
-              enableSnippets = true,
-              enableSdkFormatter = true,
-              lineLength = 80,
-            },
-          },
-        },
-        -- elixirls = {
-        --   cmd = { "elixir-ls" },
-        --   settings = {
-        --     elixirLS = {
-        --       dialyzerEnabled = true,
-        --       fetchDeps = false,
-        --       enableTestLenses = true,
-        --       suggestSpecs = true,
-        --     },
-        --   },
-        -- },
         expert = {
           mason = false,
           cmd = { "expert_linux_amd64", "--stdio" },
           root_markers = { "mix.exs", ".git" },
           filetypes = { "elixir", "eelixir", "heex" },
         },
-        jdtls = {
-          settings = {
-            java = {
-              project = {
-                referencedLibraries = {
-                  "$JAVA_HOME/lib/**/*.jar",
-                },
-              },
-              eclipse = {
-                downloadSources = true,
-              },
-              maven = {
-                downloadSources = true,
-              },
-              implementation = {
-                searchAllProjectsScope = true,
-              },
-              referencesCodeLens = {
-                enabled = true,
-              },
-              signatureHelp = {
-                enabled = true,
-                description = {
-                  enabled = true,
-                },
-              },
-              contentProvider = "fernflower",
-              autobuild = {
-                enabled = true,
-              },
-              saveActions = {
-                organizeImports = true,
-              },
-              sources = {
-                organizeImports = {
-                  starThreshold = 9999,
-                  staticStarThreshold = 9999,
-                },
-              },
-              codeGeneration = {
-                toString = {
-                  template = "${object}.toString()",
-                },
-                hashCodeEquals = {
-                  useInstanceof = true,
-                  useJava7Objects = true,
-                },
-                useBlocks = true,
-              },
-              configuration = {
-                runtimes = {
-                  {
-                    name = "JavaSE-11",
-                    path = os.getenv("JAVA_HOME") or "/usr/lib/jvm/java-11",
-                    default = true,
-                  },
-                  {
-                    name = "JavaSE-17",
-                    path = os.getenv("JAVA_HOME_17") or "/usr/lib/jvm/java-17",
-                  },
-                },
-              },
-              format = {
-                enabled = true,
-                settings = {
-                  url = os.getenv("JAVA_FORMAT_SETTINGS_URL"),
-                  profile = os.getenv("JAVA_FORMAT_SETTINGS_PROFILE"),
-                },
-              },
-            },
-          },
-        },
-        graphql = {
+        dartls = {
           mason = false,
-          cmd = { "graphql-lsp", "server", "-m", "stream" },
-          filetypes = { "graphql", "typescriptreact", "javascriptreact" },
-          root_dir = function(bufnr, on_dir)
-            local fname = vim.api.nvim_buf_get_name(bufnr)
-            on_dir(util.root_pattern(".graphqlrc*", ".graphql.config.*", "graphql.config.*")(fname))
-          end,
         },
-        gopls = {
-          settings = {
-            gopls = {
-              usePlaceholders = true,
-              analyses = {
-                unusedparams = true,
-                shadow = true,
-              },
-              staticcheck = true,
-              gofumpt = true,
-            },
-          },
-        },
-        golangci_lint_ls = {
-
-          mason = false,
-          cmd = { "golangci-lint-langserver" },
-          filetypes = { "go", "gomod" },
-          init_options = {
-            command = {
-              "golangci-lint",
-              "run",
-              -- disable all output formats that might be enabled by the users .golangci.yml
-              "--output.text.path=",
-              "--output.tab.path=",
-              "--output.html.path=",
-              "--output.checkstyle.path=",
-              "--output.junit-xml.path=",
-              "--output.teamcity.path=",
-              "--output.sarif.path=",
-              -- disable stats output
-              "--show-stats=false",
-              -- enable JSON output to be used by the language server
-              "--output.json.path=stdout",
-            },
-          },
-          root_markers = {
-            ".golangci.yml",
-            ".golangci.yaml",
-            ".golangci.toml",
-            ".golangci.json",
-            "go.work",
-            "go.mod",
-            ".git",
-          },
-          before_init = function(_, config)
-            -- Add support for golangci-lint V1 (in V2 `--out-format=json` was replaced by
-            -- `--output.json.path=stdout`).
-            local v1, v2 = false, false
-            -- PERF: `golangci-lint version` is very slow (about 0.1 sec) so let's find
-            -- version using `go version -m $(which golangci-lint) | grep '^\smod'`.
-            if vim.fn.executable("go") == 1 then
-              local exe = vim.fn.exepath("golangci-lint")
-              local version = vim.system({ "go", "version", "-m", exe }):wait()
-              v1 = string.match(version.stdout, "\tmod\tgithub.com/golangci/golangci%-lint\t")
-              v2 = string.match(version.stdout, "\tmod\tgithub.com/golangci/golangci%-lint/v2\t")
-            end
-            if not v1 and not v2 then
-              local version = vim.system({ "golangci-lint", "version" }):wait()
-              v1 = string.match(version.stdout, "version v?1%.")
-            end
-            if v1 then
-              config.init_options.command = { "golangci-lint", "run", "--out-format", "json" }
-            end
-          end,
-        },
+        html = {},
+        jdtls = {},
+        jsonls = {},
       },
     },
     config = function(_, opts)
       require("mason").setup()
-
       local setup_done = {}
-
       local function setup(server_name)
         if setup_done[server_name] then
           return
@@ -293,37 +43,11 @@ return {
         local server_opts = opts.servers[server_name] or {}
         -- Correctly get blink.cmp capabilities
         server_opts.capabilities = require("blink.cmp").get_lsp_capabilities(server_opts.capabilities)
+        local lspconfig_configs = require("lspconfig.configs")[server_name] or {}
+        server_opts = vim.tbl_deep_extend("force", lspconfig_configs, server_opts)
 
-        -- Use native vim.lsp APIs for Neovim 0.11
-        local has_native, _ = pcall(require, "vim.lsp.config")
-        if has_native then
-          vim.lsp.config[server_name] = server_opts
-          pcall(vim.lsp.enable, server_name)
-        else
-          -- Fallback for older versions or very custom servers
-          local filetypes = server_opts.filetypes
-          if not filetypes then
-            local ok, configs = pcall(require, "lspconfig.configs")
-            if ok and configs[server_name] then
-              filetypes = configs[server_name].default_config.filetypes
-            end
-          end
-
-          if filetypes then
-            vim.api.nvim_create_autocmd("FileType", {
-              pattern = filetypes,
-              callback = function(ev)
-                local config = vim.tbl_deep_extend("force", {
-                  name = server_name,
-                  root_dir = server_opts.root_dir
-                    or (server_opts.root_patterns and vim.fs.root(ev.buf, server_opts.root_patterns)),
-                }, server_opts)
-                vim.lsp.start(config)
-              end,
-            })
-          end
-        end
-
+        vim.lsp.config(server_name, server_opts)
+        vim.lsp.enable(server_name)
         setup_done[server_name] = true
       end
 

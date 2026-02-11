@@ -84,3 +84,5 @@ vim.g.format_on_save = false -- Disable format on save by default (enable per pr
 -- ━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━
 vim.g.mapleader = " "
 vim.g.maplocalleader = ","
+
+vim.hl.priorities.treesitter = 210
