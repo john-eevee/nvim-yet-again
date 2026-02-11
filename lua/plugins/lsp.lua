@@ -93,14 +93,47 @@ return {
             vim.keymap.set(mode, l, r, { buffer = ev.buf, desc = desc })
           end
 
-          map("n", "gD", vim.lsp.buf.declaration, "LSP: Goto Declaration")
-          map("n", "gd", vim.lsp.buf.definition, "LSP: Goto Definition")
+          -- prefer telescope pickers when available, fall back to native LSP
+          local has_ts, ts = pcall(require, 'telescope.builtin')
+
+          map("n", "gD", function()
+            if has_ts and ts.lsp_type_definitions then
+              ts.lsp_type_definitions()
+            else
+              vim.lsp.buf.declaration()
+            end
+          end, "LSP: Goto Declaration")
+
+          map("n", "gd", function()
+            if has_ts and ts.lsp_definitions then
+              ts.lsp_definitions()
+            else
+              vim.lsp.buf.definition()
+            end
+          end, "LSP: Goto Definition")
+
           map("n", "K", vim.lsp.buf.hover, "LSP: Hover")
-          map("n", "gi", vim.lsp.buf.implementation, "LSP: Goto Implementation")
+
+          map("n", "gi", function()
+            if has_ts and ts.lsp_implementations then
+              ts.lsp_implementations()
+            else
+              vim.lsp.buf.implementation()
+            end
+          end, "LSP: Goto Implementation")
+
           map("n", "<C-k>", vim.lsp.buf.signature_help, "LSP: Signature Help")
-          map("n", "<leader>rn", vim.lsp.buf.rename, "LSP: Rename")
+          map("n", "<leader>cr", vim.lsp.buf.rename, "LSP: Rename")
           map({ "n", "v" }, "<leader>ca", vim.lsp.buf.code_action, "LSP: Code Action")
-          map("n", "gr", vim.lsp.buf.references, "LSP: References")
+
+          map("n", "gr", function()
+            if has_ts and ts.lsp_references then
+              ts.lsp_references()
+            else
+              vim.lsp.buf.references()
+            end
+          end, "LSP: References")
+
           map("n", "<leader>f", function()
             vim.lsp.buf.format({ async = true })
           end, "LSP: Format")
