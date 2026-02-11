@@ -93,33 +93,20 @@ return {
             vim.keymap.set(mode, l, r, { buffer = ev.buf, desc = desc })
           end
 
-          -- prefer telescope pickers when available, fall back to native LSP
-          local has_ts, ts = pcall(require, 'telescope.builtin')
+          local ts = require('telescope.builtin')
 
           map("n", "gD", function()
-            if has_ts and ts.lsp_type_definitions then
-              ts.lsp_type_definitions()
-            else
-              vim.lsp.buf.declaration()
-            end
+            ts.lsp_type_definitions()
           end, "LSP: Goto Declaration")
 
           map("n", "gd", function()
-            if has_ts and ts.lsp_definitions then
-              ts.lsp_definitions()
-            else
-              vim.lsp.buf.definition()
-            end
+            ts.lsp_definitions()
           end, "LSP: Goto Definition")
 
           map("n", "K", vim.lsp.buf.hover, "LSP: Hover")
 
           map("n", "gi", function()
-            if has_ts and ts.lsp_implementations then
-              ts.lsp_implementations()
-            else
-              vim.lsp.buf.implementation()
-            end
+            ts.lsp_implementations()
           end, "LSP: Goto Implementation")
 
           map("n", "<C-k>", vim.lsp.buf.signature_help, "LSP: Signature Help")
@@ -127,11 +114,7 @@ return {
           map({ "n", "v" }, "<leader>ca", vim.lsp.buf.code_action, "LSP: Code Action")
 
           map("n", "gr", function()
-            if has_ts and ts.lsp_references then
-              ts.lsp_references()
-            else
-              vim.lsp.buf.references()
-            end
+            ts.lsp_references()
           end, "LSP: References")
 
           map("n", "<leader>f", function()
