@@ -6,8 +6,8 @@ return {
     spec = {
       { "<leader>b", group = "Buffer" },
       { "<leader>c", group = "Code" },
-      { "<leader>f", group = "File" },
-      { "<leader>g", group = "Git" },
+      { "<leader>f", group = "Finder" },
+      { "<leader>g", group = "Go To" },
       { "<leader>s", group = "Search" },
       { "<leader>u", group = "UI" },
       { "<leader>w", group = "Window" },

@@ -35,6 +35,27 @@ return {
     },
     config = function(_, opts)
       require("mason").setup()
+      
+      -- Setup LSP error logging
+      local log_file = vim.fn.expand('~/.config/nvim/lsp-errors.log')
+      local function log_lsp_error(level_name, message, client_id)
+        local timestamp = os.date('%Y-%m-%d %H:%M:%S')
+        local handle = io.open(log_file, 'a')
+        if handle then
+          handle:write(string.format('[%s] [%s] [Client %d] %s\n', timestamp, level_name, client_id or 0, message))
+          handle:close()
+        end
+      end
+      
+      -- Override window/showMessage handler to log errors instead of showing them
+      vim.lsp.handlers['window/showMessage'] = function(err, method, params, client_id)
+        if params then
+          local level_names = { 'ERROR', 'WARNING', 'INFO', 'LOG' }
+          local level_name = level_names[params.type] or 'UNKNOWN'
+          log_lsp_error(level_name, params.message, client_id)
+        end
+      end
+      
       local setup_done = {}
       local function setup(server_name)
         if setup_done[server_name] then
