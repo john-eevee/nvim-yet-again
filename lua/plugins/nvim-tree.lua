@@ -50,7 +50,7 @@ return {
         },
         view = {
           width = 30,
-          side = 'left',
+          side = 'right',
           preserve_window_proportions = false,
           number = false,
           relativenumber = false,
