@@ -16,7 +16,7 @@ vim.opt.sidescrolloff = 16 -- Horizontal scroll offset
 vim.opt.ignorecase = true -- Case insensitive search
 vim.opt.smartcase = true -- Case sensitive if uppercase present
 vim.opt.mouse = "a" -- Enable mouse support
-
+vim.opt.clipboard = "unnamedplus"
 -- ━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━
 -- PERFORMANCE OPTIMIZATION
 -- ━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━

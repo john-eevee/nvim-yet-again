@@ -102,6 +102,7 @@ keymap("n", "<leader>fQ", "<cmd>quit!<CR>", { desc = "File: Quit without save" }
 -- FILE EXPLORER
 -- ━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━
 -- Note: <leader>- is handled by oil.nvim in lazy.lua
+-- Note: <M-1> is handled by nvim-tree.lua in lua/plugins/nvim-tree.lua
 
 -- ━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━
 -- SEARCH & REPLACE (Space + s)

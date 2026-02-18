@@ -11,6 +11,7 @@
 -- ━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━
 
 local theme = "ivy"
+local buf_toggle = 1
 return {
   {
     "nvim-telescope/telescope-fzf-native.nvim",
@@ -142,6 +143,19 @@ return {
         "<leader>fb",
         "<cmd>Telescope buffers<CR>",
         desc = "Telescope: Buffers",
+      },
+      {
+        "<leader>bb",
+        function()
+          if buf_toggle == 1 then
+            vim.cmd("bprev")
+            buf_toggle = 0
+          else
+            vim.cmd("bnext")
+            buf_toggle = 1
+          end
+        end,
+        desc = "Buffer: Cycle",
       },
 
       -- ━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━
