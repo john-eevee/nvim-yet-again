@@ -21,7 +21,7 @@ vim.opt.clipboard = "unnamedplus"
 -- PERFORMANCE OPTIMIZATION
 -- ━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━
 vim.opt.updatetime = 250 -- Faster response for plugins
-vim.opt.timeoutlen = 300 -- Leader key timeout
+vim.opt.timeoutlen = 1000 -- Leader key timeout (increased for more time to type keybinds)
 vim.opt.ttimeoutlen = 50 -- Terminal codes timeout
 vim.opt.synmaxcol = 200 -- Limit syntax highlighting span
 vim.opt.termguicolors = true -- True color support
@@ -30,8 +30,8 @@ vim.opt.termguicolors = true -- True color support
 -- DISPLAY & UI
 -- ━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━
 vim.opt.showmode = false -- Don't show mode (shown in statusline)
-vim.opt.showcmd = false -- Don't show partial commands
-vim.opt.cmdheight = 0 -- Hide command bar when inactive
+vim.opt.showcmd = true -- Show partial commands being typed
+vim.opt.cmdheight = 1 -- Show command bar to display keybinds
 vim.opt.pumheight = 8 -- Completion menu height
 vim.opt.pumwidth = 20 -- Completion menu width
 vim.opt.signcolumn = "yes:1" -- Always show sign column (gutter)
