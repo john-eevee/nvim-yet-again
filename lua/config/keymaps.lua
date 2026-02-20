@@ -163,6 +163,12 @@ keymap("n", "<leader>ud", function()
 end, { desc = "UI: Toggle diagnostics" })
 
 -- ━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━
+-- UNSET KEYBINDINGS (to avoid tmux clashes)
+-- ━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━
+-- Unset Ctrl+b to avoid clashing with tmux prefix
+vim.keymap.del("n", "<C-b>")
+
+-- ━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━
 -- COMMAND ABBREVIATIONS
 -- ━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━
 -- Save shortcuts
