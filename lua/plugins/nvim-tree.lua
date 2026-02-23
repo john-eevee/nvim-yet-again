@@ -49,19 +49,19 @@ return {
           },
         },
         view = {
-          width = 30,
+          width = 50,
           side = "right",
           preserve_window_proportions = false,
           number = false,
           relativenumber = false,
           signcolumn = "yes",
           float = {
-            enable = false,
+            enable = true,
             quit_on_focus_loss = true,
             open_win_config = {
               relative = "editor",
               border = "rounded",
-              width = 30,
+              width = 50,
               height = 30,
               row = 1,
               col = 1,
@@ -99,10 +99,10 @@ return {
           group_empty = false,
           highlight_git = "none",
           full_name = false,
-          root_folder_label = false,
+          root_folder_label = true,
           indent_width = 2,
           indent_markers = {
-            enable = false,
+            enable = true,
             icons = {
               corner = "└",
               edge = "│",
@@ -127,8 +127,8 @@ return {
               symlink = "",
               bookmark = "󰆤",
               folder = {
-                arrow_closed = "",
-                arrow_open = "",
+                arrow_closed = "",
+                arrow_open = "",
                 default = "",
                 open = "",
                 empty = "",
@@ -147,7 +147,17 @@ return {
               },
             },
           },
-          special_files = { "Cargo.toml", "Makefile", "README.md", "readme.md" },
+          special_files = {
+            "Cargo.toml",
+            "Makefile",
+            "README.md",
+            "readme.md",
+            "pom.xml",
+            "*.gradle",
+            "*.gradle.kts",
+            "mix.exs",
+            "pubspec.*",
+          },
           symlink_destination = true,
         },
         on_attach = function(bufnr)
@@ -158,7 +168,7 @@ return {
           end
 
           -- Default mappings
-          api.config.mappings.default_on_attach(bufnr)
+          api.map.on_attach.default(bufnr)
 
           -- Custom keymaps can be added here if needed
         end,
