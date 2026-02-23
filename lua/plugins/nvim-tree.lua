@@ -99,7 +99,10 @@ return {
           group_empty = false,
           highlight_git = "none",
           full_name = false,
-          root_folder_label = true,
+          root_folder_label = function(path)
+            local folder_name = vim.fn.fnamemodify(path, ":t")
+            return " " .. folder_name .. " "
+          end,
           indent_width = 2,
           indent_markers = {
             enable = true,
