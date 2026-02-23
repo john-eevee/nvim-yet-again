@@ -31,6 +31,8 @@ return {
       appearance = {
         use_nvim_cmp_as_default = true,
         nerd_font_variant = "mono",
+        border = "rounded",
+        winhighlight = "Normal:Normal,FloatBorder:FloatBorder,CursorLine:CursorLine,Search:None",
       },
 
       snippets = {
