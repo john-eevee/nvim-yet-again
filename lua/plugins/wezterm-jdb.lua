@@ -1,6 +1,6 @@
 return {
   "wezterm-jdb",
-  dir = vim.fn.stdpath("config") .. "/lua/local-plugins/wezterm-jdb",
+  dir = vim.fn.stdpath("config") .. "/lua/plugins",
   ft = "java",
   config = function()
     local function send_breakpoint_to_jdb()

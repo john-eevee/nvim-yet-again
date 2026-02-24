@@ -31,13 +31,24 @@ return {
       appearance = {
         use_nvim_cmp_as_default = true,
         nerd_font_variant = "mono",
-        border = "rounded",
-        winhighlight = "Normal:Normal,FloatBorder:FloatBorder,CursorLine:CursorLine,Search:None",
       },
 
       completion = {
+        trigger = {
+          show_on_trigger_character = true,
+        },
+        documentation = {
+          auto_show = true,
+          auto_show_delay_ms = 1000,
+        },
         menu = {
           max_height = 10,
+          draw = {
+            columns = {
+              { "label", "label_description", gap = 1 },
+              { "kind" },
+            },
+          },
         },
       },
 
@@ -46,7 +57,7 @@ return {
       },
 
       sources = {
-        default = { "lsp", "path", "snippets", "buffer" },
+        default = { "lsp", "buffer", "snippets", "path" },
       },
 
       signature = { enabled = true },
