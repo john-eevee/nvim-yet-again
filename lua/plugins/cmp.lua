@@ -35,6 +35,12 @@ return {
         winhighlight = "Normal:Normal,FloatBorder:FloatBorder,CursorLine:CursorLine,Search:None",
       },
 
+      completion = {
+        menu = {
+          max_height = 10,
+        },
+      },
+
       snippets = {
         preset = "luasnip",
       },

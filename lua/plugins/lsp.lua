@@ -35,6 +35,11 @@ return {
     },
     config = function(_, opts)
       require("mason").setup()
+
+      -- Set hover border
+      vim.lsp.handlers["textDocument/hover"] = vim.lsp.with(vim.lsp.handlers.hover, {
+        border = "rounded",
+      })
       
       -- Setup LSP error logging
       local log_file = vim.fn.expand('~/.config/nvim/lsp-errors.log')
