@@ -37,30 +37,17 @@ return {
       require("mason").setup()
 
       -- Set hover border
-      vim.lsp.handlers["textDocument/hover"] = vim.lsp.with(vim.lsp.handlers.hover, {
-        border = "rounded",
-      })
-      
       -- Setup LSP error logging
-      local log_file = vim.fn.expand('~/.config/nvim/lsp-errors.log')
+      local log_file = vim.fn.expand("~/.config/nvim/lsp-errors.log")
       local function log_lsp_error(level_name, message, client_id)
-        local timestamp = os.date('%Y-%m-%d %H:%M:%S')
-        local handle = io.open(log_file, 'a')
+        local timestamp = os.date("%Y-%m-%d %H:%M:%S")
+        local handle = io.open(log_file, "a")
         if handle then
-          handle:write(string.format('[%s] [%s] [Client %d] %s\n', timestamp, level_name, client_id or 0, message))
+          handle:write(string.format("[%s] [%s] [Client %d] %s\n", timestamp, level_name, client_id or 0, message))
           handle:close()
         end
       end
-      
-      -- Override window/showMessage handler to log errors instead of showing them
-      vim.lsp.handlers['window/showMessage'] = function(err, method, params, client_id)
-        if params then
-          local level_names = { 'ERROR', 'WARNING', 'INFO', 'LOG' }
-          local level_name = level_names[params.type] or 'UNKNOWN'
-          log_lsp_error(level_name, params.message, client_id)
-        end
-      end
-      
+
       local setup_done = {}
       local function setup(server_name)
         if setup_done[server_name] then
@@ -101,13 +88,11 @@ return {
 
       -- Global diagnostics config
       vim.diagnostic.config({
-        virtual_text = {
-          spacing = 4,
-          prefix = "●",
-        },
+        border = "rounded",
+        virtual_text = false,
         signs = true,
         underline = true,
-        update_in_insert = false,
+        update_in_insert = true,
         severity_sort = true,
       })
 
@@ -119,7 +104,7 @@ return {
             vim.keymap.set(mode, l, r, { buffer = ev.buf, desc = desc })
           end
 
-          local ts = require('telescope.builtin')
+          local ts = require("telescope.builtin")
 
           map("n", "gD", function()
             ts.lsp_type_definitions()
@@ -129,15 +114,21 @@ return {
             ts.lsp_definitions()
           end, "LSP: Goto Definition")
 
-          map("n", "K", vim.lsp.buf.hover, "LSP: Hover")
+          map("n", "K", function()
+            vim.lsp.buf.hover({ border = "rounded" })
+          end, "LSP: Hover")
 
           map("n", "gi", function()
             ts.lsp_implementations()
           end, "LSP: Goto Implementation")
 
-          map("n", "<C-k>", vim.lsp.buf.signature_help, "LSP: Signature Help")
+          map("n", "<C-k>", function()
+            vim.lsp.buf.signature_help({ border = "rounded" })
+          end, "LSP: Signature Help")
           map("n", "<leader>cr", vim.lsp.buf.rename, "LSP: Rename")
-          map({ "n", "v" }, "<leader>ca", vim.lsp.buf.code_action, "LSP: Code Action")
+          map({ "n", "v" }, "<leader>ca", function()
+            vim.lsp.buf.code_action({ border = "rounded" })
+          end, "LSP: Code Action")
 
           map("n", "gr", function()
             ts.lsp_references()
