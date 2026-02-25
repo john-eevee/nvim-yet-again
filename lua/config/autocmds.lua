@@ -40,7 +40,7 @@ vim.diagnostic.config({
       -- Filter out deprecation warnings from LSP
       if diagnostic.severity == vim.diagnostic.severity.WARN and
          (diagnostic.message:lower():match("deprecat") or 
-          diagnostic.message:lower():match("deprecated")) then
+           diagnostic.message:lower():match("deprecated")) then
         return "" -- Return empty to hide deprecation warnings
       end
       return string.format(" %s", diagnostic.message)
@@ -61,3 +61,13 @@ vim.diagnostic.open_float = function(opts)
   if #filtered_diags == 0 then return end
   return orig_open_float(opts)
 end
+
+-- ━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━
+-- AUTO RELOAD FILES ON DISK CHANGE
+-- ━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━
+vim.opt.autoread = true
+
+vim.api.nvim_create_autocmd({ "BufEnter", "CursorHold", "CursorHoldI", "FocusGained" }, {
+  pattern = "*",
+  command = "if mode() != 'c' | checktime | endif",
+})
