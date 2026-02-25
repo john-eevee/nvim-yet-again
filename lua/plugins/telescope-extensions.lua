@@ -78,6 +78,31 @@ return {
           theme = theme,
         },
         -- ━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━
+        -- BUFFERS CONFIGURATION
+        -- ━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━
+        buffers = {
+          theme = theme,
+          initial_mode = "normal",
+          mappings = {
+            i = {
+              ["<c-d>"] = require("telescope.actions").delete_buffer,
+            },
+          },
+          sort_lastused = true,
+          show_all_buffers = true,
+          ignore_current_buffer = true,
+          previewer = false,
+          layout_strategy = "vertical",
+          format_buffer_name = function(buffer_path, bufnr)
+            local filename = vim.fn.fnamemodify(buffer_path, ":t")
+            local dirname = vim.fn.fnamemodify(buffer_path, ":h")
+            if dirname == "." then
+              return filename
+            end
+            return string.format("%s (%s)", filename, dirname)
+          end,
+        },
+        -- ━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━
         -- LIVE GREP CONFIGURATION
         -- ━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━
         live_grep = {
