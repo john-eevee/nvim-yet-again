@@ -19,6 +19,7 @@ return {
         python = { "isort", "black" },
         javascript = { { "prettierd", "prettier" } },
         typescript = { { "prettierd", "prettier" } },
+        dart = { "dart_format" },
       },
       format_on_save = {
         timeout_ms = 500,
