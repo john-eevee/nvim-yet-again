@@ -88,7 +88,6 @@ return {
 
       -- Global diagnostics config
       vim.diagnostic.config({
-        border = "rounded",
         virtual_text = false,
         signs = true,
         underline = true,
@@ -115,7 +114,7 @@ return {
           end, "LSP: Goto Definition")
 
           map("n", "K", function()
-            vim.lsp.buf.hover({ border = "rounded" })
+            vim.lsp.buf.hover({ border = "single" })
           end, "LSP: Hover")
 
           map("n", "gi", function()
@@ -123,11 +122,11 @@ return {
           end, "LSP: Goto Implementation")
 
           map("n", "<C-k>", function()
-            vim.lsp.buf.signature_help({ border = "rounded" })
+            vim.lsp.buf.signature_help({ border = "single" })
           end, "LSP: Signature Help")
           map("n", "<leader>cr", vim.lsp.buf.rename, "LSP: Rename")
           map({ "n", "v" }, "<leader>ca", function()
-            vim.lsp.buf.code_action({ border = "rounded" })
+            vim.lsp.buf.code_action({ border = "single" })
           end, "LSP: Code Action")
 
           map("n", "gr", function()

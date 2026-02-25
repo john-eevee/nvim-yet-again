@@ -54,7 +54,9 @@ return {
         -- ━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━
         -- FILE PICKER CONFIGURATION
         -- ━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━
-        theme = theme,
+        defaults = {
+          theme = theme,
+        },
         find_files = {
           -- Use ripgrep for finding files
           find_command = {
