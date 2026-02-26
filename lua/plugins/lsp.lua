@@ -125,7 +125,7 @@ return {
             vim.lsp.buf.signature_help({ border = "single" })
           end, "LSP: Signature Help")
           map("n", "<leader>cr", vim.lsp.buf.rename, "LSP: Rename")
-          map({ "n", "v" }, "<leader>ca", function()
+          map({ "n", "v" }, "<A-Enter>", function()
             vim.lsp.buf.code_action({ border = "single" })
           end, "LSP: Code Action")
 
