@@ -204,13 +204,21 @@ local function run_mise_task()
     if not selected then return end
 
     vim.ui.input({ prompt = "Arguments (optional): " }, function(args)
+      local args_str = args and args ~= "" and (" " .. args) or ""
+      local title = string.format("[mise] %s%s", selected.name, args_str)
+      local cwd = vim.fn.getcwd()
+
       local cmd = string.format(
-        "tmux split-window -h -c '%s' 'mise run %s%s'",
-        vim.fn.getcwd(),
+        "wezterm cli spawn --cwd '%s' -- bash -c 'mise run %s%s'",
+        cwd,
         selected.name,
-        args and args ~= "" and (" " .. args) or ""
+        args_str
       )
-      vim.fn.system(cmd)
+      local pane_id = vim.fn.system(cmd):gsub("%s+", "")
+
+      if pane_id and pane_id ~= "" then
+        vim.fn.system(string.format("wezterm cli set-tab-title --pane-id %s '%s'", pane_id, title))
+      end
     end)
   end)
 end
