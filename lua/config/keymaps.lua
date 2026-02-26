@@ -176,3 +176,18 @@ vim.cmd("cnoreabbrev QA qa")
 -- Common typos
 vim.cmd("cnoreabbrev q1 q!")
 vim.cmd("cnoreabbrev w1 w!")
+
+-- ━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━
+-- MISE TASKS
+-- ━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━
+local function run_mise_task()
+  vim.ui.input({ prompt = "Mise task (e.g., dev --flag): " }, function(input)
+    if input and input ~= "" then
+      local cmd = string.format("tmux split-window -h -c '%s' 'mise run %s'", vim.fn.getcwd(), input)
+      vim.fn.system(cmd)
+    end
+  end)
+end
+
+vim.api.nvim_create_user_command("MiseRun", run_mise_task, { nargs = 0, desc = "Run mise task in tmux split" })
+keymap("n", "<leader>mr", run_mise_task, { desc = "Mise: Run task in tmux" })
