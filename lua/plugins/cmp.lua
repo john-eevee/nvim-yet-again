@@ -5,6 +5,8 @@ return {
     dependencies = {
       "rafamadriz/friendly-snippets",
       "L3MON4D3/LuaSnip",
+      "zbirenbaum/copilot.lua",
+      "giuxtaposition/blink-cmp-copilot",
     },
 
     -- Use the main branch and build from source for Neovim nightly (0.11)
@@ -57,7 +59,15 @@ return {
       },
 
       sources = {
-        default = { "lsp", "buffer", "snippets", "path" },
+        default = { "lsp", "buffer", "snippets", "path", "copilot" },
+        providers = {
+          copilot = {
+            name = "copilot",
+            module = "blink-cmp-copilot",
+            score_offset = 100,
+            async = true,
+          },
+        },
       },
 
       signature = { enabled = true },
