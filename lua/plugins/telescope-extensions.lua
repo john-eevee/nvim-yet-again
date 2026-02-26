@@ -141,6 +141,60 @@ return {
       pcall(telescope.load_extension, "registers")
       pcall(telescope.load_extension, "fzf")
       pcall(telescope.load_extension, "notify")
+
+      local pickers = require("telescope.pickers")
+      local actions = require("telescope.actions")
+      local action_state = require("telescope.actions.state")
+
+      local function run_mise_task_telescope()
+        local task_list = vim.fn.systemlist("mise tasks --json 2>/dev/null")
+        if vim.v.shell_error ~= 0 or #task_list == 0 then
+          vim.notify("No mise tasks found", vim.log.levels.WARN)
+          return
+        end
+
+        local tasks = {}
+        for _, line in ipairs(task_list) do
+          local decoded = vim.json.decode(line)
+          if decoded and decoded.name then
+            table.insert(tasks, decoded)
+          end
+        end
+
+        pickers.new({}, {
+          prompt_title = "Mise Tasks",
+          finder = require("telescope.finders").new_table({
+            results = tasks,
+            entry_maker = function(entry)
+              return {
+                value = entry,
+                display = entry.name .. (entry.description and (" - " .. entry.description) or ""),
+                ordinal = entry.name,
+              }
+            end,
+          }),
+          sorter = require("telescope.sorters").get_fuzzy_file(),
+          attach_mappings = function(prompt_bufnr)
+            actions.select_default:replace(function()
+              local selection = action_state.get_selected_entry()
+              actions.close(prompt_bufnr)
+
+              vim.ui.input({ prompt = "Arguments (optional): " }, function(args)
+                local cmd = string.format(
+                  "tmux split-window -h -c '%s' 'mise run %s%s'",
+                  vim.fn.getcwd(),
+                  selection.value.name,
+                  args and args ~= "" and (" " .. args) or ""
+                )
+                vim.fn.system(cmd)
+              end)
+            end)
+            return true
+          end,
+        }):find()
+      end
+
+      vim.api.nvim_create_user_command("MiseRunTelescope", run_mise_task_telescope, { nargs = 0 })
     end,
     keys = {
       -- ━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━

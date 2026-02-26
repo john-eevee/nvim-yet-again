@@ -181,13 +181,43 @@ vim.cmd("cnoreabbrev w1 w!")
 -- MISE TASKS
 -- ━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━
 local function run_mise_task()
-  vim.ui.input({ prompt = "Mise task (e.g., dev --flag): " }, function(input)
-    if input and input ~= "" then
-      local cmd = string.format("tmux split-window -h -c '%s' 'mise run %s'", vim.fn.getcwd(), input)
-      vim.fn.system(cmd)
+  local task_list = vim.fn.systemlist("mise tasks --json 2>/dev/null")
+  if vim.v.shell_error ~= 0 or #task_list == 0 then
+    vim.notify("No mise tasks found", vim.log.levels.WARN)
+    return
+  end
+
+  local tasks = {}
+  for _, line in ipairs(task_list) do
+    local decoded = vim.json.decode(line)
+    if decoded and decoded.name then
+      table.insert(tasks, decoded)
     end
+  end
+
+  vim.ui.select(tasks, {
+    prompt = "Select mise task:",
+    format_item = function(item)
+      return item.name .. (item.description and (" - " .. item.description) or "")
+    end,
+  }, function(selected)
+    if not selected then return end
+
+    vim.ui.input({ prompt = "Arguments (optional): " }, function(args)
+      local cmd = string.format(
+        "tmux split-window -h -c '%s' 'mise run %s%s'",
+        vim.fn.getcwd(),
+        selected.name,
+        args and args ~= "" and (" " .. args) or ""
+      )
+      vim.fn.system(cmd)
+    end)
   end)
 end
 
 vim.api.nvim_create_user_command("MiseRun", run_mise_task, { nargs = 0, desc = "Run mise task in tmux split" })
-keymap("n", "<leader>mr", run_mise_task, { desc = "Mise: Run task in tmux" })
+vim.api.nvim_create_user_command("MiseRunTelescope", function()
+  vim.cmd("MiseRunTelescope")
+end, { nargs = 0, desc = "Run mise task via telescope" })
+keymap("n", "<leader>mr", run_mise_task, { desc = "Mise: Run task (ui.select)" })
+keymap("n", "<leader>mR", "<cmd>MiseRunTelescope<CR>", { desc = "Mise: Run task (telescope)" })
