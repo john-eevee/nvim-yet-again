@@ -19,11 +19,27 @@ return {
         python = { "isort", "black" },
         javascript = { { "prettierd", "prettier" } },
         typescript = { { "prettierd", "prettier" } },
+        java = { "spotless" },
         dart = { "dart_format" },
+        elixir = { "mix" },
       },
       format_on_save = {
         timeout_ms = 500,
         lsp_fallback = true,
+      },
+      formatters = {
+        spotless = {
+          command = "gradlew",
+          args = {
+            "spotlessApply",
+            "-PspotlessIdeHook=$FILENAME",
+            "-PspotlessIdeHookUseStdIn",
+            "-PspotlessIdeHookUseStdOut",
+            "--quiet",
+          },
+          stdin = true,
+          cwd = require("conform.util").root_file({ "gradlew", "build.gradle", "build.gradle.kts" }),
+        },
       },
     },
     config = function(_, opts)

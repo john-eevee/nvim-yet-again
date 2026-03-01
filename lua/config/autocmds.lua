@@ -7,29 +7,6 @@
 -- Or remove existing autocmds by their group name (which is prefixed with `lazyvim_` for the defaults)
 -- e.g. vim.api.nvim_del_augroup_by_name("lazyvim_wrap_spell")
 
-local border = "rounded"
-
-vim.lsp.handlers["textDocument/hover"] = vim.lsp.with(vim.lsp.handlers.hover, {
-  border = border,
-})
-
-vim.lsp.handlers["textDocument/signatureHelp"] = vim.lsp.with(vim.lsp.handlers.signature_help, {
-  border = border,
-})
-
-vim.diagnostic.config({
-  float = {
-    border = border,
-    padding = { 0, 1, 0, 1 },
-  },
-})
-
-vim.ui.open = function(path, opts)
-  opts = opts or {}
-  opts.border = opts.border or border
-  return vim.ui.open(path, opts)
-end
-
 -- ━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━
 -- SUPPRESS LSP DEPRECATION WARNINGS
 -- ━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━
@@ -38,9 +15,10 @@ vim.diagnostic.config({
     prefix = "●",
     format = function(diagnostic)
       -- Filter out deprecation warnings from LSP
-      if diagnostic.severity == vim.diagnostic.severity.WARN and
-         (diagnostic.message:lower():match("deprecat") or 
-           diagnostic.message:lower():match("deprecated")) then
+      if
+        diagnostic.severity == vim.diagnostic.severity.WARN
+        and (diagnostic.message:lower():match("deprecat") or diagnostic.message:lower():match("deprecated"))
+      then
         return "" -- Return empty to hide deprecation warnings
       end
       return string.format(" %s", diagnostic.message)
@@ -54,11 +32,13 @@ vim.diagnostic.open_float = function(opts)
   opts = opts or {}
   local diags = vim.diagnostic.get(opts.bufnr)
   local filtered_diags = vim.tbl_filter(function(d)
-    local is_deprecation = d.severity == vim.diagnostic.severity.WARN and
-      (d.message:lower():match("deprecat") or d.message:lower():match("deprecated"))
+    local is_deprecation = d.severity == vim.diagnostic.severity.WARN
+      and (d.message:lower():match("deprecat") or d.message:lower():match("deprecated"))
     return not is_deprecation
   end, diags)
-  if #filtered_diags == 0 then return end
+  if #filtered_diags == 0 then
+    return
+  end
   return orig_open_float(opts)
 end
 
@@ -70,4 +50,22 @@ vim.opt.autoread = true
 vim.api.nvim_create_autocmd({ "BufEnter", "CursorHold", "CursorHoldI", "FocusGained" }, {
   pattern = "*",
   command = "if mode() != 'c' | checktime | endif",
+})
+vim.api.nvim_create_autocmd("CursorHold", {
+  group = vim.api.nvim_create_augroup("FloatDiagnostic", { clear = true }),
+  callback = function()
+    for _, winid in pairs(vim.api.nvim_tabpage_list_wins(0)) do
+      if vim.api.nvim_win_get_config(winid).zindex then
+        return
+      end
+    end
+    vim.diagnostic.open_float(nil, { focus = false, scope = "cursor" })
+  end,
+})
+vim.api.nvim_create_autocmd({ "TermOpen", "BufEnter" }, {
+  group = vim.api.nvim_create_augroup("TerminalBehavior", { clear = true }),
+  pattern = "term://*",
+  callback = function()
+    vim.cmd("startinsert")
+  end,
 })

@@ -44,9 +44,13 @@ vim.opt.fillchars = {
   eob = " ", -- Hide end of buffer
   fold = " ", -- Hide fold
   diff = "╱", -- Better diff character
-  vert = " ", -- Transparent vertical split
-  horiz = " ", -- Transparent horizontal split
-  msgsep = " ", -- Transparent message separator
+  horiz = "━",
+  horizup = "┻",
+  horizdown = "┳",
+  vert = "┃",
+  vertleft = "┫",
+  vertright = "┣",
+  verthoriz = "╋",
 }
 vim.opt.winblend = 0 -- Disable pseudo-transparency in favor of real
 vim.opt.pumblend = 0 -- Popup transparency
