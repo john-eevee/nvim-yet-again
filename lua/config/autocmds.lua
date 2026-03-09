@@ -54,11 +54,6 @@ vim.api.nvim_create_autocmd({ "BufEnter", "CursorHold", "CursorHoldI", "FocusGai
 vim.api.nvim_create_autocmd("CursorHold", {
   group = vim.api.nvim_create_augroup("FloatDiagnostic", { clear = true }),
   callback = function()
-    for _, winid in pairs(vim.api.nvim_tabpage_list_wins(0)) do
-      if vim.api.nvim_win_get_config(winid).zindex then
-        return
-      end
-    end
     vim.diagnostic.open_float(nil, { focus = false, scope = "cursor" })
   end,
 })

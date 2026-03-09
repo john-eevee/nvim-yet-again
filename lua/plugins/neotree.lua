@@ -28,16 +28,9 @@ return {
       {
         "<M-1>",
         function()
-          require("neo-tree.command").execute({ toggle = true, dir = vim.loop.cwd() })
+          require("neo-tree.command").execute({ toggle = true, dir = vim.loop.cwd(), position = "right" })
         end,
-        desc = "Toggle NeoTree (float)",
-      },
-      {
-        "<M-!>",
-        function()
-          require("neo-tree.command").execute({ toggle = true, position = "right", dir = vim.loop.cwd() })
-        end,
-        desc = "Toggle NeoTree (sidebar)",
+        desc = "Toggle NeoTree",
       },
     },
     deactivate = function()

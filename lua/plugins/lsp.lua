@@ -21,7 +21,7 @@ return {
       servers = {
         expert = {
           mason = false,
-          cmd = { "expert_linux_amd64", "--stdio" },
+          cmd = { "expert", "--stdio" },
           root_markers = { "mix.exs", ".git" },
           filetypes = { "elixir", "eelixir", "heex" },
         },

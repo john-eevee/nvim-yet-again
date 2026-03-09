@@ -1,5 +1,6 @@
 return {
   "karb94/neoscroll.nvim",
+  enabed = false,
   event = "WinScrolled",
   opts = {
     mappings = {

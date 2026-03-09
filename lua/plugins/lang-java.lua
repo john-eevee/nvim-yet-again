@@ -27,7 +27,23 @@ return {
     "stevearc/conform.nvim",
     opts = {
       formatters_by_ft = {
-        java = { "google_java_format" },
+        java = { "spotless" },
+      },
+      formatters = {
+        spotless = {
+          command = "gradlew",
+          args = {
+            "spotlessApply",
+            "-PspotlessIdeHook=$FILENAME",
+            "-PspotlessIdeHookUseStdIn",
+            "-PspotlessIdeHookUseStdOut",
+            "--quiet",
+          },
+          stdin = true,
+          cwd = function()
+            require("conform.util").root_file({ "gradlew", "build.gradle", "build.gradle.kts" })
+          end,
+        },
       },
     },
   },

@@ -76,8 +76,8 @@ keymap("n", "<leader>w<M-Left>", "<C-w><", { desc = "Window: Decrease width (alt
 -- ━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━
 keymap("n", "<leader>bn", "<cmd>enew<CR>", { desc = "Buffer: New" })
 keymap("n", "<leader>bd", "<cmd>bdelete<CR>", { desc = "Buffer: Delete" })
-keymap("n", "<leader>bl", "<cmd>bnext<CR>", { desc = "Buffer: Next" })
-keymap("n", "<leader>bh", "<cmd>bprevious<CR>", { desc = "Buffer: Previous" })
+keymap("n", "<leader>bn", "<cmd>bnext<CR>", { desc = "Buffer: Next" })
+keymap("n", "<leader>bp", "<cmd>bprevious<CR>", { desc = "Buffer: Previous" })
 keymap("n", "<leader>ba", "<cmd>%bdelete|edit #<CR>", { desc = "Buffer: Delete all others" })
 
 -- Smart buffer navigation with counts
@@ -201,19 +201,16 @@ local function run_mise_task()
       return item.name .. (item.description and (" - " .. item.description) or "")
     end,
   }, function(selected)
-    if not selected then return end
+    if not selected then
+      return
+    end
 
     vim.ui.input({ prompt = "Arguments (optional): " }, function(args)
       local args_str = args and args ~= "" and (" " .. args) or ""
       local title = string.format("[mise] %s%s", selected.name, args_str)
       local cwd = vim.fn.getcwd()
 
-      local cmd = string.format(
-        "wezterm cli spawn --cwd '%s' -- bash -c 'mise run %s%s'",
-        cwd,
-        selected.name,
-        args_str
-      )
+      local cmd = string.format("wezterm cli spawn --cwd '%s' -- bash -c 'mise run %s%s'", cwd, selected.name, args_str)
       local pane_id = vim.fn.system(cmd):gsub("%s+", "")
 
       if pane_id and pane_id ~= "" then
