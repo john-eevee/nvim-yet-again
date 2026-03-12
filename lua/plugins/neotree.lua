@@ -172,6 +172,7 @@ return {
         },
         use_libuv_file_watcher = true,
         collapse_empty_dirs = true,
+        group_empty_dirs = true,
         filtered_items = {
           visible = false,
           hide_dotfiles = false,
