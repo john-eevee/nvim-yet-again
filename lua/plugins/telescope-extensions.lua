@@ -112,6 +112,15 @@ return {
           end,
           theme = theme,
         },
+        -- ━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━
+        -- DIAGNOSTICS PICKER
+        -- ━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━
+        diagnostics = {
+          theme = "ivy",
+          previewer = false,
+          wrap_results = true,
+          sorting_strategy = "ascending",
+        },
       },
       extensions = {
         -- ━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━
@@ -338,7 +347,17 @@ return {
       },
       {
         "<leader>gx",
-        "<cmd>Telescope diagnostics<CR>",
+        function()
+          local severity_map = { Error = 1, Warning = 2, Information = 3, Hint = 4 }
+          local opts = {
+            theme = "ivy",
+            previewer = false,
+            wrap_results = true,
+            severity_sort = true,
+          }
+          local diagnostics = require("telescope.builtin").diagnostics
+          diagnostics(opts)
+        end,
         desc = "Telescope: Diagnostics",
       },
       {

@@ -16,6 +16,8 @@ return {
     "williamboman/mason.nvim",
     opts = function(_, opts)
       opts.ensure_installed = vim.list_extend(opts.ensure_installed or {}, {
+        -- LSP
+        "pyright",
         -- Type checking with Ty
         "ty",
         -- Linting and formatting with Ruff (replaces flake8, black, isort, etc.)
@@ -24,30 +26,6 @@ return {
         "debugpy",
       })
     end,
-  },
-
-  -- Conform configuration for Python formatting with Ruff
-  -- Ruff is an extremely fast Python linter and formatter (written in Rust)
-  {
-    "stevearc/conform.nvim",
-    opts = {
-      formatters_by_ft = {
-        -- Ruff handles both linting and formatting (replaces black, isort, flake8)
-        python = { "ruff_organize_imports", "ruff_format" },
-      },
-      formatters = {
-        ruff_organize_imports = {
-          command = "ruff",
-          args = { "check", "--select", "I", "--fix", "-" },
-          stdin = true,
-        },
-        ruff_format = {
-          command = "ruff",
-          args = { "format", "-" },
-          stdin = true,
-        },
-      },
-    },
   },
 
   -- nvim-dap configuration for Python debugging with debugpy

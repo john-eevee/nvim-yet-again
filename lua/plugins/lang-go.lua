@@ -17,23 +17,17 @@ return {
     "williamboman/mason.nvim",
     opts = function(_, opts)
       opts.ensure_installed = vim.list_extend(opts.ensure_installed or {}, {
+        -- LSP
         "gopls",
+        -- Formatting
         "goimports",
         "golines",
+        -- Linting
         "golangci-lint",
+        -- Debugging
         "delve",
       })
     end,
-  },
-
-  -- Conform configuration for Go formatting
-  {
-    "stevearc/conform.nvim",
-    opts = {
-      formatters_by_ft = {
-        go = { "goimports", "golines" },
-      },
-    },
   },
 
   -- nvim-dap configuration for Go debugging

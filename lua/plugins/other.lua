@@ -50,11 +50,5 @@ return {
         },
       },
     })
-
-    -- Keymaps
-    local map = vim.keymap.set
-    map("n", "<leader>oa", "<cmd>Other<cr>", { noremap = true, desc = "Open alternate file" })
-    map("n", "<leader>os", "<cmd>OtherSplit<cr>", { noremap = true, desc = "Open alternate in split" })
-    map("n", "<leader>ov", "<cmd>OtherVsplit<cr>", { noremap = true, desc = "Open alternate in vsplit" })
   end,
 }

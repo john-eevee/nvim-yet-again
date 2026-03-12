@@ -15,37 +15,13 @@ return {
     "williamboman/mason.nvim",
     opts = function(_, opts)
       opts.ensure_installed = vim.list_extend(opts.ensure_installed or {}, {
+        -- LSP
         "jdtls",
+        -- Debugging
         "java-debug-adapter",
         "java-test",
       })
     end,
-  },
-
-  -- Conform configuration for Java formatting
-  {
-    "stevearc/conform.nvim",
-    opts = {
-      formatters_by_ft = {
-        java = { "spotless" },
-      },
-      formatters = {
-        spotless = {
-          command = "gradlew",
-          args = {
-            "spotlessApply",
-            "-PspotlessIdeHook=$FILENAME",
-            "-PspotlessIdeHookUseStdIn",
-            "-PspotlessIdeHookUseStdOut",
-            "--quiet",
-          },
-          stdin = true,
-          cwd = function()
-            require("conform.util").root_file({ "gradlew", "build.gradle", "build.gradle.kts" })
-          end,
-        },
-      },
-    },
   },
 
   -- nvim-dap configuration for Java debugging
@@ -141,15 +117,6 @@ return {
       }
 
       jdtls.start_or_attach(config)
-
-      -- Key mappings for JDTLS
-      local map = vim.keymap.set
-      local opts = { noremap = true, silent = true }
-
-      map("n", "<leader>jc", jdtls.compile, vim.tbl_extend("force", opts, { desc = "Java: Compile" }))
-      map("n", "<leader>jC", jdtls.organize_imports, vim.tbl_extend("force", opts, { desc = "Java: Organize imports" }))
-      map("n", "<leader>je", jdtls.extract_variable, vim.tbl_extend("force", opts, { desc = "Java: Extract variable" }))
-      map("n", "<leader>jm", jdtls.extract_method, vim.tbl_extend("force", opts, { desc = "Java: Extract method" }))
     end,
   },
 }

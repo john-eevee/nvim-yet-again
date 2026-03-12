@@ -17,20 +17,33 @@ return {
       "saghen/blink.cmp",
     },
     opts = {
-      -- Default servers to install
       servers = {
+        -- Elixir
         expert = {
           mason = false,
           cmd = { "expert", "--stdio" },
           root_markers = { "mix.exs", ".git" },
           filetypes = { "elixir", "eelixir", "heex" },
         },
+        -- Dart
         dartls = {
           mason = false,
         },
+        -- Web
         html = {},
-        jdtls = {},
+        cssls = {},
         jsonls = {},
+        ts_ls = {},
+        -- Rust (handled by rust-tools)
+        rust_analyzer = {},
+        -- Go
+        gopls = {},
+        -- Python
+        pyright = {},
+        -- Java
+        jdtls = {},
+        -- Lua
+        lua_ls = {},
       },
     },
     config = function(_, opts)
@@ -93,50 +106,6 @@ return {
         underline = true,
         update_in_insert = true,
         severity_sort = true,
-      })
-
-      -- LspAttach autocommand
-      vim.api.nvim_create_autocmd("LspAttach", {
-        group = vim.api.nvim_create_augroup("UserLspConfig", {}),
-        callback = function(ev)
-          local map = function(mode, l, r, desc)
-            vim.keymap.set(mode, l, r, { buffer = ev.buf, desc = desc })
-          end
-
-          local ts = require("telescope.builtin")
-
-          map("n", "gD", function()
-            ts.lsp_type_definitions()
-          end, "LSP: Goto Declaration")
-
-          map("n", "gd", function()
-            ts.lsp_definitions()
-          end, "LSP: Goto Definition")
-
-          map("n", "K", function()
-            vim.lsp.buf.hover({ border = "single" })
-          end, "LSP: Hover")
-
-          map("n", "gi", function()
-            ts.lsp_implementations()
-          end, "LSP: Goto Implementation")
-
-          map("n", "<C-k>", function()
-            vim.lsp.buf.signature_help({ border = "single" })
-          end, "LSP: Signature Help")
-          map("n", "<leader>cr", vim.lsp.buf.rename, "LSP: Rename")
-          map({ "n", "v" }, "<A-Enter>", function()
-            vim.lsp.buf.code_action({ border = "single" })
-          end, "LSP: Code Action")
-
-          map("n", "gr", function()
-            ts.lsp_references()
-          end, "LSP: References")
-
-          map("n", "<leader>f", function()
-            vim.lsp.buf.format({ async = true })
-          end, "LSP: Format")
-        end,
       })
     end,
   },
