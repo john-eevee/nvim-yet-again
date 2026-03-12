@@ -17,6 +17,7 @@ return {
         html = { "prettier" },
         yaml = { "prettier" },
         markdown = { "prettier" },
+        elixir = {"mix"}
       },
       formatters = {
         ruff_organize_imports = {

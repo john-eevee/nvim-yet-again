@@ -33,7 +33,13 @@ vim.api.nvim_create_autocmd("LspAttach", {
     end, "LSP: Signature Help", { buffer = ev.buf })
 
     map("n", "<leader>cr", vim.lsp.buf.rename, "LSP: Rename", { buffer = ev.buf })
-
+    map("n", "<leader>c=", function()
+      local ok, conform = pcall(require, "conform")
+      if not ok then
+        return
+      end
+      conform.format({ lsp_fallback = true })
+    end)
     map({ "n", "v" }, "<A-Enter>", function()
       vim.lsp.buf.code_action({ border = "single" })
     end, "LSP: Code Action", { buffer = ev.buf })
@@ -199,35 +205,10 @@ end)
 -- MINI PLUGINS KEYMAPS
 -- ━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━
 
--- Mini.move - move lines/selection
-map("n", "<M-j>", "<cmd>lua require('mini.move').move_down()<CR>", "Move line down", { noremap = true })
-map("n", "<M-k>", "<cmd>lua require('mini.move').move_up()<CR>", "Move line up", { noremap = true })
-map("v", "<M-j>", "<cmd>lua require('mini.move').move_down()<CR>", "Move selection down", { noremap = true })
-map("v", "<M-k>", "<cmd>lua require('mini.move').move_up()<CR>", "Move selection up", { noremap = true })
-map("v", "<M-h>", "<cmd>lua require('mini.move').move_left()<CR>", "Move selection left", { noremap = true })
-map("v", "<M-l>", "<cmd>lua require('mini.move').move_right()<CR>", "Move selection right", { noremap = true })
-
 -- Mini.splitjoin
 map("n", "gS", function()
   require("mini.splitjoin").toggle()
 end, "Split/Join block", { noremap = true })
-
--- Mini.splitjoin
-map("n", "gS", function()
-  require("mini.splitjoin").toggle()
-end, "Split/Join block", { noremap = true })
-
--- Mini.align
-map("n", "<leader>a]", function()
-  require("mini.align").align_with_mapping({ direction = "left" })
-end, "Align left", { noremap = true })
-map("n", "<leader>a[", function()
-  require("mini.align").align_with_mapping({ direction = "right" })
-end, "Align right", { noremap = true })
-map("v", "<leader>a", function()
-  require("mini.align").align()
-end, "Align selection", { noremap = true })
-
 -- Mini.jump / Mini.jump2d
 map("n", "f", function()
   require("mini.jump2d").jump()
@@ -243,12 +224,3 @@ end, "Jump2d start", { noremap = true })
 map("n", "<leader>dh", function()
   require("mini.diff").toggle_overlay()
 end, "Diff toggle", { noremap = true })
-map("n", "<leader>ds", function()
-  require("mini.diff").stage()
-end, "Diff stage", { noremap = true })
-map("n", "<leader>dr", function()
-  require("mini.diff").reset()
-end, "Diff reset", { noremap = true })
-map("n", "<leader>dP", function()
-  require("mini.diff").preview_hunk()
-end, "Diff preview hunk", { noremap = true })

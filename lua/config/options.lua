@@ -2,7 +2,7 @@
 -- Default options that are always set: https://github.com/LazyVim/LazyVim/blob/main/lua/lazyvim/config/options.lua
 -- Add any additional options here
 vim.opt.number = true -- Show line numbers
-vim.opt.relativenumber = true -- Relative line numbers for navigation
+vim.opt.relativenumber = false -- Relative line numbers for navigation
 vim.opt.cursorline = true -- Highlight current line
 vim.opt.expandtab = true -- Convert tabs to spaces
 vim.opt.tabstop = 2 -- 2 spaces per tab

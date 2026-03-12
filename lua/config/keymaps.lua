@@ -88,15 +88,6 @@ keymap("n", "<C-h>", "<cmd>bprevious<CR>", { desc = "Buffer: Previous (Ctrl+h)" 
 keymap("n", "<C-Right>", "<cmd>bnext<CR>", { desc = "Buffer: Next (ctrl+right)" })
 keymap("n", "<C-Left>", "<cmd>bprevious<CR>", { desc = "Buffer: Previous (ctrl+left)" })
 
--- ━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━
--- FILE OPERATIONS (Space + f)
--- ━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━
-keymap("n", "<leader><leader>", "<cmd>write<CR>", { desc = "File: Save" })
-keymap("n", "<leader>fs", "<cmd>write<CR>", { desc = "File: Save" })
-keymap("n", "<leader>fS", "<cmd>wall<CR>", { desc = "File: Save all" })
-keymap("n", "<leader>fe", "<cmd>edit<CR>", { desc = "File: Reload" })
-keymap("n", "<leader>fq", "<cmd>quit<CR>", { desc = "File: Quit" })
-keymap("n", "<leader>fQ", "<cmd>quit!<CR>", { desc = "File: Quit without save" })
 
 -- ━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━
 -- FILE EXPLORER
