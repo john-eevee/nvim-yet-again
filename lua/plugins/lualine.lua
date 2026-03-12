@@ -5,10 +5,10 @@ return {
   },
   event = "VeryLazy",
   opts = function()
-    local theme = "catppuccin"
+    local theme = "rose-pine"
     return {
       options = {
-        theme = "catppuccin",
+        theme = theme,
         component_separators = "",
         section_separators = { left = "", right = "" },
         always_divide_middle = true,
