@@ -1,0 +1,93 @@
+return {
+  "mfussenegger/nvim-dap",
+  dependencies = {
+    "rcarriga/nvim-dap-ui",
+    "theHamsta/nvim-dap-virtual-text",
+  },
+  config = function()
+    local dap = require("dap")
+
+    -- Java adapter
+    dap.adapters.java = {
+      type = "server",
+      host = "127.0.0.1",
+      port = 5005,
+    }
+
+    -- Java configurations
+    dap.configurations.java = {
+      {
+        name = "Debug (Attach) - Remote",
+        type = "java",
+        request = "attach",
+        hostName = "127.0.0.1",
+        port = 5005,
+      },
+    }
+
+    -- Python (debugpy)
+    dap.adapters.python = {
+      type = "executable",
+      command = "python",
+      args = { "-m", "debugpy.adapter" },
+    }
+    dap.configurations.python = {
+      {
+        type = "python",
+        request = "launch",
+        name = "Launch file",
+        program = "${file}",
+        pythonPath = function()
+          local cwd = vim.fn.getcwd()
+          if vim.fn.executable(cwd .. "/.venv/bin/python") == 1 then
+            return cwd .. "/.venv/bin/python"
+          elseif vim.fn.executable(cwd .. "/venv/bin/python") == 1 then
+            return cwd .. "/venv/bin/python"
+          end
+          return "python"
+        end,
+      },
+    }
+
+    -- Rust (codelldb)
+    dap.adapters.codelldb = {
+      type = "server",
+      port = "${port}",
+      executable = {
+        command = "codelldb",
+        args = { "--port", "${port}" },
+      },
+    }
+    dap.configurations.rust = {
+      {
+        type = "codelldb",
+        name = "Debug",
+        request = "launch",
+        program = function()
+          return vim.fn.input("Path to executable: ", vim.fn.getcwd() .. "/target/debug/", "file")
+        end,
+        cwd = "${workspaceFolder}",
+        stopOnEntry = false,
+      },
+    }
+
+    -- Go (delve)
+    dap.adapters.delve = {
+      type = "server",
+      port = "${port}",
+      executable = {
+        command = "dlv",
+        args = { "dap", "-l", "127.0.0.1:${port}" },
+      },
+    }
+    dap.configurations.go = {
+      {
+        type = "delve",
+        name = "Debug",
+        mode = "debug",
+        program = "${fileDirname}",
+        request = "launch",
+      },
+    }
+  end,
+}

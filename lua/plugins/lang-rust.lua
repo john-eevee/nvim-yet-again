@@ -26,57 +26,6 @@ return {
     end,
   },
 
-  -- nvim-dap configuration for Rust debugging
-  {
-    "mfussenegger/nvim-dap",
-    optional = true,
-    dependencies = {
-      "mason.nvim",
-    },
-    config = function(_, opts)
-      local dap = require("dap")
-      if not dap.adapters.codelldb then
-        dap.adapters.codelldb = {
-          type = "server",
-          port = "${port}",
-          executable = {
-            command = "codelldb",
-            args = { "--port", "${port}" },
-          },
-        }
-      end
-      if not dap.configurations.rust then
-        dap.configurations.rust = {
-          {
-            type = "codelldb",
-            name = "Debug",
-            request = "launch",
-            program = function()
-              return vim.fn.input("Path to executable: ", vim.fn.getcwd() .. "/target/debug/", "file")
-            end,
-            cwd = "${workspaceFolder}",
-            stopOnEntry = false,
-            args = {},
-          },
-          {
-            type = "codelldb",
-            name = "Debug (with input)",
-            request = "launch",
-            program = function()
-              return vim.fn.input("Path to executable: ", vim.fn.getcwd() .. "/target/debug/", "file")
-            end,
-            cwd = "${workspaceFolder}",
-            stopOnEntry = false,
-            args = function()
-              local input = vim.fn.input("Arguments: ")
-              return vim.split(input, " ")
-            end,
-          },
-        }
-      end
-    end,
-  },
-
   -- rust-tools for enhanced Rust support
   {
     "simrat39/rust-tools.nvim",

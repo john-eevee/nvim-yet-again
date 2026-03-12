@@ -84,14 +84,4 @@ return {
       })
     end,
   },
-
-  -- nvim-dap configuration for Dart
-  {
-    "mfussenegger/nvim-dap",
-    optional = true,
-    dependencies = {
-      "mason.nvim",
-      "flutter-tools.nvim",
-    },
-  },
 }

@@ -24,35 +24,6 @@ return {
     end,
   },
 
-  -- nvim-dap configuration for Java debugging
-  {
-    "mfussenegger/nvim-dap",
-    config = function(_, opts)
-      local dap = require("dap")
-      if not dap.adapters.java then
-        dap.adapters.java = function(callback, config)
-          callback({
-            type = "server",
-            host = "127.0.0.1",
-            port = 5005,
-          })
-        end
-      end
-      if not dap.configurations.java then
-        dap.configurations.java = {
-          {
-            name = "Debug (Attach) - Remote",
-            type = "java",
-            request = "attach",
-            hostName = "127.0.0.1",
-            port = 5005,
-            preLaunchTask = "java: Start debugging session",
-          },
-        }
-      end
-    end,
-  },
-
   -- nvim-jdtls for enhanced Java support
   {
     "mfussenegger/nvim-jdtls",
