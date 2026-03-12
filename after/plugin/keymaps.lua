@@ -58,32 +58,28 @@ vim.api.nvim_create_autocmd("FileType", {
     local rt = require("rust-tools")
     local opts = { noremap = true, silent = true }
 
-    map("n", "<leader>Rh", rt.hover_actions.hover_actions, "Rust: Hover actions", opts)
-    map("n", "<leader>Ra", rt.code_action_group.code_action_group, "Rust: Code actions", opts)
-    map("n", "<leader>Rd", rt.debuggables.debuggables, "Rust: Debuggables", opts)
+    -- Rust-specific features not available via generic LSP
+    -- Runnables (cargo run/test)
     map("n", "<leader>Rr", rt.runnables.runnables, "Rust: Runnables", opts)
+    -- Debug (LLDB)
+    map("n", "<leader>Rd", rt.debuggables.debuggables, "Rust: Debuggables", opts)
+    -- Expand macro
+    map("n", "<leader>Re", rt.expand_macro.expand_macro, "Rust: Expand macro", opts)
+    -- Parent module
     map("n", "<leader>Rp", rt.parent_module.parent_module, "Rust: Parent module", opts)
+    -- Join lines
     map("n", "<leader>Rj", function()
       rt.join_lines.join_lines()
     end, "Rust: Join lines", opts)
-    map("n", "<leader>Re", rt.expand_macro.expand_macro, "Rust: Expand macro", opts)
-    map("n", "<leader>RS", rt.ssr.ssr, "Rust: Structural search replace", opts)
+    -- Structural search replace
+    map("n", "<leader>RS", rt.ssr.ssr, "Rust: SSR", opts)
   end,
 })
 
-vim.api.nvim_create_autocmd("FileType", {
-  group = vim.api.nvim_create_augroup("FiletypeKeymaps", { clear = true }),
-  pattern = "java",
-  callback = function()
-    local jdtls = require("jdtls")
-    local opts = { noremap = true, silent = true }
-
-    map("n", "<leader>jc", jdtls.compile, "Java: Compile", opts)
-    map("n", "<leader>jC", jdtls.organize_imports, "Java: Organize imports", opts)
-    map("n", "<leader>je", jdtls.extract_variable, "Java: Extract variable", opts)
-    map("n", "<leader>jm", jdtls.extract_method, "Java: Extract method", opts)
-  end,
-})
+-- Note: Java keymaps (jdtls) already use generic LSP bindings via LSP server
+-- <leader>cr, <A-Enter> work for code actions
+-- <leader>f for format
+-- etc.
 
 -- ━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━
 -- HARPOON KEYMAPS
