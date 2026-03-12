@@ -11,6 +11,11 @@ return {
       { "<leader>s", group = "Search" },
       { "<leader>u", group = "UI" },
       { "<leader>w", group = "Window" },
+      { "<leader>r", group = "Refactor" },
+      { "<leader>g", group = "Git", mode = { "n", "v" } },
+      { "<leader>jj", group = "Jump" },
+      { "<leader>jS", group = "Split/Join" },
+      { "<leader>a", group = "Align" },
     },
   },
   config = function(_, opts)

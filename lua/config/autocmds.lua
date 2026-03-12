@@ -64,3 +64,36 @@ vim.api.nvim_create_autocmd({ "TermOpen", "BufEnter" }, {
     vim.cmd("startinsert")
   end,
 })
+
+-- ━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━
+-- CONFIRM QUIT ON LAST WINDOW
+-- ━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━
+vim.api.nvim_create_autocmd("QuitPre", {
+  callback = function()
+    if vim.fn.has("gui_running") == 0 and #vim.api.nvim_list_uis() == 0 then
+      return
+    end
+
+    local tabpages = vim.api.nvim_list_tabpages()
+    if #tabpages > 1 then
+      return
+    end
+
+    local wins = vim.api.nvim_tabpage_list_wins(tabpages[1])
+    if #wins > 1 then
+      return
+    end
+
+    local buf = vim.api.nvim_win_get_buf(wins[1])
+    local modified = vim.api.nvim_buf_get_option(buf, "modified")
+
+    if modified or vim.bo[buf].modified then
+      return
+    end
+
+    local confirm = vim.fn.confirm("Quit nvim?", "&Yes\n&No", 2, "Q")
+    if confirm ~= 1 then
+      vim.cmd("qa!")
+    end
+  end,
+})
