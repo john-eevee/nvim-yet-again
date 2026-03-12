@@ -41,24 +41,22 @@ return {
       dapui.close({})
     end
 
-    -- Java adapter
-    dap.adapters.java = {
-      type = "server",
-      host = "127.0.0.1",
-      port = 5005,
-    }
-
-    -- Java configurations
-    dap.configurations.java = {
-      {
-        name = "Debug (Attach) - Remote",
-        type = "java",
-        request = "attach",
-        hostName = "127.0.0.1",
-        port = 5005,
-      },
-    }
-
+    -- Java adapter is registered automatically by nvim-jdtls when it starts.
+    -- Only add a remote-attach configuration here; the launch adapter and
+    -- local launch configs come from nvim-jdtls / java-debug automatically.
+    dap.configurations.java = dap.configurations.java or {}
+    if #dap.configurations.java == 0 then
+      dap.configurations.java = {
+        {
+          -- Attach to a JVM started with -agentlib:jdwp=transport=dt_socket,server=y,suspend=n,address=5005
+          name = 'Debug (Attach) - Remote',
+          type = 'java',
+          request = 'attach',
+          hostName = '127.0.0.1',
+          port = 5005,
+        },
+      }
+    end
     -- Python (debugpy)
     dap.adapters.python = {
       type = "executable",
