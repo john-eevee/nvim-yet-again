@@ -27,7 +27,6 @@ return {
   -- nvim-dap configuration for Java debugging
   {
     "mfussenegger/nvim-dap",
-    optional = true,
     config = function(_, opts)
       local dap = require("dap")
       if not dap.adapters.java then
@@ -105,7 +104,7 @@ return {
           "--jvm-arg=-XX:AdaptiveSizePolicyWeight=90",
           "--jvm-arg=-Dsun.zip.disableMemoryMapping=true",
         },
-        root_dir = require("jdtls.setup").find_root({ "build.xml", "pom.xml", "gradle.build", ".git" }),
+        root_dir = require("jdtls.setup").find_root({ "build.xml", "pom.xml", "gradle.build", "gradle.build.kts", ".git" }),
         settings = {
           java = {
             home = java_home,
