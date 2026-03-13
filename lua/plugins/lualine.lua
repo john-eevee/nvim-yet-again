@@ -9,17 +9,18 @@ return {
     return {
       options = {
         theme = theme,
-        component_separators = "",
-        section_separators = { left = "", right = "" },
+        component_separators = "",
+        -- searches nf-ple
+        section_separators = { left = "", right = "" },
         always_divide_middle = true,
       },
       sections = {
-        lualine_a = { "mode" },
-        lualine_b = { "branch" },
+        lualine_a = { { "mode", icon = "" } },
+        lualine_b = { { "branch", icon = "󰘬" } },
         lualine_c = {},
         lualine_x = { "diagnostics" },
-        lualine_y = {},
-        lualine_z = { "location" },
+        lualine_y = { "lsp_status" },
+        lualine_z = {},
       },
       tabline = {
         lualine_a = { "buffers" },
