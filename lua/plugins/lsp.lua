@@ -44,11 +44,11 @@ return {
         jdtls = {},
         -- Lua
         lua_ls = {},
+        -- SQL
+        sqlls = {},
       },
     },
     config = function(_, opts)
-      require("mason").setup()
-
       -- Set hover border
       -- Setup LSP error logging
       local log_file = vim.fn.expand("~/.config/nvim/lsp-errors.log")

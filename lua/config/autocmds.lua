@@ -26,22 +26,6 @@ vim.diagnostic.config({
   },
 })
 
--- Suppress deprecation warnings in LSP diagnostics globally
-local orig_open_float = vim.diagnostic.open_float
-vim.diagnostic.open_float = function(opts)
-  opts = opts or {}
-  local diags = vim.diagnostic.get(opts.bufnr)
-  local filtered_diags = vim.tbl_filter(function(d)
-    local is_deprecation = d.severity == vim.diagnostic.severity.WARN
-      and (d.message:lower():match("deprecat") or d.message:lower():match("deprecated"))
-    return not is_deprecation
-  end, diags)
-  if #filtered_diags == 0 then
-    return
-  end
-  return orig_open_float(opts)
-end
-
 -- ━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━
 -- AUTO RELOAD FILES ON DISK CHANGE
 -- ━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━
@@ -54,7 +38,7 @@ vim.api.nvim_create_autocmd({ "BufEnter", "CursorHold", "CursorHoldI", "FocusGai
 vim.api.nvim_create_autocmd("CursorHold", {
   group = vim.api.nvim_create_augroup("FloatDiagnostic", { clear = true }),
   callback = function()
-    vim.diagnostic.open_float(nil, { focus = false, scope = "cursor" })
+    vim.diagnostic.open_float(nil, { focus = false, border = "rounded" })
   end,
 })
 vim.api.nvim_create_autocmd({ "TermOpen", "BufEnter" }, {
@@ -68,12 +52,12 @@ vim.api.nvim_create_autocmd({ "TermOpen", "BufEnter" }, {
 vim.api.nvim_create_autocmd("BufWritePre", {
   pattern = "*",
   callback = function(args)
-    local ok, conform = pcall(require, 'conform')
+    local ok, conform = pcall(require, "conform")
     if not ok then
       return
     end
-    conform.format({bufnr = args.buf})
-  end
+    conform.format({ bufnr = args.buf })
+  end,
 })
 
 -- ━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━

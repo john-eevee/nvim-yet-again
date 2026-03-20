@@ -60,12 +60,22 @@ return {
 
       sources = {
         default = { "lsp", "buffer", "snippets", "path", "copilot" },
+        per_filetype = {
+          sql = { "lsp", "dadbod", "buffer", "snippets", "copilot" },
+          mysql = { "lsp", "dadbod", "buffer", "snippets", "copilot" },
+          plsql = { "lsp", "dadbod", "buffer", "snippets", "copilot" },
+        },
         providers = {
           copilot = {
             name = "copilot",
             module = "blink-cmp-copilot",
             score_offset = 100,
             async = true,
+          },
+          dadbod = {
+            name = "Dadbod",
+            module = "vim_dadbod_completion.blink",
+            score_offset = 85, -- score offset for dadbod completion
           },
         },
       },
