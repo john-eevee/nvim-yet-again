@@ -32,32 +32,25 @@ keymap("n", "N", "Nzz", opts)
 
 -- Center on page up/down
 keymap("n", "<C-u>", "<C-u>zz", opts)
-keymap("n", "<C-d>", "<C-d>zz", opts)
+-- Note: <C-d> is remapped to duplicate line (IntelliJ style) below
 
 -- ━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━
 -- WINDOW NAVIGATION & MANAGEMENT
 -- ━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━
--- Split navigation (IntelliJ-style: Ctrl+Alt+hjkl)
-keymap("n", "<C-A-h>", "<C-w>h", { desc = "Window: Left" })
-keymap("n", "<C-A-j>", "<C-w>j", { desc = "Window: Down" })
-keymap("n", "<C-A-k>", "<C-w>k", { desc = "Window: Up" })
-keymap("n", "<C-A-l>", "<C-w>l", { desc = "Window: Right" })
+-- Split navigation (IntelliJ-style: Ctrl+Alt+Arrow keys only)
+-- Using arrows to avoid collisions with plugins (Harpoon, LSP Format, Mini.jump2d)
 
 -- Arrow key variants for navigation (IntelliJ-style)
-keymap("n", "<C-A-Left>", "<C-w>h", { desc = "Window: Left (arrow)" })
-keymap("n", "<C-A-Down>", "<C-w>j", { desc = "Window: Down (arrow)" })
-keymap("n", "<C-A-Up>", "<C-w>k", { desc = "Window: Up (arrow)" })
-keymap("n", "<C-A-Right>", "<C-w>l", { desc = "Window: Right (arrow)" })
+keymap("n", "<C-A-Left>", "<C-w>h", { desc = "Window: Left" })
+keymap("n", "<C-A-Down>", "<C-w>j", { desc = "Window: Down" })
+keymap("n", "<C-A-Up>", "<C-w>k", { desc = "Window: Up" })
+keymap("n", "<C-A-Right>", "<C-w>l", { desc = "Window: Right" })
 
--- Split creation (IntelliJ-style)
+-- Split manipulation (Ctrl+F4 for close, similar to IntelliJ)
+keymap("n", "<C-F4>", "<C-w>c", { desc = "Window: Close (IntelliJ-style)" })
 keymap("n", "<C-A-v>", "<C-w>v", { desc = "Window: Split vertical" })
 keymap("n", "<C-A-s>", "<C-w>s", { desc = "Window: Split horizontal" })
 keymap("n", "<C-A-n>", "<C-w>n", { desc = "Window: New window" })
-
--- Split manipulation (Ctrl+F4 for close, similar to IntelliJ)
-keymap("n", "<C-A-w>", "<C-w>c", { desc = "Window: Close" })
-keymap("n", "<C-F4>", "<C-w>c", { desc = "Window: Close (IntelliJ-style)" })
-keymap("n", "<C-A-o>", "<C-w>o", { desc = "Window: Only" })
 keymap("n", "<C-A-=>", "<C-w>=", { desc = "Window: Equalize sizes" })
 
 -- ━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━
@@ -112,26 +105,50 @@ keymap("v", "p", '"_dP', opts)
 -- MISC UTILITIES
 -- ━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━
 
+-- Duplicate line (IntelliJ: Ctrl+D)
+keymap("n", "<C-d>", "yyp", { desc = "Edit: Duplicate line" })
+keymap("v", "<C-d>", "y'>p", { desc = "Edit: Duplicate selection" })
+
+-- Delete line (IntelliJ: Ctrl+Y)
+keymap("n", "<C-y>", "dd", { desc = "Edit: Delete line" })
+
+-- Join lines (IntelliJ: Ctrl+Shift+J)
+keymap("n", "<C-S-j>", "J", { desc = "Edit: Join lines" })
+
+-- Comment line (IntelliJ: Ctrl+/)
+-- Delegated to mini.comment or native gc; users can map <C-/> to "gcc" if desired
+-- Note: Ctrl+/ may require terminal-specific key handling; map to gc for now
+keymap("n", "<C-/>", "gcc", { desc = "Edit: Comment line" })
+keymap("v", "<C-/>", "gc", { desc = "Edit: Comment selection" })
+
+-- Go to Line (IntelliJ: Ctrl+G)
+keymap("n", "<C-g>", "<cmd>Telescope goto_line<CR>", { desc = "Navigate: Go to line" })
+
 -- Toggle relative number
 keymap("n", "<C-A-r>", function()
   vim.opt.relativenumber = not vim.opt.relativenumber._value
 end, { desc = "UI: Toggle relative numbers" })
 
--- Toggle line wrapping
-keymap("n", "<C-A-w>", function()
-  vim.opt.wrap = not vim.opt.wrap._value
-end, { desc = "UI: Toggle line wrap" })
-
--- Toggle spell checking
-keymap("n", "<C-A-p>", function()
-  vim.opt.spell = not vim.opt.spell._value
-end, { desc = "UI: Toggle spell check" })
-
--- Toggle diagnostics (Ctrl+Alt+D)
-keymap("n", "<C-A-d>", function()
+-- Toggle diagnostics (moved under <C-A-d> as a group)
+keymap("n", "<C-A-d>d", function()
   local enabled = vim.diagnostic.is_enabled()
   vim.diagnostic.enable(not enabled)
 end, { desc = "UI: Toggle diagnostics" })
+
+-- Toggle line wrapping (moved under <C-A-w> for window group)
+keymap("n", "<C-A-w>w", function()
+  vim.opt.wrap = not vim.opt.wrap._value
+end, { desc = "UI: Toggle line wrap" })
+
+-- Toggle spell checking (moved under <C-A-p> for clarity, away from DAP Pause on base <C-A-p>)
+keymap("n", "<C-A-d>s", function()
+  vim.opt.spell = not vim.opt.spell._value
+end, { desc = "UI: Toggle spell check" })
+
+-- Show Terminal (IntelliJ: Alt+F12)
+keymap("n", "<A-F12>", function()
+  require("snacks").terminal()
+end, { desc = "Terminal: Toggle" })
 
 -- ━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━
 -- COMMAND ABBREVIATIONS

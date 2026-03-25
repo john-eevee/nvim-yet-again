@@ -33,7 +33,7 @@ vim.api.nvim_create_autocmd("LspAttach", {
     end, "LSP: Signature Help", { buffer = ev.buf })
 
     map("n", "<S-F6>", vim.lsp.buf.rename, "LSP: Rename", { buffer = ev.buf })
-    map("n", "<C-A-l>", function()
+    map("n", "<C-A-f>", function()
       local ok, conform = pcall(require, "conform")
       if not ok then
         return
@@ -82,6 +82,12 @@ vim.api.nvim_create_autocmd("FileType", {
 -- <leader>cr, <A-Enter> work for code actions
 -- <leader>f for format
 -- etc.
+
+-- ━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━
+-- DIAGNOSTIC KEYMAPS
+-- ━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━
+map("n", "<F2>", vim.diagnostic.goto_next, "Goto Next Error", { noremap = true })
+map("n", "<S-F2>", vim.diagnostic.goto_prev, "Goto Prev Error", { noremap = true })
 
 -- ━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━
 -- HARPOON KEYMAPS
@@ -205,7 +211,7 @@ end)
 map("n", "gS", function()
   require("mini.splitjoin").toggle()
 end, "Split/Join block", { noremap = true })
--- Mini.jump / Mini.jump2d
+-- Mini.jump / Mini.jump2d (now using <C-A-j> since hjkl window nav removed)
 map("n", "f", function()
   require("mini.jump2d").jump()
 end, "Jump to char", { noremap = true })
@@ -276,10 +282,9 @@ vim.schedule(function()
     { "<C-A-m>R", desc = "Run Mise Task (telescope)" },
   })
 
-  -- Format/LSP
+  -- Format/LSP (moved from C-A-l to C-A-f for window nav)
   wk.add({
-    { "<C-A-l>l", desc = "Loclist" },
-    { "<C-A-l>r", desc = "Run Last Debug" },
+    { "<C-A-f>", desc = "Format" },
   })
 
   -- Split/Session
@@ -289,9 +294,9 @@ vim.schedule(function()
     { "<C-A-s>e", desc = "Session" },
   })
 
-  -- Utils
+  -- Utils (moved DAP UI from C-A-u>d to C-A-d>u to avoid Rust Debuggables collision)
   wk.add({
-    { "<C-A-u>d", desc = "DAP UI" },
+    { "<C-A-d>u", desc = "DAP UI" },
     { "<C-A-e>r", desc = "REPL Toggle" },
   })
 

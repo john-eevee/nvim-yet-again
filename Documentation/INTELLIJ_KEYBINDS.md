@@ -14,6 +14,7 @@
 |---------|--------|---|
 | `<C-S-n>` | Find Files | Ctrl+Shift+N |
 | `<C-S-f>` | Live Grep (Find in Path) | Ctrl+Shift+F |
+| `<C-S-r>` | Replace in Files (GrugFar) | Ctrl+Shift+R |
 | `<C-e>` | Recent Files/Buffers | Ctrl+E |
 | `<C-S-a>` | Command Palette | Ctrl+Shift+A |
 | `<C-A-k>` | Keymaps Search | — |
@@ -48,12 +49,33 @@
 | Keybind | Action | IntelliJ Equiv |
 |---------|--------|---|
 | `<S-F6>` | Rename | Shift+F6 |
-| `<C-A-l>` | Format Code | Ctrl+Alt+L |
+| `<C-A-f>` | Format Code | Ctrl+Alt+L |
 | `<A-Enter>` | Code Action (Quick Fix) | Alt+Enter |
 | `K` | Hover Docs | — |
 | `<C-k>` | Signature Help | — |
 
 ---
+
+## Editing
+
+### Code Editing
+
+| Keybind | Action | IntelliJ Equiv |
+|---------|--------|---|
+| `<C-d>` | Duplicate Line/Selection | Ctrl+D |
+| `<C-y>` | Delete Line | Ctrl+Y |
+| `<C-S-j>` | Join Lines | Ctrl+Shift+J |
+| `<C-/>` | Comment Line | Ctrl+/ |
+
+---
+
+## Error Navigation
+
+| Keybind | Action | IntelliJ Equiv |
+|---------|--------|---|
+| `<F2>` | Next Error | F2 |
+| `<S-F2>` | Previous Error | Shift+F2 |
+| `<C-g>` | Go to Line | Ctrl+G |
 
 ## Debugging (DAP)
 
@@ -62,12 +84,25 @@
 | Keybind | Action | IntelliJ Equiv |
 |---------|--------|---|
 | `<C-F8>` | Toggle Breakpoint | Ctrl+F8 |
+| `<C-S-F8>` | Breakpoint Condition | Ctrl+Shift+F8 |
 | `<F7>` | Step Into | F7 |
 | `<F8>` | Step Over | F8 |
 | `<S-F8>` | Step Out | Shift+F8 |
 | `<F9>` | Continue | F9 |
 | `<A-F9>` | Run to Cursor | Alt+F9 |
 | `<A-F8>` | Evaluate Expression | Alt+F8 |
+| `<C-S-F9>` | Run with Args | — (DAP extension) |
+
+### DAP Commands (Under `<C-A-d>` group)
+
+| Keybind | Action |
+|---------|--------|
+| `<C-A-d>d` | Toggle Diagnostics |
+| `<C-A-d>g` | Goto Line (No Execute) |
+| `<C-A-d>p` | Pause |
+| `<C-A-d>r` | Run Last |
+| `<C-A-d>u` | DAP UI |
+| `<C-A-d>w` | Widgets (Hover) |
 
 ---
 
@@ -79,7 +114,16 @@
 |---------|--------|---|
 | `<C-S-F10>` | Run Nearest Test | Ctrl+Shift+F10 |
 | `<S-F10>` | Run File Tests | Shift+F10 |
-| `<S-F9>` | Debug Nearest Test | Shift+F9 |
+
+### Test Commands (Under `<C-A-t>` group)
+
+| Keybind | Action |
+|---------|--------|
+| `<C-A-t>D` | Debug Nearest Test |
+| `<C-A-t>O` | Toggle Output Panel |
+| `<C-A-t>o` | Show Output |
+| `<C-A-t>s` | Toggle Summary |
+| `<C-A-t>t` | Stop Test |
 
 ---
 
@@ -89,14 +133,12 @@
 
 | Keybind | Action |
 |---------|--------|
-| `<C-A-h>` | Navigate Left |
-| `<C-A-j>` | Navigate Down |
-| `<C-A-k>` | Navigate Up |
-| `<C-A-l>` | Navigate Right |
-| `<C-A-Left>` | Navigate Left (arrow variant) |
-| `<C-A-Down>` | Navigate Down (arrow variant) |
-| `<C-A-Up>` | Navigate Up (arrow variant) |
-| `<C-A-Right>` | Navigate Right (arrow variant) |
+| `<C-A-Left>` | Navigate Left |
+| `<C-A-Down>` | Navigate Down |
+| `<C-A-Up>` | Navigate Up |
+| `<C-A-Right>` | Navigate Right |
+
+**Note:** Direct `h/j/k/l` window nav removed; use arrow variants to avoid plugin collisions
 
 ### Creating & Manipulating Splits
 
@@ -104,7 +146,6 @@
 |---------|--------|
 | `<C-A-v>` | Split Vertical |
 | `<C-A-s>` | Split Horizontal |
-| `<C-A-w>` | Close Split |
 | `<C-F4>` | Close Split (IntelliJ-style) |
 | `<C-A-=>` | Equalize Split Sizes |
 
@@ -175,9 +216,10 @@
 | Keybind | Action |
 |---------|--------|
 | `<C-A-r>` | Toggle Relative Line Numbers |
-| `<C-A-w>` | Toggle Line Wrap |
-| `<C-A-p>` | Toggle Spell Check |
-| `<C-A-d>` | Toggle Diagnostics |
+| `<C-A-d>d` | Toggle Diagnostics |
+| `<C-A-d>s` | Toggle Spell Check |
+| `<C-A-d>W` | Toggle Line Wrap |
+| `<A-F12>` | Toggle Terminal | 
 | `<C-A-\>` | Toggle Zen Mode |
 
 ---
@@ -200,11 +242,12 @@
 | Keybind | Action |
 |---------|--------|
 | `<C-A-u>r` | Runnables (cargo run/test) |
-| `<C-A-u>d` | Debuggables (LLDB) |
 | `<C-A-u>e` | Expand Macro |
 | `<C-A-u>p` | Parent Module |
 | `<C-A-u>j` | Join Lines |
 | `<C-A-u>s` | Structural Search & Replace |
+
+**Note:** `<C-A-u>d` removed (was Debuggables) to avoid collision with DAP UI on `<C-A-d>u`
 
 ### Database (SQL)
 
@@ -228,6 +271,9 @@
 | `<C-A-x>` | Toggle Diff Overlay |
 | `<C-A-m>r` | Run Mise Task (ui.select) |
 | `<C-A-m>R` | Run Mise Task (telescope) |
+| `<C-A-e>r` | Toggle DAP REPL |
+| `<C-A-s>e` | DAP Session |
+| `<C-A-t>e` | DAP Terminate |
 
 ---
 
@@ -247,6 +293,8 @@ These core Vim motions remain standard and are not affected by the keybind migra
 | `<C-r>` | Redo |
 | `d`, `c`, `y` | Delete, Change, Yank |
 | `p`, `P` | Paste After/Before |
+| `<C-w>` | Extend Selection (Treesitter incremental) |
+| `<C-S-w>` | Shrink Selection (Treesitter decremental) |
 | `gd` (in plugins) | Go to Definition (remapped from `:lsp`) |
 
 ---
@@ -264,26 +312,24 @@ All keybinds are registered with **Which-Key**, so you can:
 
 ### Which-Key Groups
 
-| Group | Prefix | Commands |
+| Group | Prefix | Main Commands |
 |-------|--------|----------|
 | Alt Commands | `<C-A-a>` | — |
 | Colors/Check | `<C-A-c>` | Highlights, Workspace Symbols |
-| Database | `<C-A-d>` | Toggle DB UI |
-| Explorer | `<C-A-e>` | Oil file explorer |
+| DAP/Diagnostics | `<C-A-d>` | Diagnostics, DAP (Goto, Pause, Run Last, UI, Widgets) |
+| Explorer | `<C-A-e>` | Oil file explorer, REPL toggle |
+| Format | `<C-A-f>` | LSP Format |
 | Git | `<C-A-g>` | Stage, Reset, Preview, Blame, Diff |
 | Harpoon | `<C-A-h>` | Menu, Next, Prev, Add |
 | Jump | `<C-A-j>` | Jump2d |
 | Keymaps | `<C-A-k>` | Search keymaps |
-| Format | `<C-A-l>` | Format, Loclist |
 | Mise | `<C-A-m>` | Run task |
 | Other | `<C-A-o>` | Alternate files |
-| Pause/Spell | `<C-A-p>` | Toggle spell |
-| Quickfix | `<C-A-q>` | Quickfix list |
 | Replace | `<C-A-r>` | GrugFar, Relative numbers |
-| Split/Session | `<C-A-s>` | Splits, test summary |
-| Todo/Test | `<C-A-t>` | Todo search, test commands |
-| Utils | `<C-A-u>` | DAP, REPL, Rust tools |
-| Wrap/Widgets | `<C-A-w>` | Line wrap, DAP widgets |
+| Split/Session/Test | `<C-A-s>` | Splits, DAP session, Test summary |
+| Todo/Test | `<C-A-t>` | Todo search, Test commands (Debug, Output, Summary, Stop) |
+| Utils/Rust | `<C-A-u>` | Rust tools (Runnables, Expand, Parent, Join, SSR) |
+| Window | `<C-A-w>` | Window splits & navigation |
 | Diff | `<C-A-x>` | Toggle diff overlay |
 | Zen/Reset | `<C-A-z>` | Zen mode, Reset hunk |
 
@@ -298,10 +344,10 @@ All keybinds are registered with **Which-Key**, so you can:
 | `<Space>ff` | `<C-S-n>` | Find Files |
 | `<Space>fg` | `<C-S-f>` | Live Grep |
 | `<Space>fb` | `<C-e>` | Recent Files |
-| `<Space>sr` | `<C-A-r>` | Search & Replace |
-| `<Space>wh/wj/wk/wl` | `<C-A-h/j/k/l>` | Window Navigation |
+| `<Space>sr` | `<C-S-r>` | Search & Replace |
+| `<Space>wh/wj/wk/wl` | `<C-A-Left/Down/Up/Right>` | Window Navigation |
 | `<Space>bd` | `<C-F4>` | Close Buffer |
-| `<Space>uh/uw/us` | `<C-A-r/w/p>` | UI Toggles |
+| `<Space>uh/uw/us` | `<C-A-r>` / `<C-A-d>W` / `<C-A-d>s` | UI Toggles |
 
 ---
 

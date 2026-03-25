@@ -58,11 +58,11 @@ return {
     keys = {
       { "<C-S-F10>", function() require("neotest").run.run() end, desc = "Run Nearest" },
       { "<S-F10>", function() require("neotest").run.run(vim.fn.expand("%")) end, desc = "Run File" },
-      { "<C-A-s>y", function() require("neotest").summary.toggle() end, desc = "Toggle Summary" },
-      { "<C-A-o>", function() require("neotest").output.open({ enter = true, auto_close = true }) end, desc = "Show Output" },
-      { "<C-A-O>", function() require("neotest").output_panel.toggle() end, desc = "Toggle Output Panel" },
-      { "<C-A-s>t", function() require("neotest").run.stop() end, desc = "Stop" },
-      { "<S-F9>", function() require("neotest").run.run({ strategy = "dap" }) end, desc = "Debug Nearest" },
+      { "<C-A-t>s", function() require("neotest").summary.toggle() end, desc = "Toggle Summary" },
+      { "<C-A-t>o", function() require("neotest").output.open({ enter = true, auto_close = true }) end, desc = "Show Output" },
+      { "<C-A-t>O", function() require("neotest").output_panel.toggle() end, desc = "Toggle Output Panel" },
+      { "<C-A-t>t", function() require("neotest").run.stop() end, desc = "Stop" },
+      { "<C-A-t>D", function() require("neotest").run.run({ strategy = "dap" }) end, desc = "Debug Nearest" },
     },
   },
 }
