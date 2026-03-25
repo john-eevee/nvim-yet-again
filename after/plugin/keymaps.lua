@@ -220,3 +220,83 @@ end, "Jump2d start", { noremap = true })
 map("n", "<C-A-x>", function()
   require("mini.diff").toggle_overlay()
 end, "Diff toggle", { noremap = true })
+
+-- ━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━
+-- WHICH-KEY INTEGRATIONS
+-- ━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━
+vim.schedule(function()
+  local wk = require("which-key")
+
+  -- Rust tools group
+  wk.add({
+    { "<C-A-u>r", desc = "Runnables" },
+    { "<C-A-u>d", desc = "Debuggables" },
+    { "<C-A-u>e", desc = "Expand Macro" },
+    { "<C-A-u>p", desc = "Parent Module" },
+    { "<C-A-u>j", desc = "Join Lines" },
+    { "<C-A-u>s", desc = "SSR" },
+  })
+
+  -- Harpoon subcommands
+  wk.add({
+    { "<C-A-h>p", desc = "Harpoon: Previous" },
+    { "<C-A-h>n", desc = "Harpoon: Next" },
+  })
+
+  -- Gitsigns subcommands
+  wk.add({
+    { "<C-A-g>S", desc = "Stage Buffer" },
+    { "<C-A-g>u", desc = "Undo Stage Hunk" },
+    { "<C-A-g>R", desc = "Reset Buffer" },
+    { "<C-A-g>D", desc = "Diff This ~" },
+  })
+
+  -- Other.nvim subcommands
+  wk.add({
+    { "<C-A-o>a", desc = "Open Alternate" },
+    { "<C-A-o>s", desc = "Open in Split" },
+    { "<C-A-o>v", desc = "Open in Vsplit" },
+  })
+
+  -- Telescope/Search subcommands
+  wk.add({
+    { "<C-A-c>h", desc = "Highlights" },
+    { "<C-A-c>w", desc = "Workspace Symbols" },
+  })
+
+  -- Test/Todo subcommands
+  wk.add({
+    { "<C-A-t>d", desc = "Todo Search" },
+    { "<C-A-t>f", desc = "Todo/Fix/Fixme" },
+  })
+
+  -- Mise task subcommands
+  wk.add({
+    { "<C-A-m>r", desc = "Run Mise Task (ui.select)" },
+    { "<C-A-m>R", desc = "Run Mise Task (telescope)" },
+  })
+
+  -- Format/LSP
+  wk.add({
+    { "<C-A-l>l", desc = "Loclist" },
+    { "<C-A-l>r", desc = "Run Last Debug" },
+  })
+
+  -- Split/Session
+  wk.add({
+    { "<C-A-s>y", desc = "Summary Toggle" },
+    { "<C-A-s>t", desc = "Stop Test" },
+    { "<C-A-s>e", desc = "Session" },
+  })
+
+  -- Utils
+  wk.add({
+    { "<C-A-u>d", desc = "DAP UI" },
+    { "<C-A-e>r", desc = "REPL Toggle" },
+  })
+
+  -- Database
+  wk.add({
+    { "<C-A-d>b", desc = "Toggle DB UI" },
+  })
+end)
