@@ -109,7 +109,7 @@ return {
     dependencies = { "nvim-tree/nvim-web-devicons" },
     keys = {
       {
-        "<leader>-",
+        "<C-A-e>",
         "<cmd>Oil<CR>",
         desc = "Oil: Toggle file explorer",
       },

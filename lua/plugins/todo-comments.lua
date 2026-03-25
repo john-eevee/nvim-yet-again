@@ -6,7 +6,7 @@ return {
   keys = {
     { "]t", function() require("todo-comments").jump_next() end, desc = "Next Todo" },
     { "[t", function() require("todo-comments").jump_prev() end, desc = "Previous Todo" },
-    { "<leader>st", "<cmd>TodoTelescope<cr>", desc = "Todo" },
-    { "<leader>sT", "<cmd>TodoTelescope keywords=TODO,FIX,FIXME<cr>", desc = "Todo/Fix/Fixme" },
+    { "<C-A-t>d", "<cmd>TodoTelescope<cr>", desc = "Todo" },
+    { "<C-A-t>f", "<cmd>TodoTelescope keywords=TODO,FIX,FIXME<cr>", desc = "Todo/Fix/Fixme" },
   },
 }

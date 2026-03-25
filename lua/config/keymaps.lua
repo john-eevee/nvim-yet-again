@@ -35,58 +35,41 @@ keymap("n", "<C-u>", "<C-u>zz", opts)
 keymap("n", "<C-d>", "<C-d>zz", opts)
 
 -- ━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━
--- WINDOW NAVIGATION & MANAGEMENT (Space + w)
+-- WINDOW NAVIGATION & MANAGEMENT
 -- ━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━
--- Split navigation
-keymap("n", "<leader>wh", "<C-w>h", { desc = "Window: Left" })
-keymap("n", "<leader>wj", "<C-w>j", { desc = "Window: Down" })
-keymap("n", "<leader>wk", "<C-w>k", { desc = "Window: Up" })
-keymap("n", "<leader>wl", "<C-w>l", { desc = "Window: Right" })
+-- Split navigation (IntelliJ-style: Ctrl+Alt+hjkl)
+keymap("n", "<C-A-h>", "<C-w>h", { desc = "Window: Left" })
+keymap("n", "<C-A-j>", "<C-w>j", { desc = "Window: Down" })
+keymap("n", "<C-A-k>", "<C-w>k", { desc = "Window: Up" })
+keymap("n", "<C-A-l>", "<C-w>l", { desc = "Window: Right" })
 
--- Arrow key variants for navigation
-keymap("n", "<leader>w<Left>", "<C-w>h", { desc = "Window: Left (arrow)" })
-keymap("n", "<leader>w<Down>", "<C-w>j", { desc = "Window: Down (arrow)" })
-keymap("n", "<leader>w<Up>", "<C-w>k", { desc = "Window: Up (arrow)" })
-keymap("n", "<leader>w<Right>", "<C-w>l", { desc = "Window: Right (arrow)" })
+-- Arrow key variants for navigation (IntelliJ-style)
+keymap("n", "<C-A-Left>", "<C-w>h", { desc = "Window: Left (arrow)" })
+keymap("n", "<C-A-Down>", "<C-w>j", { desc = "Window: Down (arrow)" })
+keymap("n", "<C-A-Up>", "<C-w>k", { desc = "Window: Up (arrow)" })
+keymap("n", "<C-A-Right>", "<C-w>l", { desc = "Window: Right (arrow)" })
 
--- Split creation (new splits go right/below)
-keymap("n", "<leader>wv", "<C-w>v", { desc = "Window: Split vertical" })
-keymap("n", "<leader>ws", "<C-w>s", { desc = "Window: Split horizontal" })
-keymap("n", "<leader>wn", "<C-w>n", { desc = "Window: New window" })
+-- Split creation (IntelliJ-style)
+keymap("n", "<C-A-v>", "<C-w>v", { desc = "Window: Split vertical" })
+keymap("n", "<C-A-s>", "<C-w>s", { desc = "Window: Split horizontal" })
+keymap("n", "<C-A-n>", "<C-w>n", { desc = "Window: New window" })
 
--- Split manipulation
-keymap("n", "<leader>wc", "<C-w>c", { desc = "Window: Close" })
-keymap("n", "<leader>wo", "<C-w>o", { desc = "Window: Only" })
-keymap("n", "<leader>w=", "<C-w>=", { desc = "Window: Equalize sizes" })
-
--- Resize windows
-keymap("n", "<leader>w+", "<C-w>+", { desc = "Window: Increase height" })
-keymap("n", "<leader>w-", "<C-w>-", { desc = "Window: Decrease height" })
-keymap("n", "<leader>w>", "<C-w>>", { desc = "Window: Increase width" })
-keymap("n", "<leader>w<", "<C-w><", { desc = "Window: Decrease width" })
-
--- Arrow key variants for resizing (Shift+arrow for height, Alt+arrow for width)
-keymap("n", "<leader>w<S-Up>", "<C-w>+", { desc = "Window: Increase height (shift+up)" })
-keymap("n", "<leader>w<S-Down>", "<C-w>-", { desc = "Window: Decrease height (shift+down)" })
-keymap("n", "<leader>w<M-Right>", "<C-w>>", { desc = "Window: Increase width (alt+right)" })
-keymap("n", "<leader>w<M-Left>", "<C-w><", { desc = "Window: Decrease width (alt+left)" })
+-- Split manipulation (Ctrl+F4 for close, similar to IntelliJ)
+keymap("n", "<C-A-w>", "<C-w>c", { desc = "Window: Close" })
+keymap("n", "<C-F4>", "<C-w>c", { desc = "Window: Close (IntelliJ-style)" })
+keymap("n", "<C-A-o>", "<C-w>o", { desc = "Window: Only" })
+keymap("n", "<C-A-=>", "<C-w>=", { desc = "Window: Equalize sizes" })
 
 -- ━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━
--- BUFFER MANAGEMENT (Space + b)
+-- BUFFER MANAGEMENT
 -- ━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━
-keymap("n", "<leader>bn", "<cmd>enew<CR>", { desc = "Buffer: New" })
-keymap("n", "<leader>bd", "<cmd>bdelete<CR>", { desc = "Buffer: Delete" })
-keymap("n", "<leader>bn", "<cmd>bnext<CR>", { desc = "Buffer: Next" })
-keymap("n", "<leader>bp", "<cmd>bprevious<CR>", { desc = "Buffer: Previous" })
-keymap("n", "<leader>ba", "<cmd>%bdelete|edit #<CR>", { desc = "Buffer: Delete all others" })
+-- Buffer navigation (IntelliJ-style: Alt+Left/Right)
+keymap("n", "<A-Left>", "<cmd>bprevious<CR>", { desc = "Buffer: Previous (IntelliJ)" })
+keymap("n", "<A-Right>", "<cmd>bnext<CR>", { desc = "Buffer: Next (IntelliJ)" })
 
--- Smart buffer navigation with counts
-keymap("n", "<C-l>", "<cmd>bnext<CR>", { desc = "Buffer: Next (Ctrl+l)" })
+-- Legacy control binds still available
 keymap("n", "<C-h>", "<cmd>bprevious<CR>", { desc = "Buffer: Previous (Ctrl+h)" })
-
--- Arrow key variants for buffer navigation
-keymap("n", "<C-Right>", "<cmd>bnext<CR>", { desc = "Buffer: Next (ctrl+right)" })
-keymap("n", "<C-Left>", "<cmd>bprevious<CR>", { desc = "Buffer: Previous (ctrl+left)" })
+keymap("n", "<C-l>", "<cmd>bnext<CR>", { desc = "Buffer: Next (Ctrl+l)" })
 
 
 -- ━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━
@@ -96,10 +79,9 @@ keymap("n", "<C-Left>", "<cmd>bprevious<CR>", { desc = "Buffer: Previous (ctrl+l
 -- Note: <M-1> is handled by nvim-tree.lua in lua/plugins/nvim-tree.lua
 
 -- ━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━
--- SEARCH & REPLACE (Space + s)
+-- SEARCH & REPLACE
 -- ━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━
-keymap("n", "<leader>sh", "<cmd>nohlsearch<CR>", { desc = "Search: Clear highlight" })
--- Additional search/replace mappings will be added with Telescope integration
+keymap("n", "<Esc>", "<cmd>nohlsearch<CR>", opts)
 
 -- ━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━
 -- MODE TRANSITIONS
@@ -129,26 +111,24 @@ keymap("v", "p", '"_dP', opts)
 -- ━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━
 -- MISC UTILITIES
 -- ━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━
--- Clear search highlight on pressing Escape
-keymap("n", "<Esc>", "<cmd>nohlsearch<CR>", opts)
 
 -- Toggle relative number
-keymap("n", "<leader>ur", function()
+keymap("n", "<C-A-r>", function()
   vim.opt.relativenumber = not vim.opt.relativenumber._value
 end, { desc = "UI: Toggle relative numbers" })
 
 -- Toggle line wrapping
-keymap("n", "<leader>uw", function()
+keymap("n", "<C-A-w>", function()
   vim.opt.wrap = not vim.opt.wrap._value
 end, { desc = "UI: Toggle line wrap" })
 
 -- Toggle spell checking
-keymap("n", "<leader>us", function()
+keymap("n", "<C-A-p>", function()
   vim.opt.spell = not vim.opt.spell._value
 end, { desc = "UI: Toggle spell check" })
 
--- Toggle diagnostics
-keymap("n", "<leader>ud", function()
+-- Toggle diagnostics (Ctrl+Alt+D)
+keymap("n", "<C-A-d>", function()
   local enabled = vim.diagnostic.is_enabled()
   vim.diagnostic.enable(not enabled)
 end, { desc = "UI: Toggle diagnostics" })
@@ -215,5 +195,5 @@ vim.api.nvim_create_user_command("MiseRun", run_mise_task, { nargs = 0, desc = "
 vim.api.nvim_create_user_command("MiseRunTelescope", function()
   vim.cmd("MiseRunTelescope")
 end, { nargs = 0, desc = "Run mise task via telescope" })
-keymap("n", "<leader>mr", run_mise_task, { desc = "Mise: Run task (ui.select)" })
-keymap("n", "<leader>mR", "<cmd>MiseRunTelescope<CR>", { desc = "Mise: Run task (telescope)" })
+keymap("n", "<C-A-m>r", run_mise_task, { desc = "Mise: Run task (ui.select)" })
+keymap("n", "<C-A-m>R", "<cmd>MiseRunTelescope<CR>", { desc = "Mise: Run task (telescope)" })

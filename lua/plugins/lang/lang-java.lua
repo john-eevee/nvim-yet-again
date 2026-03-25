@@ -1,15 +1,5 @@
 -- Add Java language support with Gradle and Maven
 return {
-  -- Add Java treesitter parser
-  {
-    "nvim-treesitter/nvim-treesitter",
-    opts = function(_, opts)
-      opts.ensure_installed = vim.list_extend(opts.ensure_installed or {}, {
-        "java",
-      })
-    end,
-  },
-
   -- Add Mason integration for Java tools
   {
     "williamboman/mason.nvim",
@@ -99,8 +89,8 @@ return {
       local map = function(mode, lhs, rhs, desc)
         vim.keymap.set(mode, lhs, rhs, { buffer = true, desc = desc })
       end
-      map("n", "<leader>df", function() jdtls.test_class() end, "Debug test class")
-      map("n", "<leader>dn", function() jdtls.test_nearest_method() end, "Debug nearest test method")
+      map("n", "<S-F9>", function() jdtls.test_class() end, "Debug test class")
+      map("n", "<S-F9>", function() jdtls.test_nearest_method() end, "Debug nearest test method")
     end,
   },
 }

@@ -85,7 +85,7 @@ return {
           initial_mode = "normal",
           mappings = {
             i = {
-              ["<c-d>"] = require("telescope.actions").delete_buffer,
+              ["<c-d>"] = "delete_buffer",
             },
           },
           sort_lastused = true,
@@ -215,30 +215,30 @@ return {
     end,
     keys = {
       -- ━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━
-      -- REGISTERS
+      -- REGISTERS (Ctrl+Shift+R)
       -- ━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━
       {
-        "<leader>srg",
+        "<C-S-r>",
         "<cmd>Telescope registers<CR>",
         mode = { "n", "v" },
         desc = "Telescope: Registers",
       },
 
       -- ━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━
-      -- FIND FILES & LIVE GREP
+      -- FIND FILES & LIVE GREP (IntelliJ-style: Ctrl+Shift+N, Ctrl+Shift+F)
       -- ━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━
       {
-        "<leader>ff",
+        "<C-S-n>",
         "<cmd>Telescope find_files<CR>",
         desc = "Telescope: Find Files",
       },
       {
-        "<leader>fg",
+        "<C-S-f>",
         "<cmd>Telescope live_grep<CR>",
         desc = "Telescope: Live Grep",
       },
       {
-        "<leader>fb",
+        "<C-e>",
         "<cmd>Telescope buffers<CR>",
         desc = "Telescope: Buffers",
       },
@@ -257,15 +257,15 @@ return {
       },
 
       -- ━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━
-      -- COMMANDS & COMMAND PALETTE
+      -- COMMANDS & COMMAND PALETTE (Ctrl+Shift+A)
       -- ━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━
       {
-        "<leader>fc",
+        "<C-S-a>",
         "<cmd>Telescope commands<CR>",
         desc = "Telescope: Commands",
       },
       {
-        "<leader>fp",
+        "<C-S-a>",
         function()
           require("telescope.builtin").builtin()
         end,
@@ -276,7 +276,7 @@ return {
       -- HELP TAGS
       -- ━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━
       {
-        "<leader>fh",
+        "<C-A-h>f",
         "<cmd>Telescope help_tags<CR>",
         desc = "Telescope: Help Tags",
       },
@@ -285,7 +285,7 @@ return {
       -- KEYMAPS
       -- ━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━
       {
-        "<leader>fk",
+        "<C-A-k>",
         "<cmd>Telescope keymaps<CR>",
         desc = "Telescope: Keymaps",
       },
@@ -294,7 +294,7 @@ return {
       -- SEARCH HISTORY
       -- ━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━
       {
-        "<leader>f/",
+        "<C-A-/>",
         "<cmd>Telescope search_history<CR>",
         desc = "Telescope: Search History",
       },
@@ -303,7 +303,7 @@ return {
       -- COMMAND HISTORY
       -- ━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━
       {
-        "<leader>f:",
+        "<C-A-:>",
         "<cmd>Telescope command_history<CR>",
         desc = "Telescope: Command History",
       },
@@ -312,7 +312,7 @@ return {
       -- HIGHLIGHTS (Colorscheme colors)
       -- ━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━
       {
-        "<leader>sch",
+        "<C-A-c>h",
         "<cmd>Telescope highlights<CR>",
         desc = "Telescope: Highlights",
       },
@@ -321,32 +321,31 @@ return {
       -- QUICKFIX & LOCLIST
       -- ━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━
       {
-        "<leader>sq",
+        "<C-A-q>",
         "<cmd>Telescope quickfix<CR>",
         desc = "Telescope: Quickfix",
       },
       {
-        "<leader>sl",
+        "<C-A-l>l",
         "<cmd>Telescope loclist<CR>",
         desc = "Telescope: Loclist",
       },
+
+      -- ━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━
+      -- LSP PICKERS (IntelliJ-style)
+      -- ━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━
       {
-        "<leader>gR",
-        "<cmd>Telescope lsp_references<CR>",
-        desc = "Telescope: LSP References",
-      },
-      {
-        "<leader>go",
+        "<C-F12>",
         "<cmd>Telescope lsp_document_symbols<CR>",
         desc = "Telescope: LSP Document Symbols",
       },
       {
-        "<leader>gO",
+        "<C-A-c>w",
         "<cmd>Telescope lsp_workspace_symbols<CR>",
         desc = "Telescope: LSP Workspace Symbols",
       },
       {
-        "<leader>gx",
+        "<A-F8>",
         function()
           local severity_map = { Error = 1, Warning = 2, Information = 3, Hint = 4 }
           local opts = {
@@ -359,23 +358,6 @@ return {
           diagnostics(opts)
         end,
         desc = "Telescope: Diagnostics",
-      },
-      {
-        "<leader>gI",
-        "<cmd>Telescope lsp_implementations<CR>",
-        desc = "Telescope: Implementations",
-      },
-
-      {
-        "<leader>gd",
-        "<cmd>Telescope definitions<CR>",
-        desc = "Telescope: Definitions",
-      },
-
-      {
-        "<leader>gT",
-        "<cmd>Telescope lsp_type_definitions<CR>",
-        desc = "Telescope: Type Definitions",
       },
     },
   },

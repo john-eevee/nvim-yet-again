@@ -49,7 +49,7 @@ return {
   end,
   keys = {
     {
-      "<leader>zz",
+      "<C-A-\\>",
       function()
         require("zen-mode").toggle()
       end,

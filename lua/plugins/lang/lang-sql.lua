@@ -18,7 +18,7 @@ return {
       vim.g.db_ui_use_nvim_notify = 1
     end,
     keys = {
-      { "<leader>D", "<cmd>DBUIToggle<CR>", desc = "Toggle DB UI" },
+      { "<C-A-d>b", "<cmd>DBUIToggle<CR>", desc = "Toggle DB UI" },
     },
   },
 }

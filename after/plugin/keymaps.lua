@@ -12,41 +12,37 @@ vim.api.nvim_create_autocmd("LspAttach", {
   callback = function(ev)
     local ts = require("telescope.builtin")
 
-    map("n", "gD", function()
-      ts.lsp_type_definitions()
-    end, "LSP: Goto Declaration", { buffer = ev.buf })
-
-    map("n", "gd", function()
+    map("n", "<C-b>", function()
       ts.lsp_definitions()
     end, "LSP: Goto Definition", { buffer = ev.buf })
 
-    map("n", "K", function()
-      vim.lsp.buf.hover({ border = "single" })
-    end, "LSP: Hover", { buffer = ev.buf })
+    map("n", "<C-S-b>", function()
+      ts.lsp_type_definitions()
+    end, "LSP: Goto Declaration", { buffer = ev.buf })
 
-    map("n", "gi", function()
+    map("n", "<C-A-b>", function()
       ts.lsp_implementations()
     end, "LSP: Goto Implementation", { buffer = ev.buf })
+
+    map("n", "<A-F7>", function()
+      ts.lsp_references()
+    end, "LSP: References", { buffer = ev.buf })
 
     map("n", "<C-k>", function()
       vim.lsp.buf.signature_help({ border = "single" })
     end, "LSP: Signature Help", { buffer = ev.buf })
 
-    map("n", "<leader>cr", vim.lsp.buf.rename, "LSP: Rename", { buffer = ev.buf })
-    map("n", "<leader>c=", function()
+    map("n", "<S-F6>", vim.lsp.buf.rename, "LSP: Rename", { buffer = ev.buf })
+    map("n", "<C-A-l>", function()
       local ok, conform = pcall(require, "conform")
       if not ok then
         return
       end
       conform.format({ lsp_fallback = true })
-    end)
+    end, "LSP: Format", { buffer = ev.buf })
     map({ "n", "v" }, "<A-Enter>", function()
       vim.lsp.buf.code_action({ border = "single" })
     end, "LSP: Code Action", { buffer = ev.buf })
-
-    map("n", "gr", function()
-      ts.lsp_references()
-    end, "LSP: References", { buffer = ev.buf })
 
     map("n", "<leader>f", function()
       vim.lsp.buf.format({ async = true })
@@ -66,19 +62,19 @@ vim.api.nvim_create_autocmd("FileType", {
 
     -- Rust-specific features not available via generic LSP
     -- Runnables (cargo run/test)
-    map("n", "<leader>Rr", rt.runnables.runnables, "Rust: Runnables", opts)
+    map("n", "<C-A-u>r", rt.runnables.runnables, "Rust: Runnables", opts)
     -- Debug (LLDB)
-    map("n", "<leader>Rd", rt.debuggables.debuggables, "Rust: Debuggables", opts)
+    map("n", "<C-A-u>d", rt.debuggables.debuggables, "Rust: Debuggables", opts)
     -- Expand macro
-    map("n", "<leader>Re", rt.expand_macro.expand_macro, "Rust: Expand macro", opts)
+    map("n", "<C-A-u>e", rt.expand_macro.expand_macro, "Rust: Expand macro", opts)
     -- Parent module
-    map("n", "<leader>Rp", rt.parent_module.parent_module, "Rust: Parent module", opts)
+    map("n", "<C-A-u>p", rt.parent_module.parent_module, "Rust: Parent module", opts)
     -- Join lines
-    map("n", "<leader>Rj", function()
+    map("n", "<C-A-u>j", function()
       rt.join_lines.join_lines()
     end, "Rust: Join lines", opts)
     -- Structural search replace
-    map("n", "<leader>RS", rt.ssr.ssr, "Rust: SSR", opts)
+    map("n", "<C-A-u>s", rt.ssr.ssr, "Rust: SSR", opts)
   end,
 })
 
@@ -93,35 +89,35 @@ vim.api.nvim_create_autocmd("FileType", {
 vim.schedule(function()
   local harpoon = require("harpoon")
 
-  map("n", "<leader>ha", function()
+  map("n", "<C-A-m>a", function()
     harpoon:list():add()
   end, "Harpoon: Add file", { noremap = true })
 
-  map("n", "<leader>hm", function()
+  map("n", "<C-A-h>", function()
     harpoon.ui:toggle_quick_menu(harpoon:list())
   end, "Harpoon: Toggle menu", { noremap = true })
 
-  map("n", "<leader>h1", function()
+  map("n", "<C-1>", function()
     harpoon:list():select(1)
   end, "Harpoon: Jump to 1", { noremap = true })
 
-  map("n", "<leader>h2", function()
+  map("n", "<C-2>", function()
     harpoon:list():select(2)
   end, "Harpoon: Jump to 2", { noremap = true })
 
-  map("n", "<leader>h3", function()
+  map("n", "<C-3>", function()
     harpoon:list():select(3)
   end, "Harpoon: Jump to 3", { noremap = true })
 
-  map("n", "<leader>h4", function()
+  map("n", "<C-4>", function()
     harpoon:list():select(4)
   end, "Harpoon: Jump to 4", { noremap = true })
 
-  map("n", "<leader>hp", function()
+  map("n", "<C-A-h>p", function()
     harpoon:list():prev()
   end, "Harpoon: Previous", { noremap = true })
 
-  map("n", "<leader>hn", function()
+  map("n", "<C-A-h>n", function()
     harpoon:list():next()
   end, "Harpoon: Next", { noremap = true })
 end)
@@ -142,17 +138,17 @@ vim.api.nvim_create_autocmd("BufReadPre", {
 
     map("n", "]h", gs.next_hunk, "Next Hunk", opts)
     map("n", "[h", gs.prev_hunk, "Prev Hunk", opts)
-    map({ "n", "v" }, "<leader>ghs", ":Gitsigns stage_hunk<CR>", "Stage Hunk", opts)
-    map({ "n", "v" }, "<leader>ghr", ":Gitsigns reset_hunk<CR>", "Reset Hunk", opts)
-    map("n", "<leader>ghS", gs.stage_buffer, "Stage Buffer", opts)
-    map("n", "<leader>ghu", gs.undo_stage_hunk, "Undo Stage Hunk", opts)
-    map("n", "<leader>ghR", gs.reset_buffer, "Reset Buffer", opts)
-    map("n", "<leader>ghp", gs.preview_hunk, "Preview Hunk", opts)
-    map("n", "<leader>ghb", function()
+    map({ "n", "v" }, "<C-A-g>s", ":Gitsigns stage_hunk<CR>", "Stage Hunk", opts)
+    map({ "n", "v" }, "<C-A-z>", ":Gitsigns reset_hunk<CR>", "Reset Hunk", opts)
+    map("n", "<C-A-g>S", gs.stage_buffer, "Stage Buffer", opts)
+    map("n", "<C-A-g>u", gs.undo_stage_hunk, "Undo Stage Hunk", opts)
+    map("n", "<C-A-g>R", gs.reset_buffer, "Reset Buffer", opts)
+    map("n", "<C-A-g>p", gs.preview_hunk, "Preview Hunk", opts)
+    map("n", "<C-A-g>b", function()
       gs.blame_line({ full = true })
     end, "Blame Line", opts)
-    map("n", "<leader>ghd", gs.diffthis, "Diff This", opts)
-    map("n", "<leader>ghD", function()
+    map("n", "<C-A-g>d", gs.diffthis, "Diff This", opts)
+    map("n", "<C-A-g>D", function()
       gs.diffthis("~")
     end, "Diff This ~", opts)
   end,
@@ -161,9 +157,9 @@ vim.api.nvim_create_autocmd("BufReadPre", {
 -- ━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━
 -- OTHER.NVM KEYMAPS
 -- ━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━
-map("n", "<leader>oa", "<cmd>Other<cr>", "Open alternate file", { noremap = true })
-map("n", "<leader>os", "<cmd>OtherSplit<cr>", "Open alternate in split", { noremap = true })
-map("n", "<leader>ov", "<cmd>OtherVsplit<cr>", "Open alternate in vsplit", { noremap = true })
+map("n", "<C-A-o>a", "<cmd>Other<cr>", "Open alternate file", { noremap = true })
+map("n", "<C-A-o>s", "<cmd>OtherSplit<cr>", "Open alternate in split", { noremap = true })
+map("n", "<C-A-o>v", "<cmd>OtherVsplit<cr>", "Open alternate in vsplit", { noremap = true })
 
 -- ━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━
 -- OPENCODE KEYMAPS
@@ -216,11 +212,11 @@ end, "Jump to char", { noremap = true })
 map("n", "F", function()
   require("mini.jump2d").jump({ direction = "backward" })
 end, "Jump backward", { noremap = true })
-map("n", "<leader>jj", function()
+map("n", "<C-A-j>", function()
   require("mini.jump2d").start()
 end, "Jump2d start", { noremap = true })
 
 -- Mini.diff
-map("n", "<leader>dh", function()
+map("n", "<C-A-x>", function()
   require("mini.diff").toggle_overlay()
 end, "Diff toggle", { noremap = true })

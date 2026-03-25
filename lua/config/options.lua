@@ -21,7 +21,7 @@ vim.opt.clipboard = "unnamedplus"
 -- PERFORMANCE OPTIMIZATION
 -- ━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━
 vim.opt.updatetime = 250 -- Faster response for plugins
-vim.opt.timeoutlen = 1000 -- Leader key timeout (increased for more time to type keybinds)
+vim.opt.timeoutlen = 5000 -- Keybind sequence timeout (increased for more time to type key combos)
 vim.opt.ttimeoutlen = 50 -- Terminal codes timeout
 vim.opt.synmaxcol = 200 -- Limit syntax highlighting span
 vim.opt.termguicolors = true -- True color support
@@ -86,7 +86,7 @@ vim.g.format_on_save = false -- Disable format on save by default (enable per pr
 -- ━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━
 -- GLOBALS
 -- ━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━
-vim.g.mapleader = " "
+vim.g.mapleader = "\\"
 vim.g.maplocalleader = ","
 
 vim.hl.priorities.treesitter = 210
