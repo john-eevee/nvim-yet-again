@@ -1,16 +1,6 @@
 -- Add Dart and Flutter support
 return {
-  -- Add Dart treesitter parser
-  {
-    "nvim-treesitter/nvim-treesitter",
-    opts = function(_, opts)
-      opts.ensure_installed = vim.list_extend(opts.ensure_installed or {}, {
-        "dart",
-      })
-    end,
-  },
-
-  -- Add Mason integration for Dart formatters and LSP
+    -- Add Mason integration for Dart formatters and LSP
   {
     "williamboman/mason.nvim",
     opts = function(_, opts)

@@ -1,16 +1,5 @@
 -- Add Rust language support
 return {
-  -- Add Rust treesitter parser
-  {
-    "nvim-treesitter/nvim-treesitter",
-    opts = function(_, opts)
-      opts.ensure_installed = vim.list_extend(opts.ensure_installed or {}, {
-        "rust",
-        "toml",
-      })
-    end,
-  },
-
   -- Add Mason integration for Rust tools
   {
     "williamboman/mason.nvim",

@@ -47,13 +47,4 @@ return {
       },
     })
   end,
-  keys = {
-    {
-      "<C-A-\\>",
-      function()
-        require("zen-mode").toggle()
-      end,
-      desc = "Zen Mode: Toggle",
-    },
-  },
-}
+ }

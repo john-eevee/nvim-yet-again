@@ -5,43 +5,21 @@ return {
     preset = "modern",
     spec = {
       -- ━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━
-      -- CTRL+ALT GROUPS
+      -- LEADER GROUPS (Mnemonic System)
       -- ━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━
-      { "<C-A-a>", group = "Alt Commands" },
-      { "<C-A-c>", group = "Colors/Check" },
-      { "<C-A-d>", group = "DAP/Diagnostics" },  -- renamed to DAP since it's now a full group
-      { "<C-A-e>", desc = "Explorer (Oil)" },
-      { "<C-A-f>", desc = "Format" },  -- LSP Format moved here
-      { "<C-A-g>", group = "Git" },
-      { "<C-A-h>", group = "Harpoon" },
-      { "<C-A-j>", desc = "Jump2d" },
-      { "<C-A-k>", desc = "Keymaps" },
-      { "<C-A-m>", group = "Mise/Mark" },
-      { "<C-A-o>", group = "Other" },  -- simplified from "Other/Output"
-      { "<C-A-r>", group = "Relative/Replace" },
-      { "<C-A-s>", group = "Split/Session/Test" },  -- expanded: now includes Test subkeys
-      { "<C-A-t>", group = "Todo/Test" },
-      { "<C-A-u>", group = "Utils/Rust" },
-      { "<C-A-w>", group = "Window" },  -- simplified: now just window (no Wrap/Widgets)
-      { "<C-A-x>", desc = "Diff toggle" },
-      { "<C-A-z>", desc = "Zen/Reset hunk" },
-      { "<C-A-\\>", desc = "Zen Mode" },
-
-      -- ━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━
-      -- CTRL+SHIFT GROUPS
-      -- ━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━
-      { "<C-S-a>", desc = "Command Palette" },
-      { "<C-S-b>", desc = "Goto Declaration" },
-      { "<C-S-f>", desc = "Find in Path (Live Grep)" },
-      { "<C-S-j>", desc = "Join Lines" },
-      { "<C-S-n>", desc = "Find Files" },
-      { "<C-S-r>", desc = "Replace in Files (GrugFar)" },  -- changed from Registers
-      { "<C-S-F8>", desc = "Breakpoint Condition" },  -- moved from <C-F8>
-      { "<C-S-F9>", desc = "Run with Args (DAP)" },  -- moved from <S-F9>
-      { "<C-S-F10>", desc = "Run Nearest Test" },
-      { "<C-S-Down>", desc = "Stack Frame Down (DAP)" },  -- moved from <C-A-Down>
-      { "<C-S-Up>", desc = "Stack Frame Up (DAP)" },  -- moved from <C-A-Up>
-      { "<C-S-w>", desc = "Shrink Selection (Treesitter)" },
+      { "<leader>a", group = "AI (Opencode)" },
+      { "<leader>b", group = "Buffer" },
+      { "<leader>c", group = "Code & LSP" },
+      { "<leader>d", group = "Diagnostics" },
+      { "<leader>D", group = "Debugging" },
+      { "<leader>e", group = "Edit" },
+      { "<leader>G", group = "Git (Gitsigns)" },
+      { "<leader>h", group = "Harpoon" },
+      { "<leader>m", group = "Mise" },
+      { "<leader>o", group = "Other" },
+      { "<leader>s", group = "Search (Telescope)" },
+      { "<leader>t", group = "Toggles" },
+      { "<leader>w", group = "Window" },
 
       -- ━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━
       -- F-KEY BINDS (Debug & Test)
@@ -86,20 +64,6 @@ return {
       { "<C-4>", desc = "Harpoon 4" },
       { "<C-h>", desc = "Previous Buffer" },
       { "<C-l>", desc = "Next Buffer" },
-
-      -- ━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━
-      -- LEGACY LEADER FALLBACKS (still functional)
-      -- ━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━
-      { "<leader>b", group = "Buffer" },
-      { "<leader>c", group = "Code" },
-      { "<leader>f", group = "Finder" },
-      { "<leader>g", group = "Go To" },
-      { "<leader>s", group = "Search" },
-      { "<leader>u", group = "UI" },
-      { "<leader>w", group = "Window" },
-      { "<leader>r", group = "Refactor" },
-      { "<leader>jj", group = "Jump" },
-      { "<leader>a", group = "Align" },
     },
   },
   config = function(_, opts)

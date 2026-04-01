@@ -4,7 +4,7 @@ return {
   opts = function()
     return {
       options = {
-        theme = "everforest",
+        theme = "kanagawa",
         component_separators = "",
         -- searches nf-ple
         section_separators = { left = "", right = "" },

@@ -32,7 +32,7 @@ return {
         end,
         desc = "Toggle NeoTree",
       },
-    },
+   },
     deactivate = function()
       vim.cmd("Neotree close")
     end,
@@ -146,6 +146,9 @@ return {
           ["<"] = "prev_source",
           [">"] = "next_source",
           ["i"] = "show_file_details",
+          ["<C-CR>"] = "open_vsplit",
+          ["<C-M-CR>"] = "open_split"
+  
         },
         float = {
           enable = true,
