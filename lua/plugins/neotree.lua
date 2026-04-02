@@ -24,15 +24,7 @@ return {
       "MunifTanjim/nui.nvim",
     },
     cmd = "Neotree",
-    keys = {
-      {
-        "<M-1>",
-        function()
-          require("neo-tree.command").execute({ toggle = true, dir = vim.loop.cwd(), position = "right" })
-        end,
-        desc = "Toggle NeoTree",
-      },
-   },
+    keys = {},
     deactivate = function()
       vim.cmd("Neotree close")
     end,
@@ -147,8 +139,7 @@ return {
           [">"] = "next_source",
           ["i"] = "show_file_details",
           ["<C-CR>"] = "open_vsplit",
-          ["<C-M-CR>"] = "open_split"
-  
+          ["<C-M-CR>"] = "open_split",
         },
         float = {
           enable = true,

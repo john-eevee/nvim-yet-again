@@ -47,21 +47,21 @@ vim.schedule(function()
   local wk = require("which-key")
 
   wk.add({
-    {"<leader>a", group = "AI (Opencode)" },
-    {"<leader>b" , { group = "Buffer" },
-    {"<leader>c" , { group = "Code & LSP" },
-    {"<leader>d" , { group = "Diagnostics" },
-    {"<leader>D" , { group = "Debugging" },
-    {"<leader>e" , { group = "Edit" },
-    {"<leader>G" , { group = "Git" },
-    {"<leader>g" , { group = "GoTo" },
-    {"<leader>h" , { group = "Harpoon" },
-    {"<leader>m" , { group = "Mise" },
-    {"<leader>o" , { group = "Other" },
-    {"<leader>s" , { group = "Search" },
-    {"<leader>t" , { group = "Toggles" },
-    {"<leader>x" , { group = "Trouble (Diagnostics)" },
-    {"<leader>w" , { group = "Window" },
+    { "<leader>a", group = "AI (Opencode)" },
+    { "<leader>b", group = "Buffer" },
+    { "<leader>c", group = "Code & LSP" },
+    { "<leader>d", group = "Diagnostics" },
+    { "<leader>D", group = "Debugging" },
+    { "<leader>e", group = "Edit" },
+    { "<leader>G", group = "Git" },
+    { "<leader>g", group = "GoTo" },
+    { "<leader>h", group = "Harpoon" },
+    { "<leader>m", group = "Mise" },
+    { "<leader>o", group = "Other" },
+    { "<leader>s", group = "Search" },
+    { "<leader>t", group = "Toggles" },
+    { "<leader>x", group = "Trouble (Diagnostics)" },
+    { "<leader>w", group = "Window" },
   })
 end)
 -- AI
@@ -100,8 +100,54 @@ keymap("n", "<leader>bn", "<cmd>bnext<CR>", { desc = "Buffer: Next" })
 keymap("n", "<leader>bd", "<cmd>bdelete<CR>", { desc = "Buffer: Delete" })
 keymap("n", "<leader>bl", "<cmd>ls<CR>", { desc = "Buffer: List" })
 keymap("n", "<leader>bl", "<cmd>Telescope buffers<CR>", { desc = "Buffer: Picker" })
-keymap("n", "<A-Left>", "<cmd>bprevious<cr>", { desc = "Buffer: Previous"})
-keymap("n", "<A-Right>", "<cmd>bnext<cr>", { desc = "Buffer: Next"})
+keymap("n", "<A-Left>", "<cmd>bprevious<cr>", { desc = "Buffer: Previous" })
+keymap("n", "<A-Right>", "<cmd>bnext<cr>", { desc = "Buffer: Next" })
+keymap("n", "<leader>bD", function()
+  local current_buf = vim.api.nvim_get_current_buf()
+  local all_bufs = vim.api.nvim_list_bufs()
+
+  for _, buf in ipairs(all_bufs) do
+    if buf ~= current_buf and vim.api.nvim_buf_is_valid(buf) and vim.bo[buf].buflisted then
+      vim.api.nvim_buf_delete(buf, { force = false })
+    end
+  end
+end, { desc = "Buffer: Close others" })
+-- Code
+
+keymap("n", "K", vim.lsp.buf.hover, { desc = "LSP: Hover documentation" })
+keymap("n", "gd", vim.lsp.buf.definition, { desc = "LSP: Go to definition" })
+keymap("n", "gD", vim.lsp.buf.declaration, { desc = "LSP: Go to declaration" })
+keymap("n", "gi", vim.lsp.buf.implementation, { desc = "LSP: Go to implementation" })
+keymap("n", "<leader>cr", vim.lsp.buf.rename, { desc = "LSP: Rename symbol" })
+keymap("n", "<leader>ca", vim.lsp.buf.code_action, { desc = "LSP: Code action" })
+keymap("n", "<A-CR>", vim.lsp.buf.code_action, { desc = "LSP: Code action" })
+keymap("n", "<leader>cf", function()
+  vim.lsp.buf.format({ async = true })
+end, { desc = "LSP: Format buffer" })
+
+-- Debugging (Requires nvim-dap)
+keymap("n", "<leader>Db", function()
+  require("dap").toggle_breakpoint()
+end, { desc = "Debug: Toggle breakpoint" })
+keymap("n", "<leader>Dc", function()
+  require("dap").continue()
+end, { desc = "Debug: Start/Continue" })
+keymap("n", "<leader>Di", function()
+  require("dap").step_into()
+end, { desc = "Debug: Step into" })
+keymap("n", "<leader>Do", function()
+  require("dap").step_over()
+end, { desc = "Debug: Step over" })
+keymap("n", "<leader>DO", function()
+  require("dap").step_out()
+end, { desc = "Debug: Step out" })
+keymap("n", "<leader>Dt", function()
+  require("dap").terminate()
+end, { desc = "Debug: Terminate" })
+keymap("n", "<leader>Dr", function()
+  require("dap").repl.toggle()
+end, { desc = "Debug: Toggle REPL" })
+
 -- Edit
 
 keymap("n", "<leader>ed", "yyp", { desc = "Edit: Duplicate line" })
@@ -112,6 +158,16 @@ keymap("n", "<leader>ec", "gcc", { desc = "Edit: Comment line" })
 keymap("v", "<leader>ec", "gc", { desc = "Edit: Comment selection" })
 keymap("n", "<leader>eg", "<cmd>", { desc = "Edit: Go to line" })
 
+-- Git (Requires gitsigns.nvim)
+keymap("n", "<leader>Gp", ":Gitsigns preview_hunk<CR>", { desc = "Git: Preview hunk" })
+keymap("n", "<leader>Gs", ":Gitsigns stage_hunk<CR>", { desc = "Git: Stage hunk" })
+keymap("n", "<leader>Gr", ":Gitsigns reset_hunk<CR>", { desc = "Git: Reset hunk" })
+keymap("n", "<leader>Gu", ":Gitsigns undo_stage_hunk<CR>", { desc = "Git: Undo stage hunk" })
+keymap("n", "<leader>Gb", ":Gitsigns blame_line<CR>", { desc = "Git: Blame line" })
+keymap("n", "]h", ":Gitsigns next_hunk<CR>", { desc = "Git: Next hunk" })
+keymap("n", "[h", ":Gitsigns prev_hunk<CR>", { desc = "Git: Previous hunk" })
+keymap("n", "<leader>Gf", "<cmd>LazyGit<CR>", { desc = "Git: Open LazyGit" })
+
 -- Search
 
 keymap("n", "<leader>sf", "<cmd>Telescope find_files<CR>", { desc = "Search: Find files" })
@@ -120,6 +176,17 @@ keymap("n", "<leader>sh", "<cmd>Telescope highlights<CR>", { desc = "Search: Hig
 keymap("n", "<leader>sw", "<cmd>Telescope workspace_symbols<CR>", { desc = "Search: Workspace symbols" })
 keymap("n", "<leader>st", "<cmd>Todo<CR>", { desc = "Search: Todos" })
 keymap("n", "<leader>sx", "<cmd>Todo fixme<CR>", { desc = "Search: Fixmes" })
+
+-- Testing (Requires neotest)
+keymap("n", "<leader>Tt", function()
+  require("neotest").run.run()
+end, { desc = "Test: Run nearest" })
+keymap("n", "<leader>Tf", function()
+  require("neotest").run.run(vim.fn.expand("%"))
+end, { desc = "Test: Run current file" })
+keymap("n", "<leader>Ts", function()
+  require("neotest").summary.toggle()
+end, { desc = "Test: Toggle summary" })
 
 -- Toggles
 
@@ -147,6 +214,10 @@ keymap("n", "<leader>tt", function()
   require("snacks").terminal()
 end, { desc = "Toggle: Terminal" })
 
+keymap("n", "<leader>1", function()
+  require("neo-tree.command").execute({ toggle = true, dir = vim.loop.cwd(), position = "right" })
+end, { desc = "Toggle NeoTree" })
+
 -- Window Management
 
 keymap("n", "<leader>wh", "<C-w>h", { desc = "Window: Left" })
@@ -158,8 +229,9 @@ keymap("n", "<leader>wv", "<C-w>v", { desc = "Window: Vertical split" })
 keymap("n", "<leader>ws", "<C-w>s", { desc = "Window: Horizontal split" })
 keymap("n", "<leader>wn", "<C-w>n", { desc = "Window: New window" })
 keymap("n", "<leader>w=", "<C-w>=", { desc = "Window: Equalize sizes" })
-keymap("n", "<leader>wz", function() require('zen-mode').toggle() end, {desc = "Window: Zen"})
-
+keymap("n", "<leader>wz", function()
+  require("zen-mode").toggle()
+end, { desc = "Window: Zen" })
 -- Mise
 
 local function run_mise_task()
@@ -213,12 +285,15 @@ keymap("n", "<leader>oa", "<cmd>Other<cr>", { desc = "Other: Alternate file" })
 keymap("n", "<leader>os", "<cmd>OtherSplit<cr>", { desc = "Other: Open in split" })
 keymap("n", "<leader>ov", "<cmd>OtherVsplit<cr>", { desc = "Other: Open in vsplit" })
 
-
 -- Trouble (Diagnostics)
-keymap("<leader>xx", "<cmd>Trouble diagnostics toggle<cr>", { desc = "Diagnostics (Trouble)"})
-keymap("<leader>xX", "<cmd>Trouble diagnostics toggle filter.buf=0<cr>", { desc = "Buffer Diagnostics (Trouble)" })
-keymap("<leader>xs", "<cmd>Trouble symbols toggle focus=false<cr>",{ desc = "Symbols (Trouble)" })
-keymap("<leader>xl", "<cmd>Trouble lsp toggle focus=false win.position=right<cr>", { desc = "LSP Definitions / references / ... (Trouble)" })
-keymap( "<leader>xL", "<cmd>Trouble loclist toggle<cr>", { desc = "Location List (Trouble)" })
-keymap( "<leader>xQ", "<cmd>Trouble qflist toggle<cr>", { desc = "Quickfix List (Trouble)" })
-
+keymap("n", "<leader>xx", "<cmd>Trouble diagnostics toggle<cr>", { desc = "Diagnostics (Trouble)" })
+keymap("n", "<leader>xX", "<cmd>Trouble diagnostics toggle filter.buf=0<cr>", { desc = "Buffer Diagnostics (Trouble)" })
+keymap("n", "<leader>xs", "<cmd>Trouble symbols toggle focus=false<cr>", { desc = "Symbols (Trouble)" })
+keymap(
+  "n",
+  "<leader>xl",
+  "<cmd>Trouble lsp toggle focus=false win.position=right<cr>",
+  { desc = "LSP Definitions / references / ... (Trouble)" }
+)
+keymap("n", "<leader>xL", "<cmd>Trouble loclist toggle<cr>", { desc = "Location List (Trouble)" })
+keymap("n", "<leader>xQ", "<cmd>Trouble qflist toggle<cr>", { desc = "Quickfix List (Trouble)" })

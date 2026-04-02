@@ -1,6 +1,6 @@
 -- Add Dart and Flutter support
 return {
-    -- Add Mason integration for Dart formatters and LSP
+  -- Add Mason integration for Dart formatters and LSP
   {
     "williamboman/mason.nvim",
     opts = function(_, opts)

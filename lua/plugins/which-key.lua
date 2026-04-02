@@ -24,19 +24,19 @@ return {
       -- ━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━
       -- F-KEY BINDS (Debug & Test)
       -- ━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━
-      { "<F2>", desc = "Next Error" },  -- new
+      { "<F2>", desc = "Next Error" }, -- new
       { "<F7>", desc = "Step Into" },
       { "<F8>", desc = "Step Over" },
       { "<F9>", desc = "Continue (Debug)" },
-      { "<S-F2>", desc = "Prev Error" },  -- new
+      { "<S-F2>", desc = "Prev Error" }, -- new
       { "<S-F6>", desc = "Rename (Shift+F6)" },
       { "<S-F8>", desc = "Step Out" },
-      { "<S-F9>", desc = "Run File Tests (Neotest)" },  -- changed from Debug/Run with Args (now neotest only)
+      { "<S-F9>", desc = "Run File Tests (Neotest)" }, -- changed from Debug/Run with Args (now neotest only)
       { "<S-F10>", desc = "Run File Tests" },
       { "<C-F4>", desc = "Close Buffer/Window" },
       { "<C-F8>", desc = "Toggle Breakpoint" },
       { "<C-F12>", desc = "Document Symbols" },
-      { "<A-F12>", desc = "Toggle Terminal" },  -- new
+      { "<A-F12>", desc = "Toggle Terminal" }, -- new
 
       -- ━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━
       -- ALT KEY BINDS
@@ -52,12 +52,12 @@ return {
       -- CTRL KEY BINDS
       -- ━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━
       { "<C-b>", desc = "Goto Definition" },
-      { "<C-d>", desc = "Duplicate Line" },  -- new
+      { "<C-d>", desc = "Duplicate Line" }, -- new
       { "<C-e>", desc = "Recent Files/Buffers" },
-      { "<C-g>", desc = "Go to Line" },  -- new
-      { "<C-y>", desc = "Delete Line" },  -- new
-      { "<C-w>", desc = "Extend Selection (Treesitter)" },  -- changed from window prefix
-      { "<C-/>", desc = "Comment Line" },  -- new
+      { "<C-g>", desc = "Go to Line" }, -- new
+      { "<C-y>", desc = "Delete Line" }, -- new
+      { "<C-w>", desc = "Extend Selection (Treesitter)" }, -- changed from window prefix
+      { "<C-/>", desc = "Comment Line" }, -- new
       { "<C-1>", desc = "Harpoon 1" },
       { "<C-2>", desc = "Harpoon 2" },
       { "<C-3>", desc = "Harpoon 3" },

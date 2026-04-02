@@ -17,7 +17,7 @@ return {
         html = { "prettier" },
         yaml = { "prettier" },
         markdown = { "prettier" },
-        elixir = {"mix"},
+        elixir = { "mix" },
         sql = { "sqlfluff" },
         mysql = { "sqlfluff" },
         plsql = { "sqlfluff" },

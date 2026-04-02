@@ -6,43 +6,158 @@ return {
   },
   keys = {
     -- Toggle Breakpoint (IntelliJ: Ctrl+F8)
-    { "<C-F8>", function() require("dap").toggle_breakpoint() end, desc = "Toggle Breakpoint" },
+    {
+      "<C-F8>",
+      function()
+        require("dap").toggle_breakpoint()
+      end,
+      desc = "Toggle Breakpoint",
+    },
     -- View Breakpoints (IntelliJ: Ctrl+Shift+F8) — reuse for condition input
-    { "<C-S-F8>", function() require("dap").set_breakpoint(vim.fn.input('Breakpoint condition: ')) end, desc = "Breakpoint Condition" },
+    {
+      "<C-S-F8>",
+      function()
+        require("dap").set_breakpoint(vim.fn.input("Breakpoint condition: "))
+      end,
+      desc = "Breakpoint Condition",
+    },
     -- Continue / Resume (IntelliJ: F9)
-    { "<F9>", function() require("dap").continue() end, desc = "Continue" },
+    {
+      "<F9>",
+      function()
+        require("dap").continue()
+      end,
+      desc = "Continue",
+    },
     -- Run with Args (moved from S-F9 to C-S-F9 to free S-F9 for neotest)
-    { "<C-S-F9>", function() require("dap").continue({ before = get_args }) end, desc = "Run with Args" },
+    {
+      "<C-S-F9>",
+      function()
+        require("dap").continue({ before = get_args })
+      end,
+      desc = "Run with Args",
+    },
     -- Run to Cursor (IntelliJ: Alt+F9)
-    { "<A-F9>", function() require("dap").run_to_cursor() end, desc = "Run to Cursor" },
+    {
+      "<A-F9>",
+      function()
+        require("dap").run_to_cursor()
+      end,
+      desc = "Run to Cursor",
+    },
     -- Goto Line (moved from <C-A-g> to <C-A-d>g to avoid Gitsigns collision)
-    { "<C-A-d>g", function() require("dap").goto_() end, desc = "Goto Line (No Execute)" },
+    {
+      "<C-A-d>g",
+      function()
+        require("dap").goto_()
+      end,
+      desc = "Goto Line (No Execute)",
+    },
     -- Step Into (IntelliJ: F7)
-    { "<F7>", function() require("dap").step_into() end, desc = "Step Into" },
+    {
+      "<F7>",
+      function()
+        require("dap").step_into()
+      end,
+      desc = "Step Into",
+    },
     -- Down stack frame (moved from <C-A-Down> to <C-S-Down> — arrows free for window nav)
-    { "<C-S-Down>", function() require("dap").down() end, desc = "Stack Frame Down" },
+    {
+      "<C-S-Down>",
+      function()
+        require("dap").down()
+      end,
+      desc = "Stack Frame Down",
+    },
     -- Up stack frame (moved from <C-A-Up> to <C-S-Up>)
-    { "<C-S-Up>", function() require("dap").up() end, desc = "Stack Frame Up" },
+    {
+      "<C-S-Up>",
+      function()
+        require("dap").up()
+      end,
+      desc = "Stack Frame Up",
+    },
     -- Run Last (moved from <C-A-l>r to <C-A-d>r under DAP group)
-    { "<C-A-d>r", function() require("dap").run_last() end, desc = "Run Last" },
+    {
+      "<C-A-d>r",
+      function()
+        require("dap").run_last()
+      end,
+      desc = "Run Last",
+    },
     -- Step Out (IntelliJ: Shift+F8)
-    { "<S-F8>", function() require("dap").step_out() end, desc = "Step Out" },
+    {
+      "<S-F8>",
+      function()
+        require("dap").step_out()
+      end,
+      desc = "Step Out",
+    },
     -- Step Over (IntelliJ: F8)
-    { "<F8>", function() require("dap").step_over() end, desc = "Step Over" },
+    {
+      "<F8>",
+      function()
+        require("dap").step_over()
+      end,
+      desc = "Step Over",
+    },
     -- Pause (moved from <C-A-p> to <C-A-d>p under DAP group)
-    { "<C-A-d>p", function() require("dap").pause() end, desc = "Pause" },
+    {
+      "<C-A-d>p",
+      function()
+        require("dap").pause()
+      end,
+      desc = "Pause",
+    },
     -- Toggle REPL (stays on <C-A-e>r)
-    { "<C-A-e>r", function() require("dap").repl.toggle() end, desc = "Toggle REPL" },
+    {
+      "<C-A-e>r",
+      function()
+        require("dap").repl.toggle()
+      end,
+      desc = "Toggle REPL",
+    },
     -- Session (stays on <C-A-s>e)
-    { "<C-A-s>e", function() require("dap").session() end, desc = "Session" },
+    {
+      "<C-A-s>e",
+      function()
+        require("dap").session()
+      end,
+      desc = "Session",
+    },
     -- Terminate (stays on <C-A-t>e)
-    { "<C-A-t>e", function() require("dap").terminate() end, desc = "Terminate" },
+    {
+      "<C-A-t>e",
+      function()
+        require("dap").terminate()
+      end,
+      desc = "Terminate",
+    },
     -- Widgets (moved from <C-A-w> to <C-A-d>w under DAP group)
-    { "<C-A-d>w", function() require("dap.ui.widgets").hover() end, desc = "Widgets" },
+    {
+      "<C-A-d>w",
+      function()
+        require("dap.ui.widgets").hover()
+      end,
+      desc = "Widgets",
+    },
     -- DAP UI (moved from <C-A-u>d to <C-A-d>u under DAP group, avoiding Rust Debuggables)
-    { "<C-A-d>u", function() require("dapui").toggle({}) end, desc = "DAP UI" },
+    {
+      "<C-A-d>u",
+      function()
+        require("dapui").toggle({})
+      end,
+      desc = "DAP UI",
+    },
     -- Eval (IntelliJ: Alt+F8)
-    { "<A-F8>", function() require("dapui").eval() end, desc = "Eval", mode = { "n", "v" } },
+    {
+      "<A-F8>",
+      function()
+        require("dapui").eval()
+      end,
+      desc = "Eval",
+      mode = { "n", "v" },
+    },
   },
   config = function()
     local dap = require("dap")
@@ -68,10 +183,10 @@ return {
       dap.configurations.java = {
         {
           -- Attach to a JVM started with -agentlib:jdwp=transport=dt_socket,server=y,suspend=n,address=5005
-          name = 'Debug (Attach) - Remote',
-          type = 'java',
-          request = 'attach',
-          hostName = '127.0.0.1',
+          name = "Debug (Attach) - Remote",
+          type = "java",
+          request = "attach",
+          hostName = "127.0.0.1",
           port = 5005,
         },
       }

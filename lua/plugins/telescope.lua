@@ -10,8 +10,6 @@
 -- 3. telescope.builtin - Built-in pickers (commands, help_tags, etc.)
 -- ━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━
 
-local theme = "ivy"
-local buf_toggle = 1
 return {
   {
     "nvim-telescope/telescope-fzf-native.nvim",
@@ -54,9 +52,7 @@ return {
         -- ━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━
         -- FILE PICKER CONFIGURATION
         -- ━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━
-        defaults = {
-          theme = theme,
-        },
+        defaults = {},
         find_files = {
           -- Use ripgrep for finding files
           find_command = {
@@ -75,13 +71,11 @@ return {
           },
           hidden = true,
           no_ignore = false, -- Respect .gitignore
-          theme = theme,
         },
         -- ━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━
         -- BUFFERS CONFIGURATION
         -- ━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━
         buffers = {
-          theme = theme,
           initial_mode = "normal",
           mappings = {
             i = {
@@ -110,7 +104,6 @@ return {
           additional_args = function()
             return { "--smart-case" }
           end,
-          theme = theme,
         },
         -- ━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━
         -- DIAGNOSTICS PICKER
@@ -128,7 +121,6 @@ return {
         -- ━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━
         registers = {
           show_empty = false,
-          theme = theme,
         },
         -- ━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━
         -- FZF EXTENSION - Fast fuzzy matching
@@ -138,7 +130,6 @@ return {
           override_generic_sorter = true,
           override_file_sorter = true,
           case_mode = "smart_case",
-          theme = theme,
         },
       },
     },
@@ -170,195 +161,50 @@ return {
           end
         end
 
-        pickers.new({}, {
-          prompt_title = "Mise Tasks",
-          finder = require("telescope.finders").new_table({
-            results = tasks,
-            entry_maker = function(entry)
-              return {
-                value = entry,
-                display = entry.name .. (entry.description and (" - " .. entry.description) or ""),
-                ordinal = entry.name,
-              }
-            end,
-          }),
-          sorter = require("telescope.sorters").get_fuzzy_file(),
-          attach_mappings = function(prompt_bufnr)
-            actions.select_default:replace(function()
-              local selection = action_state.get_selected_entry()
-              actions.close(prompt_bufnr)
+        pickers
+          .new({}, {
+            prompt_title = "Mise Tasks",
+            finder = require("telescope.finders").new_table({
+              results = tasks,
+              entry_maker = function(entry)
+                return {
+                  value = entry,
+                  display = entry.name .. (entry.description and (" - " .. entry.description) or ""),
+                  ordinal = entry.name,
+                }
+              end,
+            }),
+            sorter = require("telescope.sorters").get_fuzzy_file(),
+            attach_mappings = function(prompt_bufnr)
+              actions.select_default:replace(function()
+                local selection = action_state.get_selected_entry()
+                actions.close(prompt_bufnr)
 
-              vim.ui.input({ prompt = "Arguments (optional): " }, function(args)
-                local args_str = args and args ~= "" and (" " .. args) or ""
-                local title = string.format("[mise] %s%s", selection.value.name, args_str)
-                local cwd = vim.fn.getcwd()
+                vim.ui.input({ prompt = "Arguments (optional): " }, function(args)
+                  local args_str = args and args ~= "" and (" " .. args) or ""
+                  local title = string.format("[mise] %s%s", selection.value.name, args_str)
+                  local cwd = vim.fn.getcwd()
 
-                local cmd = string.format(
-                  "wezterm cli spawn --cwd '%s' -- bash -c 'mise run %s%s'",
-                  cwd,
-                  selection.value.name,
-                  args_str
-                )
-                local pane_id = vim.fn.system(cmd):gsub("%s+", "")
+                  local cmd = string.format(
+                    "wezterm cli spawn --cwd '%s' -- bash -c 'mise run %s%s'",
+                    cwd,
+                    selection.value.name,
+                    args_str
+                  )
+                  local pane_id = vim.fn.system(cmd):gsub("%s+", "")
 
-                if pane_id and pane_id ~= "" then
-                  vim.fn.system(string.format("wezterm cli set-tab-title --pane-id %s '%s'", pane_id, title))
-                end
+                  if pane_id and pane_id ~= "" then
+                    vim.fn.system(string.format("wezterm cli set-tab-title --pane-id %s '%s'", pane_id, title))
+                  end
+                end)
               end)
-            end)
-            return true
-          end,
-        }):find()
+              return true
+            end,
+          })
+          :find()
       end
 
       vim.api.nvim_create_user_command("MiseRunTelescope", run_mise_task_telescope, { nargs = 0 })
     end,
-    keys = {
-      -- ━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━
-      -- REGISTERS (Ctrl+Shift+R)
-      -- ━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━
-      {
-        "<C-S-r>",
-        "<cmd>Telescope registers<CR>",
-        mode = { "n", "v" },
-        desc = "Telescope: Registers",
-      },
-
-      -- ━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━
-      -- FIND FILES & LIVE GREP (IntelliJ-style: Ctrl+Shift+N, Ctrl+Shift+F)
-      -- ━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━
-      {
-        "<C-S-n>",
-        "<cmd>Telescope find_files<CR>",
-        desc = "Telescope: Find Files",
-      },
-      {
-        "<C-S-f>",
-        "<cmd>Telescope live_grep<CR>",
-        desc = "Telescope: Live Grep",
-      },
-      {
-        "<C-e>",
-        "<cmd>Telescope buffers<CR>",
-        desc = "Telescope: Buffers",
-      },
-      {
-        "<leader>bb",
-        function()
-          if buf_toggle == 1 then
-            vim.cmd("bprev")
-            buf_toggle = 0
-          else
-            vim.cmd("bnext")
-            buf_toggle = 1
-          end
-        end,
-        desc = "Buffer: Cycle",
-      },
-
-      -- ━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━
-      -- COMMANDS & COMMAND PALETTE (Ctrl+Shift+A)
-      -- ━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━
-      {
-        "<C-S-a>",
-        "<cmd>Telescope commands<CR>",
-        desc = "Telescope: Commands",
-      },
-      {
-        "<C-S-a>",
-        function()
-          require("telescope.builtin").builtin()
-        end,
-        desc = "Telescope: Command Palette (Builtin)",
-      },
-
-      -- ━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━
-      -- HELP TAGS
-      -- ━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━
-      {
-        "<C-A-h>f",
-        "<cmd>Telescope help_tags<CR>",
-        desc = "Telescope: Help Tags",
-      },
-
-      -- ━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━
-      -- KEYMAPS
-      -- ━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━
-      {
-        "<C-A-k>",
-        "<cmd>Telescope keymaps<CR>",
-        desc = "Telescope: Keymaps",
-      },
-
-      -- ━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━
-      -- SEARCH HISTORY
-      -- ━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━
-      {
-        "<C-A-/>",
-        "<cmd>Telescope search_history<CR>",
-        desc = "Telescope: Search History",
-      },
-
-      -- ━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━
-      -- COMMAND HISTORY
-      -- ━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━
-      {
-        "<C-A-:>",
-        "<cmd>Telescope command_history<CR>",
-        desc = "Telescope: Command History",
-      },
-
-      -- ━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━
-      -- HIGHLIGHTS (Colorscheme colors)
-      -- ━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━
-      {
-        "<C-A-c>h",
-        "<cmd>Telescope highlights<CR>",
-        desc = "Telescope: Highlights",
-      },
-
-      -- ━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━
-      -- QUICKFIX & LOCLIST
-      -- ━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━
-      {
-        "<C-A-q>",
-        "<cmd>Telescope quickfix<CR>",
-        desc = "Telescope: Quickfix",
-      },
-      {
-        "<C-A-l>l",
-        "<cmd>Telescope loclist<CR>",
-        desc = "Telescope: Loclist",
-      },
-
-      -- ━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━
-      -- LSP PICKERS (IntelliJ-style)
-      -- ━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━
-      {
-        "<C-F12>",
-        "<cmd>Telescope lsp_document_symbols<CR>",
-        desc = "Telescope: LSP Document Symbols",
-      },
-      {
-        "<C-A-c>w",
-        "<cmd>Telescope lsp_workspace_symbols<CR>",
-        desc = "Telescope: LSP Workspace Symbols",
-      },
-      {
-        "<A-F8>",
-        function()
-          local severity_map = { Error = 1, Warning = 2, Information = 3, Hint = 4 }
-          local opts = {
-            theme = "ivy",
-            previewer = false,
-            wrap_results = true,
-            severity_sort = true,
-          }
-          local diagnostics = require("telescope.builtin").diagnostics
-          diagnostics(opts)
-        end,
-        desc = "Telescope: Diagnostics",
-      },
-    },
   },
 }

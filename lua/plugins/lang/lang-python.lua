@@ -1,7 +1,7 @@
 -- Add Python language support with Ty, Ruff, and Uv (Astral Stack)
 -- See: https://docs.astral.sh/ty/editors/
 return {
- -- Add Mason integration for Python tools (Astral stack)
+  -- Add Mason integration for Python tools (Astral stack)
   {
     "williamboman/mason.nvim",
     opts = function(_, opts)
