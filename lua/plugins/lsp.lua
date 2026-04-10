@@ -46,6 +46,8 @@ return {
         lua_ls = {},
         -- SQL
         sqlls = {},
+        -- Svelte
+        svelte = {},
       },
     },
     config = function(_, opts)

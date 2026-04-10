@@ -98,6 +98,13 @@ end, { desc = "AI: Add line to opencode", expr = true })
 keymap("n", "<leader>bp", "<cmd>bprevious<CR>", { desc = "Buffer: Previous" })
 keymap("n", "<leader>bn", "<cmd>bnext<CR>", { desc = "Buffer: Next" })
 keymap("n", "<leader>bd", "<cmd>bdelete<CR>", { desc = "Buffer: Delete" })
+keymap("n", "<leader>bA", function()
+  for _, buf in vim.api.nvim_list_bufs() do
+    if vim.api.nvim_buf_is_valid(buf) and vim.bo[buf].buflisted then
+      vim.api.nvim_buf_delete(buf, { force = false })
+    end
+  end
+end, { desc = "Buffer: Delete all" })
 keymap("n", "<leader>bl", "<cmd>ls<CR>", { desc = "Buffer: List" })
 keymap("n", "<leader>bl", "<cmd>Telescope buffers<CR>", { desc = "Buffer: Picker" })
 keymap("n", "<A-Left>", "<cmd>bprevious<cr>", { desc = "Buffer: Previous" })
