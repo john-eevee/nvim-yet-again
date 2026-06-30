@@ -95,7 +95,7 @@ vim.api.nvim_create_autocmd("QuitPre", {
 
     local confirm = vim.fn.confirm("Quit nvim?", "&Yes\n&No", 2, "Q")
     if confirm ~= 1 then
-      vim.cmd("qa!")
+      vim.api.nvim_input("<Esc>")
     end
   end,
 })
