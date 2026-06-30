@@ -1,16 +1,6 @@
 -- Add Dart and Flutter support
 return {
-  -- Add Mason integration for Dart formatters and LSP
-  {
-    "williamboman/mason.nvim",
-    opts = function(_, opts)
-      opts.ensure_installed = vim.list_extend(opts.ensure_installed or {}, {
-        "dart-debug-adapter",
-      })
-    end,
-  },
-
-  -- Flutter support with flutter-tools
+  -- Flutter support with flutter-tools (handles DAP + LSP debugging)
   {
     "akinsho/flutter-tools.nvim",
     lazy = false,

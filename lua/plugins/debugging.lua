@@ -102,29 +102,27 @@ return {
     }
 
     -- Dart/Flutter
-    local function mise_which(name)
-      local result = vim.fn.system({ "mise", "which", name })
-      if vim.v.shell_error == 0 then
-        return vim.trim(result)
-      end
-      return name
+    local flutter_cmd = vim.fn.exepath("flutter")
+    if flutter_cmd ~= "" then
+      dap.adapters.dart = {
+        type = "executable",
+        command = flutter_cmd,
+        args = { "debug-adapter" },
+      }
+      dap.configurations.dart = dap.configurations.dart or {}
+      table.insert(dap.configurations.dart, 1, {
+        type = "dart",
+        request = "launch",
+        name = "Launch Flutter",
+        program = "lib/main.dart",
+      })
+    else
+      -- fallback if flutter not on PATH
+      dap.adapters.dart = {
+        type = "executable",
+        command = "dart",
+        args = { "debug_adapter" },
+      }
     end
-
-    dap.adapters.dart = {
-      type = "executable",
-      command = function()
-        return mise_which("dart")
-      end,
-      args = { "debug_adapter" },
-    }
-    dap.configurations.dart = dap.configurations.dart or {}
-    table.insert(dap.configurations.dart, 1, {
-      type = "dart",
-      request = "launch",
-      name = "Launch Dart script",
-      cwd = "${workspaceFolder}",
-      program = "${file}",
-    })
-    -- flutter-tools.nvim registers its own adapter and Flutter configs
   end,
 }
