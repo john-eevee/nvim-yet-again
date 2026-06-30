@@ -101,6 +101,30 @@ return {
       },
     }
 
-    -- Dart/Flutter debugging is handled by flutter-tools.nvim
+    -- Dart/Flutter
+    local function mise_which(name)
+      local result = vim.fn.system({ "mise", "which", name })
+      if vim.v.shell_error == 0 then
+        return vim.trim(result)
+      end
+      return name
+    end
+
+    dap.adapters.dart = {
+      type = "executable",
+      command = function()
+        return mise_which("dart")
+      end,
+      args = { "debug_adapter" },
+    }
+    dap.configurations.dart = dap.configurations.dart or {}
+    table.insert(dap.configurations.dart, 1, {
+      type = "dart",
+      request = "launch",
+      name = "Launch Dart script",
+      cwd = "${workspaceFolder}",
+      program = "${file}",
+    })
+    -- flutter-tools.nvim registers its own adapter and Flutter configs
   end,
 }
