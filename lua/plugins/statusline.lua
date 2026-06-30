@@ -18,13 +18,6 @@ return {
         lualine_y = { "lsp_status" },
         lualine_z = { "location" },
       },
-      tabline = {
-        lualine_a = { "buffers" },
-        lualine_b = {},
-        lualine_x = {},
-        lualine_y = {},
-        lualine_z = { "tabs" },
-      },
     }
   end,
 }
