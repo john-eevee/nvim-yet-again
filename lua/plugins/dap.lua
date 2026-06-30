@@ -101,31 +101,6 @@ return {
       },
     }
 
-    -- Elixir (mix task)
-    dap.adapters.mix_task = {
-      type = "executable",
-      command = "elixir",
-      args = { "--name", "debug@127.0.0.1", "-S", "mix", "test", "--trace" },
-    }
-    dap.configurations.elixir = {
-      {
-        type = "mix_task",
-        name = "Debug test",
-        request = "launch",
-        task = "test",
-        taskArgs = { "--trace" },
-        projectDir = "${workspaceFolder}",
-        requireFiles = {
-          "test/**/test_helper.exs",
-          "test/**/*_test.exs",
-        },
-      },
-    }
-    dap.adapters.dart = {
-      type = "executable",
-      command = "flutter",
-      args = { "debug_adapter" },
-      options = {},
-    }
+    -- Dart/Flutter debugging is handled by flutter-tools.nvim
   end,
 }

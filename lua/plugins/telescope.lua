@@ -22,6 +22,7 @@ return {
       "tpope/vim-repeat",
       "nvim-telescope/telescope-fzf-native.nvim",
       "nvim-telescope/telescope-smart-history.nvim",
+      "nvim-telescope/telescope-live-grep-args.nvim",
       "kkharji/sqlite.lua",
     },
     opts = {
@@ -141,70 +142,8 @@ return {
       pcall(telescope.load_extension, "registers")
       pcall(telescope.load_extension, "fzf")
       pcall(telescope.load_extension, "notify")
+      pcall(telescope.load_extension, "live_grep_args")
 
-      local pickers = require("telescope.pickers")
-      local actions = require("telescope.actions")
-      local action_state = require("telescope.actions.state")
-
-      local function run_mise_task_telescope()
-        local task_list = vim.fn.systemlist("mise tasks --json 2>/dev/null")
-        if vim.v.shell_error ~= 0 or #task_list == 0 then
-          vim.notify("No mise tasks found", vim.log.levels.WARN)
-          return
-        end
-
-        local tasks = {}
-        for _, line in ipairs(task_list) do
-          local decoded = vim.json.decode(line)
-          if decoded and decoded.name then
-            table.insert(tasks, decoded)
-          end
-        end
-
-        pickers
-          .new({}, {
-            prompt_title = "Mise Tasks",
-            finder = require("telescope.finders").new_table({
-              results = tasks,
-              entry_maker = function(entry)
-                return {
-                  value = entry,
-                  display = entry.name .. (entry.description and (" - " .. entry.description) or ""),
-                  ordinal = entry.name,
-                }
-              end,
-            }),
-            sorter = require("telescope.sorters").get_fuzzy_file(),
-            attach_mappings = function(prompt_bufnr)
-              actions.select_default:replace(function()
-                local selection = action_state.get_selected_entry()
-                actions.close(prompt_bufnr)
-
-                vim.ui.input({ prompt = "Arguments (optional): " }, function(args)
-                  local args_str = args and args ~= "" and (" " .. args) or ""
-                  local title = string.format("[mise] %s%s", selection.value.name, args_str)
-                  local cwd = vim.fn.getcwd()
-
-                  local cmd = string.format(
-                    "wezterm cli spawn --cwd '%s' -- bash -c 'mise run %s%s'",
-                    cwd,
-                    selection.value.name,
-                    args_str
-                  )
-                  local pane_id = vim.fn.system(cmd):gsub("%s+", "")
-
-                  if pane_id and pane_id ~= "" then
-                    vim.fn.system(string.format("wezterm cli set-tab-title --pane-id %s '%s'", pane_id, title))
-                  end
-                end)
-              end)
-              return true
-            end,
-          })
-          :find()
-      end
-
-      vim.api.nvim_create_user_command("MiseRunTelescope", run_mise_task_telescope, { nargs = 0 })
     end,
   },
 }

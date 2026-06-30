@@ -44,9 +44,7 @@ return {
             "--quiet",
           },
           stdin = true,
-          cwd = function()
-            require("conform.util").root_file({ "gradlew", "build.gradle", "build.gradle.kts" })
-          end,
+          cwd = require("conform.util").root_file({ "gradlew", "build.gradle", "build.gradle.kts" }),
         },
       },
     },

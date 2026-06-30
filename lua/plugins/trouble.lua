@@ -2,7 +2,7 @@ return {
   {
     "folke/trouble.nvim",
     cmd = { "Trouble" },
-    enabled = false,
+    enabled = true,
     opts = {
       modes = {
         lsp_base = {

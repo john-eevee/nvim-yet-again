@@ -105,7 +105,6 @@ keymap("n", "<leader>bA", function()
     end
   end
 end, { desc = "Buffer: Delete all" })
-keymap("n", "<leader>bl", "<cmd>ls<CR>", { desc = "Buffer: List" })
 keymap("n", "<leader>bl", "<cmd>Telescope buffers<CR>", { desc = "Buffer: Picker" })
 keymap("n", "<A-Left>", "<cmd>bprevious<cr>", { desc = "Buffer: Previous" })
 keymap("n", "<A-Right>", "<cmd>bnext<cr>", { desc = "Buffer: Next" })
@@ -214,7 +213,7 @@ keymap("n", "<leader>Gf", "<cmd>LazyGit<CR>", { desc = "Git: Open LazyGit" })
 -- Search
 
 keymap("n", "<leader>sf", "<cmd>Telescope find_files<CR>", { desc = "Search: Find files" })
-keymap("n", "<leader>sg", "<cmd>Telescope live_grep<CR>", { desc = "Search: Grep in files" })
+keymap("n", "<leader>sg", "<cmd>:lua require('telescope').extensions.live_grep_args.live_grep_args()<CR>", { desc = "Search: Grep in files" })
 keymap("n", "<leader>sh", "<cmd>Telescope highlights<CR>", { desc = "Search: Highlights" })
 keymap("n", "<leader>sw", "<cmd>Telescope workspace_symbols<CR>", { desc = "Search: Workspace symbols" })
 keymap("n", "<leader>st", "<cmd>Todo<CR>", { desc = "Search: Todos" })
@@ -320,7 +319,7 @@ end
 vim.api.nvim_create_user_command("MiseRun", run_mise_task, { nargs = 0, desc = "Run mise task in tmux split" })
 
 keymap("n", "<leader>ms", run_mise_task, { desc = "Mise: Select task (ui.select)" })
-keymap("n", "<leader>mt", "<cmd>MiseRunTelescope<CR>", { desc = "Mise: Telescope tasks" })
+keymap("n", "<leader>mt", run_mise_task, { desc = "Mise: Select task" })
 
 -- Other (file pair jump)
 

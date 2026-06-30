@@ -9,9 +9,14 @@ return {
           configurations = {
             runtimes = {
               {
-                name = "JavaSE-25",
-                path = "/home/john/.local/share/mise/shims",
+                name = "JavaSE-21",
+                path = "/home/john/.local/share/mise/installs/java/zulu-21",
                 default = true,
+              },
+              {
+                name = "JavaSE-25",
+                path = "/home/john/.local/share/mise/installs/java/zulu-25",
+                default = false,
               },
             },
           },
