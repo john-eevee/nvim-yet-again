@@ -1,49 +1,77 @@
--- Options are automatically loaded before lazy.nvim startup
--- Default options that are always set: https://github.com/LazyVim/LazyVim/blob/main/lua/lazyvim/config/options.lua
--- Add any additional options here
-vim.opt.number = true -- Show line numbers
-vim.opt.relativenumber = false -- Relative line numbers for navigation
-vim.opt.cursorline = true -- Highlight current line
-vim.opt.expandtab = true -- Convert tabs to spaces
-vim.opt.tabstop = 2 -- 2 spaces per tab
-vim.opt.shiftwidth = 2 -- Indentation width
-vim.opt.softtabstop = 2 -- Soft tab width
-vim.opt.autoindent = true -- Preserve indentation
-vim.opt.smartindent = true -- Smart indentation
-vim.opt.wrap = false -- No word wrap
-vim.opt.scrolloff = 8 -- Vertical scroll offset
-vim.opt.sidescrolloff = 16 -- Horizontal scroll offset
-vim.opt.ignorecase = true -- Case insensitive search
-vim.opt.smartcase = true -- Case sensitive if uppercase present
-vim.opt.mouse = "a" -- Enable mouse support
-vim.opt.clipboard = "unnamedplus"
--- ━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━
--- PERFORMANCE OPTIMIZATION
--- ━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━
-vim.opt.updatetime = 250 -- Faster response for plugins
-vim.opt.timeoutlen = 5000 -- Keybind sequence timeout (increased for more time to type key combos)
-vim.opt.ttimeoutlen = 50 -- Terminal codes timeout
-vim.opt.synmaxcol = 200 -- Limit syntax highlighting span
-vim.opt.termguicolors = true -- True color support
+vim.g.mapleader = " "
+vim.g.maplocalleader = " "
 
--- ━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━
--- DISPLAY & UI
--- ━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━
-vim.opt.showmode = false -- Don't show mode (shown in statusline)
-vim.opt.showcmd = true -- Show partial commands being typed
-vim.opt.cmdheight = 1 -- Show command bar to display keybinds
-vim.opt.pumheight = 8 -- Completion menu height
-vim.opt.pumwidth = 20 -- Completion menu width
-vim.opt.signcolumn = "yes:1" -- Always show sign column (gutter)
-vim.opt.foldcolumn = "0" -- Hide fold column
-vim.opt.splitbelow = true -- Splits go below
-vim.opt.splitright = true -- Splits go right (important for layout)
-vim.opt.breakindent = true -- Wrapped lines indent
-vim.opt.laststatus = 3 -- Global statusline
+-- Add mise shims to PATH (overrides system tools with mise-managed versions)
+local mise_shims = vim.fn.expand("~/.local/share/mise/shims")
+if vim.fn.isdirectory(mise_shims) == 1 then
+  vim.env.PATH = mise_shims .. ":" .. vim.env.PATH
+end
+
+-- Line numbers
+vim.opt.number = true
+vim.opt.relativenumber = false
+vim.opt.cursorline = true
+
+-- Tabs & indentation
+vim.opt.expandtab = true
+vim.opt.tabstop = 2
+vim.opt.shiftwidth = 2
+vim.opt.softtabstop = 2
+vim.opt.autoindent = true
+vim.opt.smartindent = true
+
+-- Search
+vim.opt.ignorecase = true
+vim.opt.smartcase = true
+vim.opt.hlsearch = true
+vim.opt.incsearch = true
+
+-- UI
+vim.opt.wrap = false
+vim.opt.scrolloff = 8
+vim.opt.sidescrolloff = 8
+vim.opt.mouse = "a"
+vim.opt.clipboard = "unnamedplus"
+vim.opt.termguicolors = true
+vim.opt.showmode = false
+vim.opt.cmdheight = 1
+vim.opt.pumheight = 10
+vim.opt.signcolumn = "yes:1"
+vim.opt.splitbelow = true
+vim.opt.splitright = true
+vim.opt.breakindent = true
+vim.opt.laststatus = 3
+
+-- Performance
+vim.opt.updatetime = 250
+vim.opt.timeoutlen = 500
+vim.opt.ttimeoutlen = 50
+vim.opt.synmaxcol = 200
+
+-- Helper: resolve a tool via mise (falls back to bare command)
+function _G.mise_cmd(tool)
+  return { "mise", "x", "--", tool }
+end
+
+-- Files & buffers
+vim.opt.hidden = true
+vim.opt.modeline = false
+vim.opt.backup = false
+vim.opt.swapfile = false
+vim.opt.undofile = true
+vim.opt.undodir = vim.fn.expand("~/.cache/nvim/undo")
+vim.opt.writebackup = false
+vim.opt.confirm = true
+vim.opt.fileencoding = "utf-8"
+
+-- Formatting
+vim.opt.formatoptions:remove({ "c", "r", "o" })
+
+-- Fillchars
 vim.opt.fillchars = {
-  eob = " ", -- Hide end of buffer
-  fold = " ", -- Hide fold
-  diff = "╱", -- Better diff character
+  eob = " ",
+  fold = " ",
+  diff = "╱",
   horiz = "━",
   horizup = "┻",
   horizdown = "┳",
@@ -52,41 +80,3 @@ vim.opt.fillchars = {
   vertright = "┣",
   verthoriz = "╋",
 }
-vim.opt.winblend = 0 -- Disable pseudo-transparency in favor of real
-vim.opt.pumblend = 0 -- Popup transparency
-
--- ━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━
--- FILE & BUFFER HANDLING
--- ━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━
-vim.opt.hidden = true -- Allow unsaved buffers in background
-vim.opt.modeline = false -- Disable modeline for security
-vim.opt.backup = false -- No backup files
-vim.opt.swapfile = false -- No swap files
-vim.opt.undofile = true -- Persistent undo
-vim.opt.undodir = vim.fn.expand("~/.cache/nvim/undo") -- Undo directory
-vim.opt.writebackup = false -- No backup on write
-vim.opt.confirm = true -- Confirm before discarding changes
-vim.opt.fileencoding = "utf-8" -- UTF-8 encoding
-
--- ━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━
--- SEARCH & REPLACE
--- ━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━
-vim.opt.hlsearch = true -- Highlight search results
-vim.opt.incsearch = true -- Incremental search
-vim.opt.gdefault = false -- Don't use 'g' flag by default in substitutions
-
--- ━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━
--- CODE FORMATTING & COMPLETION
--- ━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━
-vim.opt.formatoptions:remove("c") -- Don't auto-comment on new line
-vim.opt.formatoptions:remove("r") -- Don't auto-comment on new line
-vim.opt.formatoptions:remove("o") -- Don't auto-comment on new line
-vim.g.format_on_save = false -- Disable format on save by default (enable per project)
-
--- ━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━
--- GLOBALS
--- ━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━
-vim.g.mapleader = "\\"
-vim.g.maplocalleader = ","
-
-vim.hl.priorities.treesitter = 210
