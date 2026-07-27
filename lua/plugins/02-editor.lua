@@ -149,7 +149,7 @@ return {
           lualine_b = { { "branch", icon = "󰘬" } },
           lualine_c = {},
           lualine_x = { "diagnostics" },
-          lualine_y = { "lsp_status" },
+          lualine_y = { "filetype" },
           lualine_z = { "location" },
         },
       }

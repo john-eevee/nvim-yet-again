@@ -29,3 +29,11 @@ vim.api.nvim_create_autocmd("TextYankPost", {
     vim.highlight.on_yank({ higroup = "IncSearch", timeout = 200 })
   end,
 })
+
+-- Auto-start treesitter highlighting for buffers with an installed parser
+vim.api.nvim_create_autocmd("FileType", {
+  group = vim.api.nvim_create_augroup("StartTreesitter", { clear = true }),
+  callback = function(args)
+    vim.treesitter.start()
+  end,
+})

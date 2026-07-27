@@ -1,17 +1,5 @@
+-- Flutter/Dart support: LSP is managed by flutter-tools, not lspconfig/mason
 return {
-  -- Dart LSP via mise
-  {
-    "neovim/nvim-lspconfig",
-    opts = {
-      servers = {
-        dartls = {
-          mason = false, -- managed via mise
-          cmd = vim.list_extend(_G.mise_cmd("dart"), { "language-server", "--protocol=lsp" }),
-        },
-      },
-    },
-  },
-
   -- Flutter tools (handles LSP + debugging + widgets)
   {
     "akinsho/flutter-tools.nvim",
@@ -43,7 +31,6 @@ return {
         widget_guides = { enabled = true },
         closing_tags = { highlight = "ErrorMsg", prefix = ">", enabled = true },
         lsp = {
-          color = { enabled = false },
           capabilities = nil,
           settings = {
             showTodos = true,

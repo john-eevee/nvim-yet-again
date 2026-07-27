@@ -112,7 +112,7 @@ return {
         list = {
           selection = {
             preselect = true,
-            auto_select = true,
+            auto_insert = true,
           },
         },
         documentation = { auto_show = true, auto_show_delay_ms = 500 },
