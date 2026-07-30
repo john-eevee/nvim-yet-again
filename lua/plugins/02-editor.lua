@@ -5,9 +5,14 @@ return {
     cmd = "Telescope",
     dependencies = {
       "nvim-lua/plenary.nvim",
-      "nvim-telescope/telescope-fzf-native.nvim",
-      build = "cmake -S. -Bbuild -DCMAKE_BUILD_TYPE=Release && cmake --build build --config Release && cmake --install build --prefix build",
-      lazy = true,
+      {
+        "nvim-telescope/telescope-fzf-native.nvim",
+        build = "cmake -S. -Bbuild -DCMAKE_BUILD_TYPE=Release && cmake --build build --config Release && cmake --install build --prefix build",
+      },
+      {
+        "nvim-telescope/telescope-frecency.nvim",
+        version = "*",
+      },
     },
     opts = {
       defaults = {
@@ -16,6 +21,12 @@ return {
           "--line-number", "--column", "--smart-case",
         },
         find_command = { "rg", "--files" },
+        -- Esc in insert mode closes directly (no intermediate normal mode)
+        mappings = {
+          i = {
+            ["<Esc>"] = require("telescope.actions").close,
+          },
+        },
       },
       pickers = {
         find_files = {
@@ -39,12 +50,22 @@ return {
           override_file_sorter = true,
           case_mode = "smart_case",
         },
+        frecency = {
+          matcher = "fuzzy", -- use fzf-native fuzzy matching
+          show_scores = false,
+          show_unindexed = true,
+          ignore_patterns = {
+            "*.git/*", "*/node_modules/*", "*/__pycache__/*",
+            "*.venv/*", "*/build/*", "*/dist/*",
+          },
+        },
       },
     },
     config = function(_, opts)
       local telescope = require("telescope")
       telescope.setup(opts)
       pcall(telescope.load_extension, "fzf")
+      pcall(telescope.load_extension, "frecency")
     end,
   },
 

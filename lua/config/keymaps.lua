@@ -49,10 +49,10 @@ map("n", "g,", "g,zz", { desc = "Next change location" })
 -- LEADER KEYBINDS (Space)
 -- ━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━
 
--- File finding (IntelliJ Shift+Shift / Ctrl+Shift+N style)
-map("n", "<leader>ff", "<Cmd>Telescope find_files<CR>", { desc = "Find files" })
+-- File finding — unified "find anything" picker with source switching
+map("n", "<leader>ff", function() require("config.find-anything").find_anything() end, { desc = "Find anything" })
+map("n", "<leader>fg", function() require("config.find-anything").find_anything_grep() end, { desc = "Grep anything" })
 map("n", "<leader>fr", "<Cmd>Telescope oldfiles<CR>", { desc = "Recent files" })
-map("n", "<leader>fg", "<Cmd>Telescope live_grep<CR>", { desc = "Grep text" })
 map("n", "<leader>fb", "<Cmd>Telescope buffers<CR>", { desc = "Open buffers" })
 
 -- File operations
