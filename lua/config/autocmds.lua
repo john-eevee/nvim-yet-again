@@ -31,9 +31,9 @@ vim.api.nvim_create_autocmd("TextYankPost", {
 })
 
 -- Auto-start treesitter highlighting for buffers with an installed parser
-vim.api.nvim_create_autocmd("FileType", {
-  group = vim.api.nvim_create_augroup("StartTreesitter", { clear = true }),
-  callback = function(args)
-    vim.treesitter.start()
+vim.api.nvim_create_autocmd({ "FileType" }, {
+  pattern = "*",
+  callback = function()
+    pcall(vim.treesitter.start)
   end,
 })
