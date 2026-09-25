@@ -33,6 +33,10 @@ A clean Neovim configuration built for an IntelliJ-style workflow.
 | `K` | Hover docs |
 | `gd` / `gD` / `gi` / `gr` | Definition / declaration / implementation / references |
 | `jk` / `jj` / `jw` | Exit insert mode / exit insert mode and save |
+| `af` / `if` / `ac` / `ic` | Textobjects: function/class, outer/inner |
+| `]f` `]c` `]F` `]C` / `[f` `[c` `[F` `[C` | Next / previous function or class, start or end |
+| `an` / `in` | Select parent / child node (Nvim's built-in, treesitter + LSP) |
+| `]n` `]N` / `[n` `[N` | Grow selection to next / previous node or sibling |
 | `s` / `S` | Flash jump / flash treesitter |
 | `<Esc>` | Clear search highlights |
 | `n` / `N` / `<C-u>` / `<C-d>` | Centered navigation |

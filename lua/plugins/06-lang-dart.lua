@@ -1,5 +1,11 @@
 -- Flutter/Dart support: LSP is managed by flutter-tools, not lspconfig/mason
 return {
+  -- Treesitter parser for Dart
+  {
+    "nvim-treesitter/nvim-treesitter",
+    opts = { parsers = { "dart" } },
+  },
+
   -- Flutter tools (handles LSP + debugging + widgets)
   {
     "akinsho/flutter-tools.nvim",

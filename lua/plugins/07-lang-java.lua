@@ -1,4 +1,10 @@
 return {
+  -- Treesitter parser for Java
+  {
+    "nvim-treesitter/nvim-treesitter",
+    opts = { parsers = { "java" } },
+  },
+
   -- nvim-java (handles jdtls setup + debugging)
   {
     "nvim-java/nvim-java",
