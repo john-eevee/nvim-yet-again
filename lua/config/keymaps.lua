@@ -18,6 +18,9 @@ map("n", "<C-d>", "<C-d>zz", opts)
 map("i", "jk", "<Esc>", opts)
 map("i", "jj", "<Esc>", opts)
 
+-- Escape insert mode and save the file
+map("i", "jw", "<Esc><cmd>write<CR>", opts)
+
 -- Keep selection on indent
 map("v", "<", "<gv", opts)
 map("v", ">", ">gv", opts)
@@ -41,6 +44,10 @@ map("n", "<C-S-Tab>", "<Cmd>bprevious<CR>", { desc = "Previous buffer" })
 map("n", "<A-l>", "<Cmd>bnext<CR>", { desc = "Next buffer" })
 map("n", "<A-h>", "<Cmd>bprevious<CR>", { desc = "Previous buffer" })
 
+-- ]b / [b for next/previous buffer (unimpaired-style)
+map("n", "]b", "<Cmd>bnext<CR>", { desc = "Next buffer" })
+map("n", "[b", "<Cmd>bprevious<CR>", { desc = "Previous buffer" })
+
 -- Jump through recent change locations (like Ctrl+Backspace in IntelliJ)
 map("n", "g;", "g;zz", { desc = "Previous change location" })
 map("n", "g,", "g,zz", { desc = "Next change location" })
@@ -60,6 +67,21 @@ map("n", "<leader>e", "<Cmd>Oil<CR>", { desc = "File explorer" })
 map("n", "<leader>n", "<Cmd>enew<CR>", { desc = "New file" })
 
 -- Buffer management
+-- Jump to the most recently used buffer (toggles between the two latest)
+map("n", "<leader>bb", function()
+  local current = vim.api.nvim_get_current_buf()
+  local candidates = {}
+  for _, buf in ipairs(vim.api.nvim_list_bufs()) do
+    if buf ~= current and vim.api.nvim_buf_is_valid(buf) and vim.bo[buf].buflisted then
+      local info = vim.fn.getbufinfo(buf)[1]
+      table.insert(candidates, { buf = buf, lastused = info and info.lastused or 0 })
+    end
+  end
+  table.sort(candidates, function(a, b) return a.lastused > b.lastused end)
+  if #candidates > 0 then
+    vim.api.nvim_win_set_buf(0, candidates[1].buf)
+  end
+end, { desc = "Most recent buffer" })
 map("n", "<leader>bd", "<Cmd>bdelete<CR>", { desc = "Close buffer" })
 map("n", "<leader>bD", function()
   local current = vim.api.nvim_get_current_buf()
