@@ -24,7 +24,13 @@ return {
     opts = {
       -- Reuse mason's tinymist instead of letting the plugin download its own
       -- pinned copy (websocat is still fetched into stdpath/data on setup).
-      dependencies_bin = { tinymist = "tinymist" },
+      -- The shim only drops the --static-file-host flag that tinymist deprecated
+      -- and that the plugin still passes; without it tinymist serves the preview
+      -- page from the data plane host and keeps printing the line the plugin
+      -- parses, so this stays working when the flag is finally removed.
+      dependencies_bin = {
+        tinymist = vim.fs.joinpath(vim.fn.stdpath("config"), "bin", "tinymist-preview-shim"),
+      },
     },
     keys = {
       { "<leader>tp", "<cmd>TypstPreviewToggle<cr>", ft = "typst", desc = "Toggle Typst preview" },

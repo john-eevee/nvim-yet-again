@@ -78,6 +78,8 @@ Command abbreviations are also set up: `W`, `Wq`, `Q`, `Qa`, `WQ`, `QA`, `q1`, `
 │       ├── 09-lang-svelte.lua  # svelte-language-server (mise/npx)
 │       ├── 10-notes.lua        # Obsidian vault (obsidian.nvim)
 │       └── 11-lang-typst.lua   # tinymist (Typst LSP) + typst-preview.nvim
+├── bin/
+│   └── tinymist-preview-shim   # drops tinymist's deprecated --static-file-host
 ├── docs/
 │   └── VIM_MOTIONS_CHEATSHEET.md
 └── lazy-lock.json              # Plugin lockfile

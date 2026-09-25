@@ -1,0 +1,72 @@
+#!/usr/bin/env bash
+#
+# typst-preview.nvim adapter for tinymist.
+#
+# The plugin spawns `tinymist preview … --static-file-host <host>:<port>`, a flag
+# tinymist deprecated in favour of `--data-plane-host` ("will be removed in the
+# future"). Dropping the argument is behaviour-preserving: tinymist then serves
+# the preview page from the data plane host and *still* prints the
+# "Static file server listening on: <addr>" line that typst-preview parses to
+# open the browser. Verified against tinymist v0.15.8: the data plane address
+# answers HTTP 200 with the same HTML the static server used to serve.
+#
+# A non-zero `port` from the plugin config is carried over to the data plane
+# host, so a fixed preview port keeps working (~/.config/nvim/lua/plugins/11-lang-typst.lua).
+#
+# The real tinymist is taken from TINYMIST_BIN, then $PATH (mason's bin dir is on
+# Neovim's PATH but not necessarily on a shell's), then mason's default location.
+#
+# Remove this shim once typst-preview.nvim stops passing the flag itself.
+set -euo pipefail
+
+find_tinymist() {
+  if [[ -n "${TINYMIST_BIN:-}" && -x "${TINYMIST_BIN}" ]]; then
+    printf '%s' "$TINYMIST_BIN"
+    return 0
+  fi
+  if command -v tinymist >/dev/null 2>&1; then
+    command -v tinymist
+    return 0
+  fi
+  local fallback="${XDG_DATA_HOME:-$HOME/.local/share}/nvim/mason/bin/tinymist"
+  if [[ -x "$fallback" ]]; then
+    printf '%s' "$fallback"
+    return 0
+  fi
+  return 1
+}
+
+port=0
+args=()
+while (($#)); do
+  case "$1" in
+    --static-file-host)
+      port="${2##*:}"
+      shift 2
+      ;;
+    --static-file-host=*)
+      port="${1##*:}"
+      shift
+      ;;
+    *)
+      args+=("$1")
+      shift
+      ;;
+  esac
+done
+
+# Keep an explicitly requested port usable by moving it onto the data plane host
+if [[ "$port" != "0" ]]; then
+  for i in "${!args[@]}"; do
+    if [[ "${args[$i]}" == "--data-plane-host" ]]; then
+      args[$((i + 1))]="${args[$((i + 1))]%:*}:$port"
+    fi
+  done
+fi
+
+tinymist_bin=$(find_tinymist) || {
+  echo "tinymist-preview-shim: tinymist not found (set TINYMIST_BIN or install it, e.g. via :MasonInstall tinymist)" >&2
+  exit 127
+}
+
+exec "$tinymist_bin" "${args[@]}"
