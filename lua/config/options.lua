@@ -48,6 +48,13 @@ vim.opt.timeoutlen = 500
 vim.opt.ttimeoutlen = 50
 vim.opt.synmaxcol = 200
 
+-- Project-local config (.nvim.lua / .nvimrc / .exrc)
+-- Nvim reads these from the current directory and every parent directory, but
+-- only executes files that are in the trust list: an unknown file prompts first
+-- and the answer is persisted (see :trust). Unset 'exrc' in a project config to
+-- stop the upward search there.
+vim.opt.exrc = true
+
 -- Files & buffers
 vim.opt.hidden = true
 vim.opt.modeline = false
