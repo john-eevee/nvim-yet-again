@@ -37,7 +37,8 @@ return {
         end
       end
 
-      vim.lsp.enable("jdtls")
+      -- Register the config before enabling, so a Java buffer opened this early
+      -- cannot start a client with the built-in defaults.
       vim.lsp.config("jdtls", {
         settings = {
           java = {
@@ -47,6 +48,7 @@ return {
           },
         },
       })
+      vim.lsp.enable("jdtls")
     end,
   },
 }

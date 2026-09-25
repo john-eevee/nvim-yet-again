@@ -48,11 +48,6 @@ vim.opt.timeoutlen = 500
 vim.opt.ttimeoutlen = 50
 vim.opt.synmaxcol = 200
 
--- Helper: resolve a tool via mise (falls back to bare command)
-function _G.mise_cmd(tool)
-  return { "mise", "x", "--", tool }
-end
-
 -- Files & buffers
 vim.opt.hidden = true
 vim.opt.modeline = false

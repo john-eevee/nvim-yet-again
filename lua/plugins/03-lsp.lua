@@ -20,6 +20,15 @@ return {
   },
 
   -- LSP servers (extendable by language plugins via opts.servers)
+  --
+  -- Neovim 0.11+ starts servers itself: register each entry with
+  -- vim.lsp.config() and hand the names to vim.lsp.enable(). nvim-lspconfig v2
+  -- retired its own framework, so the old require("lspconfig")[name].setup()
+  -- call silently did nothing (and is removed outright in v3).
+  --
+  -- NOTE: no `opts_extend` here. lazy.nvim's opts_extend *list*-extends the
+  -- value, which drops keys from a string-keyed table like `servers`; the
+  -- default deep merge is what lets language plugins add to it.
   {
     "neovim/nvim-lspconfig",
     dependencies = {
@@ -39,18 +48,17 @@ return {
         sqlls = {},
       },
     },
-    opts_extend = { "servers" },
     config = function(_, opts)
-      local capabilities = vim.tbl_deep_extend(
-        "force",
-        vim.lsp.protocol.make_client_capabilities(),
-        require("blink.cmp").get_lsp_capabilities()
-      )
+      -- Applies to every server, including the ones configured elsewhere
+      -- (Elixir in init.lua, jdtls in 07-lang-java.lua).
+      vim.lsp.config("*", {
+        capabilities = require("blink.cmp").get_lsp_capabilities(nil, true),
+      })
 
       for server_name, server_opts in pairs(opts.servers) do
-        server_opts.capabilities = vim.tbl_deep_extend("force", capabilities, server_opts.capabilities or {})
-        require("lspconfig")[server_name].setup(server_opts)
+        vim.lsp.config(server_name, server_opts)
       end
+      vim.lsp.enable(vim.tbl_keys(opts.servers))
 
       -- Global diagnostics
       vim.diagnostic.config({
@@ -68,9 +76,11 @@ return {
     "williamboman/mason-lspconfig.nvim",
     dependencies = { "williamboman/mason.nvim", "neovim/nvim-lspconfig" },
     opts = function()
-      -- Merge ensure_installed from all lspconfig servers
-      local lspconfig_plugin = require("lazy.core.config").plugins["nvim-lspconfig"]
-      local servers = lspconfig_plugin and lspconfig_plugin.opts and lspconfig_plugin.opts.servers or {}
+      -- Every server declared in the nvim-lspconfig spec (including the ones
+      -- added by language plugins) should be installed by mason. `plugin.opts`
+      -- only holds the last matching spec's table, so read the merged opts.
+      local plugin = require("lazy.core.config").plugins["nvim-lspconfig"]
+      local servers = plugin and require("lazy.core.plugin").values(plugin, "opts").servers or {}
       return {
         ensure_installed = vim.tbl_keys(servers),
       }

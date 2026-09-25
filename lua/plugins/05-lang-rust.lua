@@ -1,11 +1,17 @@
 return {
-  -- Rust LSP via mise (uses project-specific rust-analyzer version)
+  -- Treesitter parser for Rust
+  {
+    "nvim-treesitter/nvim-treesitter",
+    opts = { parsers = { "rust" } },
+  },
+
+  -- Rust LSP (rust-analyzer is resolved from $PATH: mason's binary comes first
+  -- and works; `mise x -- rust-analyzer` loops through the rustup/mise shims)
   {
     "neovim/nvim-lspconfig",
     opts = {
       servers = {
         rust_analyzer = {
-          cmd = _G.mise_cmd("rust-analyzer"),
           settings = {
             ["rust-analyzer"] = {
               cargo = { allFeatures = true, loadOutDirsFromCheck = true, runBuildScripts = true },
