@@ -176,7 +176,8 @@ return {
         sections = {
           lualine_a = { { "mode", icon = "" } },
           lualine_b = { { "branch", icon = "󰘬" } },
-          lualine_c = {},
+          -- path = 2 → full absolute path (use 3 for ~/… shorthand)
+          lualine_c = { { "filename", path = 2, icon = "󰈔" } },
           lualine_x = { "diagnostics" },
           lualine_y = { "filetype" },
           lualine_z = { "location" },
