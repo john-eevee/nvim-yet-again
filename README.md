@@ -28,6 +28,7 @@ A clean Neovim configuration built for an IntelliJ-style workflow.
 | `<Space>os` | Search notes |
 | `<Space>ob` / `<Space>ol` | Note backlinks / links (inside a note) |
 | `<Space>oo` | Open note in the Obsidian app |
+| `<Space>tp` / `<Space>ts` | Typst: toggle live preview / sync preview to cursor |
 | `<CR>` (in notes) | Smart action: follow link, toggle checkbox, show tag |
 | `[o` / `]o` (in notes) | Jump to previous / next link |
 | `<Space>q` | Quickfix list |
@@ -75,7 +76,8 @@ Command abbreviations are also set up: `W`, `Wq`, `Q`, `Qa`, `WQ`, `QA`, `q1`, `
 │       ├── 07-lang-java.lua    # nvim-java
 │       ├── 08-lang-elixir.lua  # Elixir treesitter parsers
 │       ├── 09-lang-svelte.lua  # svelte-language-server (mise/npx)
-│       └── 10-notes.lua        # Obsidian vault (obsidian.nvim)
+│       ├── 10-notes.lua        # Obsidian vault (obsidian.nvim)
+│       └── 11-lang-typst.lua   # tinymist (Typst LSP) + typst-preview.nvim
 ├── docs/
 │   └── VIM_MOTIONS_CHEATSHEET.md
 └── lazy-lock.json              # Plugin lockfile
