@@ -1,6 +1,7 @@
 require("config.options")
 require("config.keymaps")
 require("config.autocmds")
+require("config.extract-to-file")
 require("config.lazy")
 
 -- Native Nvim 0.11+ Elixir LSP configuration (mise-managed expert)
