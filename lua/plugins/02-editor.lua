@@ -80,7 +80,9 @@ return {
   -- Oil (file explorer)
   {
     "stevearc/oil.nvim",
-    cmd = "Oil",
+    -- Load at startup so oil replaces netrw when opening directories
+    -- (vim . / nvim some_dir/ / :e some_dir/)
+    event = "VimEnter",
     dependencies = { "nvim-tree/nvim-web-devicons" },
     opts = {
       default_file_explorer = true,
