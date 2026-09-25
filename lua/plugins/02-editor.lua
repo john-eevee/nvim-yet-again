@@ -27,6 +27,14 @@ return {
             ["<Esc>"] = require("telescope.actions").close,
           },
         },
+        -- Show only the last 4 path parts, e.g. ../d1/d2/d3/f1.txt
+        path_display = function(_, path)
+          local parts = vim.split(path, "/")
+          if #parts > 4 then
+            return "../" .. table.concat(parts, "/", #parts - 3)
+          end
+          return path
+        end,
       },
       pickers = {
         find_files = {
