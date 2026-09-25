@@ -22,6 +22,14 @@ A clean Neovim configuration built for an IntelliJ-style workflow.
 | `<Space>f` | Format buffer |
 | `<Space>sr` | Search & replace |
 | `<Space>db` | Toggle DB UI |
+| `<Space>on` | New note (Obsidian) |
+| `<Space>ot` | Today's daily note |
+| `<Space>oq` | Quick switch note |
+| `<Space>os` | Search notes |
+| `<Space>ob` / `<Space>ol` | Note backlinks / links (inside a note) |
+| `<Space>oo` | Open note in the Obsidian app |
+| `<CR>` (in notes) | Smart action: follow link, toggle checkbox, show tag |
+| `[o` / `]o` (in notes) | Jump to previous / next link |
 | `<Space>q` | Quickfix list |
 | `<Space>gs` / `<Space>gr` / `<Space>gb` / `<Space>gp` | Stage / reset / blame / preview hunk |
 | `<C-Tab>` / `<A-l>` / `]b` | Next buffer |
@@ -66,7 +74,8 @@ Command abbreviations are also set up: `W`, `Wq`, `Q`, `Qa`, `WQ`, `QA`, `q1`, `
 │       ├── 06-lang-dart.lua    # flutter-tools
 │       ├── 07-lang-java.lua    # nvim-java
 │       ├── 08-lang-elixir.lua  # Elixir treesitter parsers
-│       └── 09-lang-svelte.lua  # svelte-language-server (mise/npx)
+│       ├── 09-lang-svelte.lua  # svelte-language-server (mise/npx)
+│       └── 10-notes.lua        # Obsidian vault (obsidian.nvim)
 ├── docs/
 │   └── VIM_MOTIONS_CHEATSHEET.md
 └── lazy-lock.json              # Plugin lockfile
